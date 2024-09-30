@@ -7,13 +7,22 @@ Architecture da Fiap. O projeto coloca em prática os conhecimentos adquiridos a
 O objetivo do desenvolvimento é apoiar lanchonetes em rápida expansão, oferecendo uma solução para gerenciar
 pedidos e aumentar a satisfação dos clientes."""
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = "==3.11"
+authors = [
+  { name = "Rodrigo dos Santos Felix", email = "felixs.rodrigo@gmail.com" },
+  { name = "Rafael Camargo da Silva", email = "rafael.camargo.rs@gmail.com" },
+  { name = "Miriã Fernandes Costa", email = "miriamfernandes.c15@gmail.com" },
+  { name = "Vinicius Nascimento Morato", email = "vinicius.morato98@outlook.com" }
+]
 dependencies = [
-    "fastapi[standard]==0.115.0",
+  "fastapi[standard]==0.115.0",
 ]
 
 [tool.uv]
 dev-dependencies = [
-    "pytest>=8.3.3",
-    "ruff>=0.6.7"
+  "pytest>=8.3.3",
+  "ruff>=0.6.7"
 ]
+
+[project.urls]
+Repository = "https://github.com/PostechSOAT2024Grupo40/ambrosia-serve"
