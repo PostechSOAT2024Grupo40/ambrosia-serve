@@ -3,6 +3,7 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FPostechSOAT2024Grupo40%2Fambrosia-serve%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/PostechSOAT2024Grupo40/ambrosia-serve)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/PostechSOAT2024Grupo40/ambrosia-serve)
+[![CI](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml/badge.svg)](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml)
 
 
 
