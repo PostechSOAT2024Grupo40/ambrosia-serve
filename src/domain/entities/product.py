@@ -16,9 +16,9 @@ class Product:
         self.stock = stock
         self.price = price
 
-        self.__validador()
+        self.__validator()
 
-    def __validador(self):
+    def __validator(self):
         try:
             Categories(self.category)
         except ValueError:

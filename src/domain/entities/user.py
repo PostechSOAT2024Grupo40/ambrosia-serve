@@ -21,9 +21,9 @@ class User:
         self.password = password
         self.address = address
 
-        self.__validador()
+        self.__validator()
 
-    def __validador(self):
+    def __validator(self):
         self.__email_validator()
 
         self.__password_validator()
