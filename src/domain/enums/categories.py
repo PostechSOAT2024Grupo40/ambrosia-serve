@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Categorias(Enum):
+class Categories(Enum):
     LANCHE = "Lanche"
     ACOMPANHAMENTO = "Acompanhamento"
     BEBIDA = "Bebida"
