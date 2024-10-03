@@ -4,18 +4,18 @@ from src.domain.domain_exception import DomainException
 from src.domain.entities.product import Product
 
 
-def test_produto_valido():
-    resultado = Product(description="Darth Burger",
-                        category="Lanche",
-                        stock=100,
-                        price=10.0)
-    assert resultado is not None
-    assert resultado.description == "Darth Burger"
-    assert resultado.category == "Lanche"
-    assert resultado.stock == 100
+def test_valid_product():
+    result = Product(description="Darth Burger",
+                     category="Lanche",
+                     stock=100,
+                     price=10.0)
+    assert result is not None
+    assert result.description == "Darth Burger"
+    assert result.category == "Lanche"
+    assert result.stock == 100
 
 
-def test_categoria_invalida():
+def test_category_invalid():
     with pytest.raises(DomainException) as exc:
         Product(description="Darth Burger",
                 category="test",
@@ -24,7 +24,7 @@ def test_categoria_invalida():
     assert str(exc.value) == "Categoria de produto inválida"
 
 
-def test_descricao_vazia():
+def test_description_empty():
     with pytest.raises(DomainException) as exc:
         Product(description="",
                 category="Lanche",
@@ -33,7 +33,7 @@ def test_descricao_vazia():
     assert str(exc.value) == "Descrição não pode ser vazio"
 
 
-def test_descricao_nula():
+def test_description_null():
     with pytest.raises(DomainException) as exc:
         Product(description=None,  # noqa
                 category="Lanche",
@@ -42,7 +42,7 @@ def test_descricao_nula():
     assert str(exc.value) == "Descrição não pode ser vazio"
 
 
-def test_preco_menor_ou_igual_a_zero():
+def test_price_less_or_equal_zero():
     with pytest.raises(DomainException) as exc:
         Product(description="Darth Burger",
                 category="Lanche",
@@ -51,7 +51,7 @@ def test_preco_menor_ou_igual_a_zero():
     assert str(exc.value) == "Preço não pode ser negativo ou igual a zero"
 
 
-def test_estoque_menor_que_zero():
+def test_stock_less_than_zero():
     with pytest.raises(DomainException) as exc:
         Product(description="Darth Burger",
                 category="Lanche",
