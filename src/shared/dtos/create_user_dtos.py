@@ -1,16 +1,9 @@
-from pydantic.dataclasses import dataclass
+from pydantic import BaseModel, EmailStr
 
 
-@dataclass
-class InputCreateUserDTO:
+class InputCreateUserDTO(BaseModel):
     first_name: str
     last_name: str
     cpf: str
-    email: str
+    email: EmailStr
     password: str
-    address: list
-
-
-@dataclass
-class OutputCreateUserDTO:
-    id: str
