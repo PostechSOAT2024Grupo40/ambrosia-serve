@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import List
 
+from src.domain.entities.user import User
 from src.domain.enums.order_status import OrderStatus
 from src.domain.enums.paymentConditions import PaymentConditions
 from src.domain.validators.order_validator import OrderValidator
@@ -9,7 +10,7 @@ from src.domain.validators.order_validator import OrderValidator
 
 class Order:
     def __init__(self,
-                 user: int,
+                 user: User,
                  user_address: int,
                  total_order: float,
                  delivery_value: float,
@@ -30,3 +31,9 @@ class Order:
         self.order_items = order_items if order_items is not None else []
 
         OrderValidator.validate(order=self)
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        return self.id == other.id
