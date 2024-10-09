@@ -7,6 +7,7 @@ from src.use_cases.user import UsersUseCase
 
 
 class UserController:
+
     @staticmethod
     def create_user(request_data: Dict):
         repository: IRepository = ...
