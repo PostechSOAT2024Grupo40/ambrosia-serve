@@ -33,7 +33,7 @@ class UsersUseCase:
         return gateway.update_user(user)
 
     @staticmethod
-    def delete_user(user_id: int, gateway: IUserGateway) -> Any:
+    def delete_user(user_id: int, gateway: IUserGateway):
         user = gateway.get_user_by_id(user_id=user_id)
         if not user:
             raise UserNotFoundError(user=user_id)
