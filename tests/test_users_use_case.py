@@ -1,7 +1,7 @@
 import pytest
 
 from src.shared.exceptions import UserExistsError, UserNotFoundError
-from src.user_cases.create_new_user_user_case import UsersUseCase
+from src.user_cases.user import UsersUseCase
 from tests.mock_user_gateway import MockUserGateway
 
 
