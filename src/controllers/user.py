@@ -3,7 +3,7 @@ from typing import Dict
 from src.ports.gateways.user_gateway import IUserGateway
 from src.ports.presenters.users_presenter import IUserPresenter
 from src.ports.repository import IRepository
-from src.user_cases.user import UsersUseCase
+from src.use_cases.user import UsersUseCase
 
 
 class UserController:
