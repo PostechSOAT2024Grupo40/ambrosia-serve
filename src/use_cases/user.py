@@ -15,8 +15,7 @@ class UsersUseCase:
                     last_name=request_data["last_name"],
                     cpf=request_data["cpf"],
                     email=request_data["email"],
-                    password=request_data["password"],
-                    address=request_data["address"])
+                    password=request_data["password"])
 
         return gateway.create_user(user)
 
@@ -29,8 +28,7 @@ class UsersUseCase:
                     last_name=request_data["last_name"],
                     cpf=request_data["cpf"],
                     email=request_data["email"],
-                    password=request_data["password"],
-                    address=request_data["address"])
+                    password=request_data["password"])
 
         return gateway.update_user(user)
 
