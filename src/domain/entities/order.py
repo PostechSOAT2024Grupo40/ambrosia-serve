@@ -2,9 +2,9 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from src.domain.domain_exception import DomainException
 from src.domain.enums.order_status import OrderStatus
 from src.domain.enums.paymentConditions import PaymentConditions
+from src.domain.validators.order_validator import OrderValidator
 
 
 class Order:
@@ -29,35 +29,4 @@ class Order:
         self.payment_condition = payment_condition
         self.order_items = order_items if order_items is not None else []
 
-        self.__validator()
-
-    def __validator(self):
-        self.__validate_payment_condition()
-        self.__validate_order_status()
-        self.__validate_total_price()
-        self.__validate_delivery_value()
-        self.__validate_order_items()
-
-    def __validate_payment_condition(self):
-        try:
-            PaymentConditions(self.payment_condition)
-        except ValueError:
-            raise DomainException("Forma de Pagamento inválida")
-
-    def __validate_order_status(self):
-        try:
-            OrderStatus(self.order_status)
-        except ValueError:
-            raise DomainException("Status do Pedido inválido")
-
-    def __validate_total_price(self):
-        if self.total_order <= 0:
-            raise DomainException("O valor total não pode ser menor ou igual a zero")
-
-    def __validate_delivery_value(self):
-        if self.delivery_value < 0:
-            raise DomainException("O valor de entrega não pode ser negativo")
-
-    def __validate_order_items(self):
-        if self.product_quantity <= 0:
-            raise DomainException("A quantidade de produtos não pode ser menor ou igual a zero")
+        OrderValidator.validate(order=self)
