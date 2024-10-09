@@ -1,5 +1,5 @@
-from src.cart.domain.domain_exception import OrderDomainException
-from src.cart.domain.enums.categories import Categories
+from src.product.domain.enums.categories import Categories
+from src.product.domain_exception import ProductDomainException
 
 
 class ProductValidator:
@@ -9,13 +9,13 @@ class ProductValidator:
         try:
             Categories(product.category)
         except ValueError:
-            raise OrderDomainException("Categoria de produto inválida")
+            raise ProductDomainException("Categoria de produto inválida")
 
         if not product.description or not product.description.strip():
-            raise OrderDomainException("Descrição não pode ser vazio")
+            raise ProductDomainException("Descrição não pode ser vazio")
 
         if product.stock < 0:
-            raise OrderDomainException("Estoque não pode ser negativo")
+            raise ProductDomainException("Estoque não pode ser negativo")
 
         if product.price <= 0.0:
-            raise OrderDomainException("Preço não pode ser negativo ou igual a zero")
+            raise ProductDomainException("Preço não pode ser negativo ou igual a zero")

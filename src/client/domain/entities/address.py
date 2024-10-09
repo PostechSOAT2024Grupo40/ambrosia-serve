@@ -1,6 +1,6 @@
 import uuid
 
-from src.domain.validators.address_validator import AddressValidator
+from src.client.domain.validators.address_validator import AddressValidator
 
 
 class Address:

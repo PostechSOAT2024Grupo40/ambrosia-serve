@@ -1,4 +1,4 @@
-from src.domain.domain_exception import DomainException
+from src.client.domain.domain_exception import ClientDomainException
 
 
 class AddressValidator:
@@ -6,7 +6,7 @@ class AddressValidator:
     @staticmethod
     def validate(address):
         if not address.number.strip():
-            raise DomainException("Número de endereço não pode ser vazio")
+            raise ClientDomainException("Número de endereço não pode ser vazio")
 
         if not address.street.strip():
-            raise DomainException("Rua não pode ser vazia")
+            raise ClientDomainException("Rua não pode ser vazia")

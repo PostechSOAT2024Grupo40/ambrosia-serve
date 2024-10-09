@@ -1,8 +1,8 @@
 from typing import Any, Dict, Optional, List
 
-from src.domain.entities.address import Address
-from src.ports.gateways.address_gateway import IAddressGateway
-from src.shared.exceptions import AddressNotFoundError, AddressExistsError
+from src.client.domain.entities.address import Address
+from src.client.ports.gateways.address_gateway import IAddressGateway
+from src.client.exceptions import AddressNotFoundError, AddressExistsError
 
 
 class AddressUseCase:

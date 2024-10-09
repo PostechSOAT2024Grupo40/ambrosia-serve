@@ -2,15 +2,14 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from src.client.domain.entities.user import User
-from src.client.domain.enums.order_status import OrderStatus
-from src.client.domain.enums.paymentConditions import PaymentConditions
-from src.client.domain.validators.order_validator import OrderValidator
+from src.cart.domain.enums.order_status import OrderStatus
+from src.cart.domain.enums.paymentConditions import PaymentConditions
+from src.cart.domain.validators.order_validator import OrderValidator
 
 
 class Order:
     def __init__(self,
-                 user: User,
+                 user: int,
                  user_address: int,
                  total_order: float,
                  delivery_value: float,

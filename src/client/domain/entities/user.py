@@ -1,7 +1,6 @@
 import uuid
-from typing import List
 
-from src.domain.validators.user_validator import UserValidator
+from src.client.domain.validators.user_validator import UserValidator
 
 
 class User:

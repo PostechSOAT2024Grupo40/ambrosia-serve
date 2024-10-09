@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
-from src.domain.entities.user import User
-from src.ports.gateways.user_gateway import IUserGateway
-from src.shared.exceptions import UserExistsError, UserNotFoundError
+from src.client.domain.entities.user import User
+from src.client.ports.gateways.user_gateway import IUserGateway
+from src.client.exceptions import UserExistsError, UserNotFoundError
 
 
 class UsersUseCase:
