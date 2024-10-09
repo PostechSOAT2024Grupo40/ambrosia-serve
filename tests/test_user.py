@@ -1,7 +1,7 @@
 import pytest
 
-from src.domain.domain_exception import DomainException
-from src.domain.entities.user import User
+from src.client.domain.domain_exception import ClientDomainException
+from src.client.domain.entities.user import User
 
 
 def test_user_valid():
@@ -17,7 +17,7 @@ def test_user_valid():
 
 
 def test_cpf_in_wrong_format_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf="660.076.370-19",
@@ -28,7 +28,7 @@ def test_cpf_in_wrong_format_should_return_error():
 
 
 def test_cpf_empty_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf=None,  # noqa
@@ -39,7 +39,7 @@ def test_cpf_empty_should_return_error():
 
 
 def test_invalid_email_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf="66007637018",
@@ -50,7 +50,7 @@ def test_invalid_email_should_return_error():
 
 
 def test_empty_email_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf="66007637018",
@@ -61,7 +61,7 @@ def test_empty_email_should_return_error():
 
 
 def test_password_less_than_8_caracteres_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf="66007637018",
@@ -72,7 +72,7 @@ def test_password_less_than_8_caracteres_should_return_error():
 
 
 def test_empty_password_should_return_error():
-    with pytest.raises(DomainException) as exc:
+    with pytest.raises(ClientDomainException) as exc:
         User(first_name="Joaão",
              last_name="da Silva",
              cpf="66007637018",
@@ -84,7 +84,7 @@ def test_empty_password_should_return_error():
 
 
 def test_invalid_first_name():
-    with pytest.raises(DomainException) as exc_nome:
+    with pytest.raises(ClientDomainException) as exc_nome:
         User(first_name="",
              last_name="da Silva",
              cpf="66007637018",
@@ -95,7 +95,7 @@ def test_invalid_first_name():
 
 
 def test_invalid_last_name():
-    with pytest.raises(DomainException) as exc_sobrenome:
+    with pytest.raises(ClientDomainException) as exc_sobrenome:
         User(first_name="Joaão",
              last_name="",
              cpf="66007637018",

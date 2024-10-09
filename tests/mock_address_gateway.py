@@ -1,8 +1,8 @@
 from typing import List, Dict, Optional
 
-from src.domain.entities.address import Address
-from src.ports.gateways.address_gateway import IAddressGateway
-from src.shared.exceptions import AddressExistsError, AddressNotFoundError
+from src.client.domain.entities.address import Address
+from src.client.ports.gateways import IAddressGateway
+from src.client.exceptions import AddressExistsError, AddressNotFoundError
 
 
 class MockAddressGateway(IAddressGateway):

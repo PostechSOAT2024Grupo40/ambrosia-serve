@@ -1,6 +1,6 @@
 import uuid
 
-from src.domain.validators.product_validator import ProductValidator
+from src.cart.domain.validators.product_validator import ProductValidator
 
 
 class Product:

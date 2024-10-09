@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 
-from src.domain.entities.address import Address
+from src.client.domain.entities.address import Address
 
 
 class IAddressPresenter(ABC):

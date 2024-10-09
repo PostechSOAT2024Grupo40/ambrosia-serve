@@ -2,10 +2,10 @@ from datetime import datetime
 
 import pytest
 
-from src.domain.domain_exception import DomainException
-from src.domain.entities.order import Order
-from src.domain.enums.order_status import OrderStatus
-from src.domain.enums.paymentConditions import PaymentConditions
+from src.cart.domain.domain_exception import OrderDomainException
+from src.cart.domain.entities.order import Order
+from src.cart.domain.enums.order_status import OrderStatus
+from src.cart.domain.enums.paymentConditions import PaymentConditions
 
 
 def test_order_creation_valid():
@@ -28,7 +28,7 @@ def test_order_creation_valid():
 
 
 def test_invalid_payment_condition():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -43,7 +43,7 @@ def test_invalid_payment_condition():
 
 
 def test_invalid_order_status():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -58,7 +58,7 @@ def test_invalid_order_status():
 
 
 def test_negative_total_order():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -73,7 +73,7 @@ def test_negative_total_order():
 
 
 def test_zero_total_order():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -88,7 +88,7 @@ def test_zero_total_order():
 
 
 def test_negative_delivery_value():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -103,7 +103,7 @@ def test_negative_delivery_value():
 
 
 def test_zero_product_quantity():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,
@@ -118,7 +118,7 @@ def test_zero_product_quantity():
 
 
 def test_negative_product_quantity():
-    with pytest.raises(DomainException) as exc_info:
+    with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
             user_address=1,

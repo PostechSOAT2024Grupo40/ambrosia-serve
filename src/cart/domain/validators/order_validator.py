@@ -1,6 +1,6 @@
-from src.domain.domain_exception import DomainException
-from src.domain.enums.order_status import OrderStatus
-from src.domain.enums.paymentConditions import PaymentConditions
+from src.client.domain.domain_exception import DomainException
+from src.client.domain.enums.order_status import OrderStatus
+from src.client.domain.enums.paymentConditions import PaymentConditions
 
 
 class OrderValidator:

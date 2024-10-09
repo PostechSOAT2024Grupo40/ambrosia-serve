@@ -2,10 +2,10 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from src.domain.entities.user import User
-from src.domain.enums.order_status import OrderStatus
-from src.domain.enums.paymentConditions import PaymentConditions
-from src.domain.validators.order_validator import OrderValidator
+from src.client.domain.entities.user import User
+from src.client.domain.enums.order_status import OrderStatus
+from src.client.domain.enums.paymentConditions import PaymentConditions
+from src.client.domain.validators.order_validator import OrderValidator
 
 
 class Order:

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from src.domain.entities.user import User
+from src.client.domain.entities.user import User
 
 
 class IUserGateway(ABC):
