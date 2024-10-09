@@ -1,8 +1,8 @@
 from typing import List, Dict, Optional
 
 from src.client.domain.entities.address import Address
-from src.client.ports.gateways import IAddressGateway
 from src.client.exceptions import AddressExistsError, AddressNotFoundError
+from src.client.ports.gateways.address_gateway import IAddressGateway
 
 
 class MockAddressGateway(IAddressGateway):
@@ -13,7 +13,7 @@ class MockAddressGateway(IAddressGateway):
         return list(self.address_by_id.values())
 
     def get_by_id(self, address_id: int) -> Optional[Address]:
-        return self.address_by_id.get(address_id)
+        return self.address_by_id.get(str(address_id))
 
     def insert_address(self, address: Address) -> Address:
         if address.id in self.address_by_id:
@@ -28,6 +28,6 @@ class MockAddressGateway(IAddressGateway):
         return address
 
     def delete(self, address_id: int) -> None:
-        address = self.address_by_id.pop(address_id, None)
+        address = self.address_by_id.pop(str(address_id), None)
         if address:
             self.address_by_id.pop(address.id, None)
