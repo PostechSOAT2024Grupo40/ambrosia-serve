@@ -2,8 +2,8 @@ from typing import Dict
 
 from src.client.ports.gateways.address_gateway import IAddressGateway
 from src.client.ports.presenters.address_presenter import IAddressPresenter
+from src.client.use_cases.address import AddressUseCase
 from src.shared.repository_interface import IRepository
-from src.client.use_cases import AddressUseCase
 
 
 class AddressController:

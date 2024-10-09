@@ -2,8 +2,8 @@ from typing import Dict
 
 from src.client.ports.gateways.user_gateway import IUserGateway
 from src.client.ports.presenters.users_presenter import IUserPresenter
+from src.client.use_cases.user import UsersUseCase
 from src.shared.repository_interface import IRepository
-from src.client.use_cases import UsersUseCase
 
 
 class UserController:
