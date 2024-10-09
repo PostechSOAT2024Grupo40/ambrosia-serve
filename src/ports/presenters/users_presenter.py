@@ -1,10 +1,10 @@
 from abc import ABC
-from typing import Any
+from typing import Any, List
 
 from src.domain.entities.user import User
 
 
-class ICreateNewUserPresenter(ABC):
+class IUserPresenter(ABC):
 
-    def present(self, output: User) -> Any:
+    def user_present(self, output: User | List[User]) -> Any:
         ...
