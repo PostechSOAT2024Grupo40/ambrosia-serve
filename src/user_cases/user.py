@@ -6,7 +6,6 @@ from src.shared.exceptions import UserExistsError, UserNotFoundError
 
 
 class UsersUseCase:
-
     @staticmethod
     def create_new_user(request_data: Dict, gateway: IUserGateway) -> Any:
         if UsersUseCase.get_user_by_cpf(cpf=request_data["cpf"], gateway=gateway):
