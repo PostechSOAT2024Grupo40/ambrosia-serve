@@ -1,8 +1,8 @@
 from typing import Any, Dict, Optional, List
 
 from src.client.domain.entities.address import Address
-from src.client.ports.gateways.address_gateway import IAddressGateway
 from src.client.exceptions import AddressNotFoundError, AddressExistsError
+from src.client.ports.gateways.address_gateway import IAddressGateway
 
 
 class AddressUseCase:
@@ -19,14 +19,14 @@ class AddressUseCase:
 
     @staticmethod
     def update_address(request_data: Dict, gateway: IAddressGateway) -> Any:
-        if not AddressUseCase.get_by_id(address_id=request_data["id"], gateway=gateway):
+        address_ = AddressUseCase.get_by_id(address_id=request_data["id"], gateway=gateway)
+        if not address_:
             raise AddressNotFoundError(address=request_data["id"])
 
-        address = Address(street=request_data["street"],
-                          number=request_data["number"],
-                          complement=request_data.get("complement"))
-
-        return gateway.update(address)
+        address_.street = request_data["street"]
+        address_.number = request_data["number"]
+        address_.complement = request_data.get("complement")
+        return gateway.update(address_)
 
     @staticmethod
     def delete_address(address_id: int, gateway: IAddressGateway):
