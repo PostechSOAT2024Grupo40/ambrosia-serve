@@ -18,11 +18,7 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def insert(self, table_name: str, params: List[RepositoryParamsDTO]):
-        ...
-
-    @abstractmethod
-    def update(self, table_name: str, params: List[RepositoryParamsDTO]):
+    def insert_update(self, table_name: str, params: List[RepositoryParamsDTO]):
         ...
 
     @abstractmethod

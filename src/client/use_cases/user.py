@@ -3,7 +3,7 @@ from typing import Any, Dict
 from src.client.domain.entities.user import User
 from src.client.domain.validators.user_validator import UserValidator
 from src.client.exceptions import UserExistsError, UserNotFoundError
-from src.client.ports.gateways.user_gateway import IUserGateway
+from src.client.ports.user_gateway import IUserGateway
 
 
 class UsersUseCase:
