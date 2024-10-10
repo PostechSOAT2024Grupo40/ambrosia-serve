@@ -1,7 +1,9 @@
 from typing import List, Dict, Optional
-from src.domain.entities.user import User
-from src.ports.gateways.user_gateway import IUserGateway
-from src.shared.exceptions import UserExistsError, UserNotFoundError
+
+from src.client.domain.entities.user import User
+from src.client.exceptions import UserExistsError, UserNotFoundError
+from src.client.ports.gateways.user_gateway import IUserGateway
+
 
 class MockUserGateway(IUserGateway):
     def __init__(self):
@@ -32,7 +34,7 @@ class MockUserGateway(IUserGateway):
         return user
 
     def delete_user(self, user_id: int) -> None:
-        user = self.users_by_id.pop(user_id, None)
+        user = self.users_by_id.pop(str(user_id), None)
         if user:
             self.users_by_cpf.pop(user.cpf, None)
 
