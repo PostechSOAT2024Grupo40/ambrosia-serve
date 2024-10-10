@@ -7,5 +7,5 @@ from src.client.domain.entities.user import User
 class IUserPresenter(ABC):
 
     @abstractmethod
-    def user_present(self, output: User | List[User]) -> Any:
+    def present(self, output: User | List[User]) -> Any:
         ...

@@ -14,7 +14,7 @@ class UserController:
         gateway: IUserGateway = ...
         presenter: IUserPresenter = ...
         user = UsersUseCase.create_new_user(request_data=request_data, gateway=gateway)
-        return presenter.user_present(user)
+        return presenter.present(user)
 
     @staticmethod
     def get_users(self):
@@ -22,7 +22,7 @@ class UserController:
         gateway: IUserGateway = ...
         presenter: IUserPresenter = ...
         users = UsersUseCase.get_users(gateway=gateway)
-        return presenter.user_present(users)
+        return presenter.present(users)
 
     @staticmethod
     def get_user_by_cpf(cpf: str):
@@ -30,7 +30,7 @@ class UserController:
         gateway: IUserGateway = ...
         presenter: IUserPresenter = ...
         user = UsersUseCase.get_user_by_cpf(cpf=cpf, gateway=gateway)
-        return presenter.user_present(user)
+        return presenter.present(user)
 
     @staticmethod
     def update_user(request_data: Dict):
@@ -38,7 +38,7 @@ class UserController:
         gateway: IUserGateway = ...
         presenter: IUserPresenter = ...
         user = UsersUseCase.update_user(request_data=request_data, gateway=gateway)
-        return presenter.user_present(user)
+        return presenter.present(user)
 
     @staticmethod
     def delete_user(user_id: int):
