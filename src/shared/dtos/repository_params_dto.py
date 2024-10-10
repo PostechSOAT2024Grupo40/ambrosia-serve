@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
 class RepositoryParamsDTO:
     key: str
-    operator: str
-    value: str
+    value: Any
