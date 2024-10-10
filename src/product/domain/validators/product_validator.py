@@ -1,5 +1,5 @@
-from src.product.domain.enums.categories import Categories
 from src.product.domain_exception import ProductDomainException
+from src.shared.enums.categories import Categories
 
 
 class ProductValidator:
