@@ -17,8 +17,7 @@ def sample_user_data():
         "last_name": "Doe",
         "cpf": "12345678901",
         "email": "john.doe@example.com",
-        "password": "securePassword1",
-        "address": ["123 Main St", "City", "Country"]
+        "password": "securePassword1"
     }
 
 
@@ -31,10 +30,8 @@ def test_create_new_user_success(mock_gateway, sample_user_data):
 
 
 def test_create_new_user_already_exists(mock_gateway, sample_user_data):
-    # Arrange
     UsersUseCase.create_new_user(sample_user_data, mock_gateway)
 
-    # Act & Assert
     with pytest.raises(UserExistsError):
         UsersUseCase.create_new_user(sample_user_data, mock_gateway)
 
