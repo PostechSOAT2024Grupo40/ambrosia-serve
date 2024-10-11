@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from src.client.domain.entities.user import User
-from src.product.ports.unit_of_work_interface import IProductUnitOfWork
+from src.client.ports.unit_of_work_interface import IClientUnitOfWork
 
 
 class IUserGateway(ABC):
-    uow: IProductUnitOfWork
+    uow: IClientUnitOfWork
 
     @abstractmethod
     def get_users(self) -> List[User]:

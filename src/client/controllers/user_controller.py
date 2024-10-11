@@ -1,9 +1,9 @@
 from typing import Dict
 
+from src.client.ports.repository_interface import IRepository
 from src.client.ports.user_gateway import IUserGateway
 from src.client.ports.users_presenter import IUserPresenter
 from src.client.use_cases.user import UsersUseCase
-from src.shared.repository_interface import IRepository
 
 
 class UserController:
