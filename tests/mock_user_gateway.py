@@ -23,14 +23,14 @@ class MockUserGateway(IUserGateway):
         if user.cpf in self.users_by_cpf:
             raise UserExistsError(user=user.cpf)
         self.users_by_cpf[user.cpf] = user
-        self.users_by_id[user.id] = user
+        self.users_by_id[user.cpf] = user
         return user
 
     def update_user(self, user: User) -> User:
         if user.cpf not in self.users_by_cpf:
             raise UserNotFoundError(user=user.cpf)
         self.users_by_cpf[user.cpf] = user
-        self.users_by_id[user.id] = user
+        self.users_by_id[user.cpf] = user
         return user
 
     def delete_user(self, user_id: int) -> None:

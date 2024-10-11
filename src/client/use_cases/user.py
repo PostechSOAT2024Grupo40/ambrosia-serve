@@ -42,7 +42,7 @@ class UsersUseCase:
         if not user:
             raise UserNotFoundError(user=user_id)
 
-        gateway.delete_user(user.id)
+        gateway.delete_user(user_id)
 
     @staticmethod
     def get_user_by_cpf(cpf: str, gateway: IUserGateway) -> Any:

@@ -55,10 +55,10 @@ def test_update_user_not_found(mock_gateway, sample_user_data):
 def test_delete_user_success(mock_gateway, sample_user_data):
     user = UsersUseCase.create_new_user(sample_user_data, mock_gateway)
 
-    UsersUseCase.delete_user(user.id, mock_gateway)
+    UsersUseCase.delete_user(user.cpf, mock_gateway)
 
     with pytest.raises(UserNotFoundError):
-        UsersUseCase.delete_user(user.id, mock_gateway)
+        UsersUseCase.delete_user(user.cpf, mock_gateway)
 
 
 def test_get_user_by_cpf(mock_gateway, sample_user_data):
