@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from src.shared.repository_interface import IRepository
+from src.product.ports.repository_interface import IRepository
 
 
-class IUnitOfWork(ABC):
+class IProductUnitOfWork(ABC):
     repository: IRepository
 
     @abstractmethod

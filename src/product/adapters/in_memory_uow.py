@@ -1,8 +1,8 @@
-from src.shared.repository_interface import IRepository
-from src.shared.unit_of_work_interface import IUnitOfWork
+from src.product.ports.repository_interface import IRepository
+from src.product.ports.unit_of_work_interface import IProductUnitOfWork
 
 
-class InMemoryUow(IUnitOfWork):
+class InMemoryUow(IProductUnitOfWork):
     def __init__(self, repository: IRepository):
         self.repository = repository
         self._committed = False

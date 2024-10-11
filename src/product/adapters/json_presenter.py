@@ -12,8 +12,11 @@ class JsonProductPresenter(IProductPresenter):
 
     @staticmethod
     def formater(p):
+        if not p:
+            return {}
         return {
-            "id": p.id,
+            "sku": p.sku,
+            "description": p.description,
             "category": p.category,
             "stock": p.stock,
             "price": p.price
