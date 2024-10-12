@@ -25,5 +25,5 @@ class Product:
     def __eq__(self, other):
         return self.sku == other.sku
     @property
-    def get_id(self):
+    def id(self):
         return self._id
