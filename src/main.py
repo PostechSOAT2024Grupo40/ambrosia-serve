@@ -5,12 +5,14 @@ from src.shared.enums.categories import Categories
 
 def main():
     request = CreateProductRequestDto(
+        sku="123456",
         description="Produto 1",
         price=10.00,
         stock=100,
         category=Categories.LANCHE
     )
     request_2 = CreateProductRequestDto(
+        sku="12345600",
         description="Produto atualizado",
         price=10.00,
         stock=100,
