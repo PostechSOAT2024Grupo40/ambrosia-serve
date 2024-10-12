@@ -10,14 +10,15 @@ class ProductUseCase:
 
     @staticmethod
     def create_new_product(request_data: Dict, gateway: IProductGateway):
+        if ProductUseCase.get_product_by_sku(sku=request_data['sku'], gateway=gateway):
+            raise ProductExistsError(product=request_data['description'])
+
         product = Product(
+            sku=request_data['sku'],
             description=request_data['description'],
             category=request_data['category'],
             price=request_data['price'],
             stock=request_data['stock'])
-
-        if ProductUseCase.get_product_by_sku(sku=product.sku, gateway=gateway):
-            raise ProductExistsError(product=request_data['description'])
 
         return gateway.create_update_product(product)
 
@@ -31,11 +32,13 @@ class ProductUseCase:
             raise ProductNotFoundError(product=sku)
 
         product = Product(
+            sku=request_data['sku'],
             description=request_data['description'],
             category=request_data['category'],
             price=request_data['price'],
             stock=request_data['stock'])
 
+        product.sku= request_data['description']
         product.description = request_data['description']
         product.category = request_data['category']
         product.price = request_data['price']

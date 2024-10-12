@@ -15,6 +15,7 @@ class JsonProductPresenter(IProductPresenter):
         if not p:
             return {}
         return {
+            "id": p.get_id,
             "sku": p.sku,
             "description": p.description,
             "category": p.category,

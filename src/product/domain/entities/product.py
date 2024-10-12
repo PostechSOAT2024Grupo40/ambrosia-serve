@@ -1,14 +1,17 @@
-from src.product.domain.object_value.sku import generate_sku_from_description
 from src.product.domain.validators.product_validator import ProductValidator
+from src.product.domain.object_values import generate_id
 
 
 class Product:
     def __init__(self,
+                 sku: str,
                  description: str,
                  category: str,
                  price: float,
-                 stock: int):
-        self.sku = generate_sku_from_description(description)
+                 stock: int,
+                 _id: int = generate_id()):
+        self._id = _id
+        self.sku = sku
         self.description = description
         self.category = category
         self.stock = stock
@@ -21,3 +24,6 @@ class Product:
 
     def __eq__(self, other):
         return self.sku == other.sku
+    @property
+    def get_id(self):
+        return self._id
