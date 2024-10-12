@@ -12,23 +12,30 @@ class InMemoryProductGateway(IProductGateway):
         products = self.uow.repository.get_all()
         if not products:
             return []
-        return [Product(description=p['description'],
-                        category=p['category'],
-                        price=p['price'],
-                        stock=p['stock']) for p in products]
+        return [
+            Product(_id=p['id'],
+                    sku=p['sku'],
+                    description=p['description'],
+                    category=p['category'],
+                    price=p['price'],
+                    stock=p['stock'])
+            for p in products]
 
     def get_product_by_sku(self, sku: str):
         result = self.uow.repository.filter_by_sku(sku)
         if not result:
             return
-        product = Product(description=result['description'],
+        product = Product(_id=result['id'],
+                          sku=result['sku'],
+                          description=result['description'],
                           category=result['category'],
                           price=result['price'],
                           stock=result['stock'])
         return product
 
     def create_update_product(self, product: Product):
-        self.uow.repository.insert_update({'sku': product.sku,
+        self.uow.repository.insert_update({'is': product.get_id,
+                                           'sku': product.sku,
                                            'category': product.category,
                                            'description': product.description,
                                            'stock': product.stock,

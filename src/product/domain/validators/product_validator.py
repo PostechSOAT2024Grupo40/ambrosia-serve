@@ -19,3 +19,6 @@ class ProductValidator:
 
         if product.price <= 0.0:
             raise ProductDomainException("Preço não pode ser negativo ou igual a zero")
+
+        if not product.sku:
+            raise ProductDomainException("Sku inválida")
