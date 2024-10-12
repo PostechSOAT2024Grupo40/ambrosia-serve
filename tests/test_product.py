@@ -5,7 +5,8 @@ from src.product.domain_exception import ProductDomainException
 
 
 def test_valid_product():
-    result = Product(description="Darth Burger",
+    result = Product(sku="12345678",
+                     description="Darth Burger",
                      category="Lanche",
                      stock=100,
                      price=10.0)
@@ -17,7 +18,8 @@ def test_valid_product():
 
 def test_category_invalid():
     with pytest.raises(ProductDomainException) as exc:
-        Product(description="Darth Burger",
+        Product(sku="12345678",
+                description="Darth Burger",
                 category="test",
                 stock=100,
                 price=10.0)
@@ -26,7 +28,8 @@ def test_category_invalid():
 
 def test_description_empty():
     with pytest.raises(ProductDomainException) as exc:
-        Product(description="",
+        Product(sku="12345678",
+                description="",
                 category="Lanche",
                 stock=100,
                 price=10.0)
@@ -35,7 +38,8 @@ def test_description_empty():
 
 def test_description_null():
     with pytest.raises(ProductDomainException) as exc:
-        Product(description=None,  # noqa
+        Product(sku="12345678",
+                description=None,  # noqa
                 category="Lanche",
                 stock=100,
                 price=10.0)
@@ -44,7 +48,8 @@ def test_description_null():
 
 def test_price_less_or_equal_zero():
     with pytest.raises(ProductDomainException) as exc:
-        Product(description="Darth Burger",
+        Product(sku="12345678",
+                description="Darth Burger",
                 category="Lanche",
                 stock=100,
                 price=-10.0)
@@ -53,8 +58,19 @@ def test_price_less_or_equal_zero():
 
 def test_stock_less_than_zero():
     with pytest.raises(ProductDomainException) as exc:
-        Product(description="Darth Burger",
+        Product(sku="12345678",
+                description="Darth Burger",
                 category="Lanche",
                 stock=-100,
                 price=10.0)
     assert str(exc.value) == "Estoque não pode ser negativo"
+
+
+def test_sku_empty():
+    with pytest.raises(ProductDomainException) as exc:
+        Product(sku="",
+                description="Darth Burger",
+                category="Lanche",
+                stock=100,
+                price=10.0)
+    assert str(exc.value) == "Sku inválida"
