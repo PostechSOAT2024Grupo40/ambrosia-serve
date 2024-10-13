@@ -2,27 +2,35 @@ from datetime import datetime
 
 import pytest
 
-from src.cart.domain.domain_exception import OrderDomainException
+from src.cart.domain.domain_exception import OrderDomainException, OrderProductDomainException
 from src.cart.domain.entities.order import Order
+from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
 from src.cart.domain.enums.paymentConditions import PaymentConditions
+from src.product.domain.entities.product import Product
 
 
 def test_order_creation_valid():
     order = Order(
         user=1,
-        user_address=1,
-        total_order=100.0,
-        delivery_value=10.0,
-        product_quantity=2,
         order_datetime=datetime.now(),
         order_status=OrderStatus.PENDENTE,
-        payment_condition=PaymentConditions.PIX
+        payment_condition=PaymentConditions.PIX,
+        products=[OrderProduct(product=Product(sku="12345678",
+                                               description="Darth Burger",
+                                               category="Lanche",
+                                               stock=100,
+                                               price=10.0),
+                               quantity=4),
+                  OrderProduct(product=Product(sku="09876542",
+                                               description="Burger Master",
+                                               category="Lanche",
+                                               stock=100,
+                                               price=30.0),
+                               quantity=2)]
     )
     assert order.id is not None
     assert order.total_order == 100.0
-    assert order.delivery_value == 10.0
-    assert order.product_quantity == 2
     assert order.order_status == OrderStatus.PENDENTE
     assert order.payment_condition == PaymentConditions.PIX
 
@@ -31,13 +39,21 @@ def test_invalid_payment_condition():
     with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
-            user_address=1,
-            total_order=100.0,
-            delivery_value=10.0,
-            product_quantity=2,
             order_datetime=datetime.now(),
             order_status=OrderStatus.PENDENTE,
-            payment_condition="INVALID"  # noqa
+            payment_condition="INVALID",  # noqa
+            products=[OrderProduct(product=Product(sku="12345678",
+                                                   description="Darth Burger",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=10.0),
+                                   quantity=4),
+                      OrderProduct(product=Product(sku="09876542",
+                                                   description="Burger Master",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=30.0),
+                                   quantity=2)]
         )
     assert str(exc_info.value) == "Forma de Pagamento inválida"
 
@@ -46,87 +62,42 @@ def test_invalid_order_status():
     with pytest.raises(OrderDomainException) as exc_info:
         Order(
             user=1,
-            user_address=1,
-            total_order=100.0,
-            delivery_value=10.0,
-            product_quantity=2,
             order_datetime=datetime.now(),
             order_status="INVALID",  # noqa
-            payment_condition=PaymentConditions.PIX
+            payment_condition=PaymentConditions.PIX,
+            products=[OrderProduct(product=Product(sku="12345678",
+                                                   description="Darth Burger",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=10.0),
+                                   quantity=4),
+                      OrderProduct(product=Product(sku="09876542",
+                                                   description="Burger Master",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=30.0),
+                                   quantity=2)]
         )
     assert str(exc_info.value) == "Status do Pedido inválido"
 
 
-def test_negative_total_order():
-    with pytest.raises(OrderDomainException) as exc_info:
-        Order(
-            user=1,
-            user_address=1,
-            total_order=-50.0,
-            delivery_value=10.0,
-            product_quantity=2,
-            order_datetime=datetime.now(),
-            order_status=OrderStatus.PENDENTE,
-            payment_condition=PaymentConditions.PIX
-        )
-    assert str(exc_info.value) == "O valor total não pode ser menor ou igual a zero"
-
-
-def test_zero_total_order():
-    with pytest.raises(OrderDomainException) as exc_info:
-        Order(
-            user=1,
-            user_address=1,
-            total_order=0.0,
-            delivery_value=10.0,
-            product_quantity=2,
-            order_datetime=datetime.now(),
-            order_status=OrderStatus.PENDENTE,
-            payment_condition=PaymentConditions.PIX
-        )
-    assert str(exc_info.value) == "O valor total não pode ser menor ou igual a zero"
-
-
-def test_negative_delivery_value():
-    with pytest.raises(OrderDomainException) as exc_info:
-        Order(
-            user=1,
-            user_address=1,
-            total_order=100.0,
-            delivery_value=-5.0,
-            product_quantity=2,
-            order_datetime=datetime.now(),
-            order_status=OrderStatus.PENDENTE,
-            payment_condition=PaymentConditions.PIX
-        )
-    assert str(exc_info.value) == "O valor de entrega não pode ser negativo"
-
-
 def test_zero_product_quantity():
-    with pytest.raises(OrderDomainException) as exc_info:
-        Order(
-            user=1,
-            user_address=1,
-            total_order=100.0,
-            delivery_value=10.0,
-            product_quantity=0,
-            order_datetime=datetime.now(),
-            order_status=OrderStatus.PENDENTE,
-            payment_condition=PaymentConditions.PIX
-        )
-    assert str(exc_info.value) == "A quantidade de produtos não pode ser menor ou igual a zero"
+    with pytest.raises(OrderProductDomainException) as exc_info:
+        OrderProduct(product=Product(sku="09876542",
+                                     description="Burger Master",
+                                     category="Lanche",
+                                     stock=100,
+                                     price=30.0),
+                     quantity=0)
+    assert str(exc_info.value) == "Quantidade do produto precisa ser maior que zero"
 
 
 def test_negative_product_quantity():
-    with pytest.raises(OrderDomainException) as exc_info:
-        Order(
-            user=1,
-            user_address=1,
-            total_order=100.0,
-            delivery_value=10.0,
-            product_quantity=-1,
-            order_datetime=datetime.now(),
-            order_status=OrderStatus.PENDENTE,
-            payment_condition=PaymentConditions.PIX
-        )
-    assert str(exc_info.value) == "A quantidade de produtos não pode ser menor ou igual a zero"
+    with pytest.raises(OrderProductDomainException) as exc_info:
+        OrderProduct(product=Product(sku="09876542",
+                                     description="Burger Master",
+                                     category="Lanche",
+                                     stock=100,
+                                     price=30.0),
+                     quantity=-1)
+    assert str(exc_info.value) == "Quantidade do produto precisa ser maior que zero"
