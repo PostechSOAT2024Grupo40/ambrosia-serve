@@ -19,5 +19,10 @@ class OrderPaymentExpiredError(Exception):
 
 
 class ClientError(Exception):
-    def __init__(self, order, client):
-        super().__init__(f"O cliente {client} do pedido {order} não foi localizado")
+    def __init__(self, client):
+        super().__init__(f"O cliente {client} do pedido não foi localizado")
+
+
+class ProductNotFoundError(Exception):
+    def __init__(self, product):
+        super().__init__(f"O produto {product} nao existe")
