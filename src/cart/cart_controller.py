@@ -3,17 +3,28 @@ from typing import Dict
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.cart_presenter import ICartPresenter
 from src.cart.ports.repository_interface import IRepository
+from src.client.ports.repository_interface import IRepository as IUserRepository
+from src.product.ports.product_gateway import IProductGateway
+from src.product.ports.repository_interface import IRepository as IProductRepository
 from src.cart.use_cases.cart import CartUseCase
+from src.client.ports.user_gateway import IUserGateway
 
 
 class CartController:
 
     @staticmethod
     def create_order(request_data: Dict):
-        repository: IRepository = ...
-        gateway: ICartGateway = ...
+        cart_repository: IRepository = ...
+        cart_gateway: ICartGateway = ...
+        user_repository: IUserRepository = ...
+        user_gateway: IUserGateway = ...
+        product_repository: IProductRepository = ...
+        product_gateway: IProductGateway = ...
         presenter: ICartPresenter = ...
-        order = CartUseCase.create_new_order(request_data=request_data, gateway=gateway)
+        order = CartUseCase.create_new_order(request_data=request_data,
+                                             cart_gateway=cart_gateway,
+                                             user_gateway=user_gateway,
+                                             product_gateway=product_gateway)
         return presenter.present(order)
 
     @staticmethod
@@ -36,8 +47,23 @@ class CartController:
     def update_order(order_id: str, request_data: Dict):
         repository: IRepository = ...
         gateway: ICartGateway = ...
+        product_repository: IProductRepository = ...
+        product_gateway: IProductGateway = ...
         presenter: ICartPresenter = ...
-        order = CartUseCase.update_order(order_id=order_id, request_data=request_data, gateway=gateway)
+        order = CartUseCase.update_order(order_id=order_id,
+                                         request_data=request_data,
+                                         gateway=gateway,
+                                         product_gateway=product_gateway)
+        return presenter.present(order)
+
+    @staticmethod
+    def update_order_status(order_id: str, new_status: str):
+        repository: IRepository = ...
+        gateway: ICartGateway = ...
+        presenter: ICartPresenter = ...
+        order = CartUseCase.update_order_status(order_id=order_id,
+                                         new_status=new_status,
+                                         gateway=gateway                                        )
         return presenter.present(order)
 
     @staticmethod
