@@ -11,7 +11,6 @@ from src.cart.domain.validators.order_validator import OrderValidator
 class Order:
     def __init__(self,
                  user: int,
-                 total_order: float,
                  order_datetime: datetime,
                  order_status: OrderStatus,
                  payment_condition: PaymentConditions,
@@ -19,10 +18,12 @@ class Order:
                  _id: str = generate_id()):
         self._id = _id
         self.user = user
-        self.total_order = total_order
+        self._total_order = 0.0
         self.order_datetime = order_datetime
         self.order_status = order_status
         self.payment_condition = payment_condition
+        self.products = products
+
         OrderValidator.validate(order=self)
 
     def __hash__(self):
@@ -34,3 +35,11 @@ class Order:
     @property
     def id(self):
         return self._id
+
+    @property
+    def total_order(self):
+        return sum(self.calculate_total_price_per_quantity(order_item) for order_item in self.products)
+
+    @staticmethod
+    def calculate_total_price_per_quantity(order_item):
+        return order_item.product.price * order_item.quantity
