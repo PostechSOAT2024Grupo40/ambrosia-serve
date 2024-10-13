@@ -1,5 +1,4 @@
-import uuid
-
+from src.client.domain.object_values import generate_id
 from src.client.domain.validators.user_validator import UserValidator
 
 
@@ -9,7 +8,9 @@ class User:
                  last_name: str,
                  cpf: str,
                  email: str,
-                 password: str):
+                 password: str,
+                 _id: str = generate_id()):
+        self._id = _id
         self.first_name = first_name
         self.last_name = last_name
         self.cpf = cpf
@@ -23,3 +24,7 @@ class User:
 
     def __eq__(self, other):
         return self.cpf == other.cpf
+
+    @property
+    def id(self):
+        return self._id

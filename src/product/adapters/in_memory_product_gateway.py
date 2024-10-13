@@ -34,7 +34,7 @@ class InMemoryProductGateway(IProductGateway):
         return product
 
     def create_update_product(self, product: Product):
-        self.uow.repository.insert_update({'is': product.get_id,
+        self.uow.repository.insert_update({'is': product.id,
                                            'sku': product.sku,
                                            'category': product.category,
                                            'description': product.description,
