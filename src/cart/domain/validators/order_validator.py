@@ -10,7 +10,6 @@ class OrderValidator:
         OrderValidator.__validate_order_status(order)
         OrderValidator.__validate_total_price(order)
         OrderValidator.__validate_delivery_value(order)
-        OrderValidator.__validate_order_items(order)
 
     @staticmethod
     def _validate_payment_condition(order):
@@ -37,6 +36,6 @@ class OrderValidator:
             raise OrderDomainException("O valor de entrega não pode ser negativo")
 
     @staticmethod
-    def __validate_order_items(order):
-        if order.product_quantity <= 0:
-            raise OrderDomainException("A quantidade de produtos não pode ser menor ou igual a zero")
+    def validate_order_items(order_items):
+        if order_items <= 0:
+            raise OrderDomainException("O pedido não pode ser criado em produtos.")
