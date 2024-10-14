@@ -63,7 +63,7 @@ class CartController:
         presenter: ICartPresenter = ...
         order = CartUseCase.update_order_status(order_id=order_id,
                                          new_status=new_status,
-                                         gateway=gateway                                        )
+                                         gateway=gateway)
         return presenter.present(order)
 
     @staticmethod
