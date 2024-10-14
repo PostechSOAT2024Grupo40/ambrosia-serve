@@ -15,6 +15,7 @@ class IProductGateway(ABC):
     @abstractmethod
     def get_product_by_sku(self, sku: str) -> Product:
         ...
+        
 
     @abstractmethod
     def create_update_product(self, product: Product) -> Product:

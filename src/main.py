@@ -26,5 +26,9 @@ def main():
     print(f"update: {ProductController.update_product('21031576667768127252', request_2.model_dump())}")
 
 
+import uvicorn
+from src.api.presentation.http import http
+
 if __name__ == "__main__":
-    main()
+    uvicorn.run("src.api.presentation.http:http.app", host="127.0.0.1", port=8000, reload=True)
+    #main()
