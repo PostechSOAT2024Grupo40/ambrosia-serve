@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from src.product.product_controller import ProductController
-from src.shared.dtos.create_product_request_dto import CreateProductRequestDto
+from src.api.presentation.shared.dtos.create_product_request_dto import CreateProductRequestDto
 
 router = APIRouter()
 

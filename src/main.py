@@ -1,6 +1,6 @@
 from src.product.product_controller import ProductController
-from src.shared.dtos.create_product_request_dto import CreateProductRequestDto
-from src.shared.enums.categories import Categories
+from src.api.presentation.shared.dtos.create_product_request_dto import CreateProductRequestDto
+from src.api.presentation.shared.enums.categories import Categories
 
 
 def main():
