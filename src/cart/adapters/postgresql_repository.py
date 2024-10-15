@@ -38,6 +38,7 @@ class PostgreSqlRepository(IRepository):
         self.session.execute(stmt_order)
 
         for product in values['products']:
+            product['order_id'] = values['id']
             stmt_product = insert(OrderProductTable).values(product)
             stmt_product = stmt_product.on_conflict_do_update(
                 index_elements=[OrderProductTable.id],
