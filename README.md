@@ -271,8 +271,8 @@ uv pip sync requirements.txt
   <img src="docs/architecture-diagram.png" />
 </p>
 
-3. **Diagrama da infra**
-![server-arquitecture](docs/architecture-diagram.png)
+2. **Diagrama da infra**
+TODO ADD K8s DIAGRAM
 
 ## Executando
 
