@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 
 
-class IRepository(ABC):
+class IProductRepository(ABC):
     """
     Repository interface definition for all repositories.
     """

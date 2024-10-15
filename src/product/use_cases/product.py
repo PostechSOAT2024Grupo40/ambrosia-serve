@@ -11,7 +11,7 @@ class ProductUseCase:
     @staticmethod
     def create_new_product(request_data: Dict, gateway: IProductGateway):
         if ProductUseCase.get_product_by_sku(sku=request_data['sku'], gateway=gateway):
-            raise ProductExistsError(product=request_data['description'])
+            raise ProductExistsError(product=request_data['sku'])
 
         product = Product(
             sku=request_data['sku'],

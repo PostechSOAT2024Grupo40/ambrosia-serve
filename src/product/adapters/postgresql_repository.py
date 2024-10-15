@@ -5,10 +5,10 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from src.product.adapters.product_table import ProductTable
-from src.product.ports.repository_interface import IRepository
+from src.product.ports.repository_interface import IProductRepository
 
 
-class PostgreSqlRepository(IRepository):
+class PostgreSqlProductRepository(IProductRepository):
     def __init__(self, session: Session):
         super().__init__()
         self.session = session
@@ -32,7 +32,7 @@ class PostgreSqlRepository(IRepository):
     def insert_update(self, values: Dict[str, Any]):
         stmt = insert(ProductTable).values(**values)
         stmt = stmt.on_conflict_do_update(
-            index_elements='sku',
+            index_elements=[ProductTable.id],
             set_=values
         )
         self.session.execute(stmt)

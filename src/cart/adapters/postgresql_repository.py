@@ -4,8 +4,7 @@ from sqlalchemy import select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from src.cart.adapters.order_products_table import OrderProductTable
-from src.cart.adapters.order_table import OrderTable
+from src.cart.adapters.order_table import OrderTable, OrderProductTable
 from src.cart.ports.repository_interface import IRepository
 
 

@@ -11,49 +11,49 @@ class PostgreSqlClientGateway(IUserGateway):
         self.uow = uow
 
     def get_users(self) -> List[User]:
-        with self.uow as uow:
-            users = uow.repository.get_users()
+        with self.uow:
+            users = self.uow.repository.get_users()
             return [User(**u) for u in users]
 
     def get_user_by_cpf(self, cpf: str) -> User:
-        with self.uow as uow:
-            user = uow.repository.get_user_by_cpf(cpf)
+        with self.uow:
+            user = self.uow.repository.get_user_by_cpf(cpf)
             return User(**user)
 
     def get_user_by_email(self, email: str) -> User:
-        with self.uow as uow:
-            user = uow.repository.get_user_by_email(email)
+        with self.uow:
+            user = self.uow.repository.get_user_by_email(email)
             return User(**user)
 
     def create_user(self, user: User) -> User:
-        with self.uow as uow:
-            uow.repository.create_user({'id': user.id,
-                                        'first_name': user.first_name,
-                                        'last_name': user.last_name,
-                                        'cpf': user.cpf,
-                                        'email': user.email,
-                                        'password': user.password})
-            uow.commit()
+        with self.uow:
+            self.uow.repository.create_user({'id': user.id,
+                                             'first_name': user.first_name,
+                                             'last_name': user.last_name,
+                                             'cpf': user.cpf,
+                                             'email': user.email,
+                                             'password': user.password})
+            self.uow.commit()
             return user
 
     def update_user(self, user: User) -> User:
-        with self.uow as uow:
-            uow.repository.update_user({'id': user.id,
-                                        'first_name': user.first_name,
-                                        'last_name': user.last_name,
-                                        'cpf': user.cpf,
-                                        'email': user.email,
-                                        'password': user.password})
-            uow.commit()
+        with self.uow:
+            self.uow.repository.update_user({'id': user.id,
+                                             'first_name': user.first_name,
+                                             'last_name': user.last_name,
+                                             'cpf': user.cpf,
+                                             'email': user.email,
+                                             'password': user.password})
+            self.uow.commit()
             return user
 
     def delete_user(self, user_id: int) -> bool:
-        with self.uow as uow:
-            uow.repository.delete_user(user_id)
-            uow.commit()
+        with self.uow:
+            self.uow.repository.delete_user(user_id)
+            self.uow.commit()
             return True
 
     def get_user_by_id(self, user_id: int) -> User:
-        with self.uow as uow:
-            user = uow.repository.get_user_by_id(user_id)
+        with self.uow:
+            user = self.uow.repository.get_user_by_id(user_id)
             return User(**user)

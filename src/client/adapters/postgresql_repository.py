@@ -5,10 +5,10 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from src.client.adapters.client_table import ClientTable
-from src.client.ports.repository_interface import IRepository
+from src.client.ports.repository_interface import IClientRepository
 
 
-class PostgreSqlRepository(IRepository):
+class PostgreSqlClientRepository(IClientRepository):
     def __init__(self, session: Session):
         super().__init__()
         self.session = session
@@ -44,7 +44,7 @@ class PostgreSqlRepository(IRepository):
     def update_user(self, user: Dict):
         stmt = insert(ClientTable).values(**user)
         stmt = stmt.on_conflict_do_update(
-            index_elements='cpf',
+            index_elements=[ClientTable.id],
             set_=user
         )
         self.session.execute(stmt)

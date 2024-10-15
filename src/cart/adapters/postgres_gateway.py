@@ -12,18 +12,18 @@ class PostgreSqlOrderGateway(ICartGateway):
         self.uow = uow
 
     def get_orders(self) -> List[Order]:
-        with self.uow as uow:
-            orders = uow.repository.get_all()
+        with self.uow:
+            orders = self.uow.repository.get_all()
             return [Order(**o) for o in orders]
 
     def get_order_by_id(self, order_id: str) -> Order:
-        with self.uow as uow:
-            order = uow.repository.filter_by_id(order_id)
+        with self.uow:
+            order = self.uow.repository.filter_by_id(order_id)
             return Order(**order)
 
     def create_update_order(self, order: Order) -> Order:
-        with self.uow as uow:
-            uow.repository.insert_update({
+        with self.uow:
+            self.uow.repository.insert_update({
                 'id': order.id,
                 'user_id': order.user,
                 'order_status': order.order_status,
@@ -33,10 +33,10 @@ class PostgreSqlOrderGateway(ICartGateway):
                               'quantity': p.quantity,
                               'observation': p.observation} for p in order.products]
             })
-            uow.commit()
+            self.uow.commit()
             return order
 
     def delete_order(self, order_id: str) -> None:
-        with self.uow as uow:
-            uow.repository.delete(order_id)
-            uow.commit()
+        with self.uow:
+            self.uow.repository.delete(order_id)
+            self.uow.commit()

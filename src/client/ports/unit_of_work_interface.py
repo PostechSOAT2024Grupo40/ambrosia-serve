@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from src.client.ports.repository_interface import IRepository
+from src.client.ports.repository_interface import IClientRepository
 
 
 class IClientUnitOfWork(ABC):
-    repository: IRepository
+    repository: IClientRepository
 
     @abstractmethod
     def __enter__(self):
