@@ -1,10 +1,10 @@
 from typing import Dict
 
 
-from src.product.ports.repository_interface import IRepository
+from src.product.ports.repository_interface import IProductRepository
 
 
-class InMemoryRepository(IRepository):
+class InMemoryProductRepository(IProductRepository):
     def __init__(self):
         self.data = {}
 

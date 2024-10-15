@@ -10,7 +10,7 @@ class CartPostgreSqlUow(ICartUnitOfWork):
         self.session_factory = session_factory()
 
     def __enter__(self):
-        self.session: Session = self.session_factory()
+        self.session: Session = self.session_factory
         self.repository = PostgreSqlRepository(session=self.session)
         return super().__enter__()
 

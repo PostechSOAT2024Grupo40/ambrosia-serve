@@ -1,5 +1,5 @@
-from src.product.domain.validators.product_validator import ProductValidator
 from src.product.domain.object_values import generate_id
+from src.product.domain.validators.product_validator import ProductValidator
 
 
 class Product:
@@ -24,6 +24,7 @@ class Product:
 
     def __eq__(self, other):
         return self.sku == other.sku
+
     @property
     def id(self):
         return self._id

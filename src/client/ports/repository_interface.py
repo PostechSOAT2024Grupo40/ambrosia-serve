@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Dict
 
 
-class IRepository(ABC):
+class IClientRepository(ABC):
 
     @abstractmethod
     def get_users(self) -> List[Dict]:
