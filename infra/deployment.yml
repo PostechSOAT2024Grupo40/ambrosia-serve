@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api-container
+          image: rodrigodossantosfelix/ambrosia-serve:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+              secretKeyRef:
+                name: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+              secretKeyRef:
+                name: postgres_password
+            - name: POSTGRES_DB
+              value: ambrosia_db
+            - name: POSTGRES_HOST
+              value: "postgres_service"
+            - name: POSTGRES_PORT
+              value: '5432'
