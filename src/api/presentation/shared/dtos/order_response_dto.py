@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -15,4 +15,4 @@ class OrderResponseDto(BaseModel):
     total_order: float
     order_status: str
     payment_condition: str
-    products: [OrderProductResponseDto]
+    products: List[OrderProductResponseDto]
