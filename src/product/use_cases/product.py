@@ -28,7 +28,7 @@ class ProductUseCase:
 
     @staticmethod
     def update_product(sku: str, request_data: Dict, gateway: IProductGateway):
-        if ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway):
+        if not ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway):
             raise ProductNotFoundError(product=sku)
 
         product = Product(
@@ -38,7 +38,7 @@ class ProductUseCase:
             price=request_data['price'],
             stock=request_data['stock'])
 
-        product.sku= request_data['description']
+        product.sku = request_data['description']
         product.description = request_data['description']
         product.category = request_data['category']
         product.price = request_data['price']
@@ -55,7 +55,7 @@ class ProductUseCase:
     @staticmethod
     def delete_product(sku: str, gateway: IProductGateway):
         product_ = ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway)
-        if product_:
+        if not product_:
             raise ProductNotFoundError(product=sku)
 
         gateway.delete_product(sku)

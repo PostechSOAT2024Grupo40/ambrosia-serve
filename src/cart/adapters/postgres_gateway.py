@@ -2,6 +2,7 @@ from typing import List
 
 from src.cart.domain.entities.order import Order
 from src.cart.domain.entities.order_product import OrderProduct
+from src.cart.domain.enums.paymentConditions import PaymentConditions
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
 
@@ -24,13 +25,14 @@ class PostgreSqlOrderGateway(ICartGateway):
 
     def create_update_order(self, order: Order) -> Order:
         with self.uow:
+            condition = PaymentConditions(order.payment_condition)
             self.uow.repository.insert_update({
                 'id': order.id,
                 'user_id': order.user,
-                'order_status': order.order_status,
-                'payment_condition': order.payment_condition,
+                'status': order.order_status.value,
+                'payment_condition': condition.name,
                 'products': [{'id': p.id,
-                              'product': p.product, # sku
+                              'product_id': p.product.sku, # sku
                               'quantity': p.quantity,
                               'observation': p.observation} for p in order.products]
             })
@@ -43,6 +45,8 @@ class PostgreSqlOrderGateway(ICartGateway):
             self.uow.commit()
 
     def build_order_entity(self, order):
+        if not order:
+            return None
         products = [self.build_order_product_entity(p) for p in order['products']]
 
         return Order(_id=order['id'],

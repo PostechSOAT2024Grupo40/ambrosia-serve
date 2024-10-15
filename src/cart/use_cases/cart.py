@@ -1,10 +1,9 @@
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, List
 
 from src.cart.domain.entities.order import Order
 from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
-from src.cart.domain.validators.order_product_validator import OrderProductValidator
 from src.cart.domain.validators.order_validator import OrderValidator
 from src.cart.exceptions import (ClientError,
                                  ProductNotFoundError,
@@ -25,7 +24,7 @@ class CartUseCase:
         user_id = request_data['user_id']
         if not user_gateway.get_user_by_id(user_id):
             raise ClientError(client=user_id)
-        products_required = CartUseCase.build_products_required_list(product_gateway, request_data)
+        products_required = CartUseCase.build_products_required_list(product_gateway, request_data['products'])
 
         order = Order(user=user_id,
                       order_datetime=datetime.now(),
@@ -38,17 +37,17 @@ class CartUseCase:
         return cart_gateway.create_update_order(order)
 
     @staticmethod
-    def build_products_required_list(product_gateway: IProductGateway, request_data: Dict):
+    def build_products_required_list(product_gateway: IProductGateway, products: List[Dict]):
         products_required = []
-        for product_required in request_data['products']:
-            sku = product_required['sku']
+        for product_required in products:
+            sku = product_required['product_sku']
             product_entity = product_gateway.get_product_by_sku(sku)
             if not product_entity:
                 raise ProductNotFoundError(product=sku)
 
-            order_product = OrderProduct(product=product_entity.sku,
+            order_product = OrderProduct(product=product_entity,
                                          quantity=product_required['quantity'],
-                                         observation=product_required.get('observation'))
+                                         observation=product_required.get('observation', ''))
             product_entity.stock -= order_product.quantity if product_entity.stock - order_product.quantity > 0 else 0
             product_gateway.create_update_product(product=product_entity)
 
@@ -64,65 +63,13 @@ class CartUseCase:
         return gateway.get_order_by_id(order_id=order_id)
 
     @staticmethod
-    def update_order(order_id: str,
-                     request_data: Dict,
-                     gateway: ICartGateway,
-                     product_gateway: IProductGateway):
-        order = CartUseCase.get_order_by_id(order_id, gateway)
-        if order:
-            raise OrderNotFoundError(order=order_id)
-
-        products_sku = [p.product for p in order.products]
-        for product_required in request_data['products']:
-            sku_required = product_required['sku']
-            if sku_required not in products_sku:
-                CartUseCase.add_new_product_to_order(original_order_products=order.products,
-                                                     product_gateway=product_gateway,
-                                                     updated_order_products_sku=product_required)
-            else:
-                CartUseCase.update_order_products(original_order_products=order.products,
-                                                  product_gateway=product_gateway,
-                                                  updated_order_products_sku=product_required)
-
-        order.order_status = request_data['order_status']
-        OrderValidator.validate(order)
-        return gateway.create_update_order(order)
-
-    @staticmethod
     def delete_order(order_id: str, gateway: ICartGateway):
         gateway.delete_order(order_id=order_id)
 
     @staticmethod
-    def update_order_products(original_order_products: list[OrderProduct],
-                              product_gateway: IProductGateway,
-                              updated_order_products_sku: Dict[str, Any]):
-
-        for original_order_product in original_order_products:
-            product = original_order_product.product
-            updated_product = updated_order_products_sku.get(product)
-            product_entity = product_gateway.get_product_by_sku(product)
-            quantity = updated_product['quantity']
-            original_order_product.quantity = quantity
-            original_order_product.observation = updated_product.get('observation')
-            OrderProductValidator.validate(original_order_product)
-            product_entity.stock -= quantity if product_entity.stock - quantity > 0 else 0
-            product_gateway.create_update_product(product=product_entity)
-
-    @staticmethod
-    def add_new_product_to_order(original_order_products, product_gateway, updated_order_products_sku):
-        product_entity = product_gateway.get_product_by_sku(updated_order_products_sku['sku'])
-        quantity = updated_order_products_sku['quantity']
-        new_order_product = OrderProduct(product=product_entity,
-                                         quantity=quantity,
-                                         observation=updated_order_products_sku.get('observation'))
-        original_order_products.append(new_order_product)
-        product_entity.stock -= quantity if product_entity.stock - quantity > 0 else 0
-        product_gateway.create_update_product(product=product_entity)
-
-    @staticmethod
     def update_order_status(order_id: str, new_status: str, gateway: ICartGateway):
         order = CartUseCase.get_order_by_id(order_id, gateway)
-        if order:
+        if not order:
             raise OrderNotFoundError(order=order_id)
         order.order_status = new_status
         OrderValidator.validate(order)

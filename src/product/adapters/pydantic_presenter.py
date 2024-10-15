@@ -15,4 +15,9 @@ class PydanticProductPresenter(IProductPresenter):
     def formater(p):
         if not p:
             return {}
-        return ProductResponseDto(**p)
+        return ProductResponseDto(id=p.id,
+                                  sku=p.sku,
+                                  description=p.description,
+                                  category=p.category,
+                                  stock=int(p.stock),
+                                  price=float(p.price))

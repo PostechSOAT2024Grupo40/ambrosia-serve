@@ -19,7 +19,7 @@ class PostgreSqlProductRepository(IProductRepository):
         if not results:
             return []
 
-        return [row.to_dict() for row in results]
+        return [row[0].to_dict() for row in results]
 
     def filter_by_sku(self, sku: str) -> Dict:
         stmt = select(ProductTable).where(ProductTable.sku == sku)
@@ -33,7 +33,7 @@ class PostgreSqlProductRepository(IProductRepository):
         stmt = insert(ProductTable).values(**values)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ProductTable.id],
-            set_=values
+            set_={key: values[key] for key in values if key != 'id'},
         )
         self.session.execute(stmt)
 

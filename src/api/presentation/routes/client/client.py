@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from loguru import logger
 from pydantic import ValidationError
 
 from src.api.presentation.shared.dtos.client_response_dto import ClientResponseDto
@@ -16,7 +17,8 @@ async def create_user(create_user: CreateUserRequestDTO) -> ClientResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {create_user=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.get("/api/v1/users")
@@ -26,7 +28,8 @@ async def get_users() -> list[ClientResponseDto]:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception("Server Error")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.get("/api/v1/user/{cpf}")
@@ -36,17 +39,19 @@ async def get_user_by_cpf(cpf: str) -> ClientResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {cpf=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.put("/api/v1/user/")
 async def update_user(update_user: CreateUserRequestDTO) -> ClientResponseDto:
     try:
-        return UserController.update_user(update_user)
+        return UserController.update_user(update_user.model_dump())
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {update_user=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.delete("/api/v1/user/{id}")
@@ -56,4 +61,5 @@ async def delete_user(id: str) -> bool:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {id=}")
+        raise HTTPException(status_code=500, detail=exc.args)

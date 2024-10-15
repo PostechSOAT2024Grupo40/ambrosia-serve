@@ -19,7 +19,7 @@ class PostgreSqlClientRepository(IClientRepository):
         if not results:
             return []
 
-        return [row.to_dict() for row in results]
+        return [row[0].to_dict() for row in results]
 
     def get_user_by_cpf(self, cpf: str) -> Dict:
         stmt = select(ClientTable).where(ClientTable.cpf == cpf)
@@ -45,7 +45,7 @@ class PostgreSqlClientRepository(IClientRepository):
         stmt = insert(ClientTable).values(**user)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ClientTable.id],
-            set_=user
+            set_={key: user[key] for key in user if key != 'id'}
         )
         self.session.execute(stmt)
 
