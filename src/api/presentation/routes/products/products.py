@@ -16,6 +16,7 @@ async def create_product(product: CreateProductRequestDto) -> ProductResponseDto
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -26,6 +27,7 @@ async def get_product_by_id(sku: str):
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -36,6 +38,7 @@ async def get_all_products():
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -46,6 +49,7 @@ async def delete_product(sku: str):
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -56,4 +60,5 @@ async def update_product(sku: str, update_product: CreateProductRequestDto):
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")

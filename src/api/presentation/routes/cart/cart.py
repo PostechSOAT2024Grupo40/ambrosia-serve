@@ -18,6 +18,7 @@ async def create_order(order_request: CreateOrderRequestDto) -> OrderResponseDto
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -28,6 +29,7 @@ async def get_all_orders() -> List[OrderResponseDto]:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -38,6 +40,7 @@ async def get_order_by_id(id: str) -> OrderResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -49,6 +52,7 @@ async def update_order(id: str, order_request: CreateOrderRequestDto) -> OrderRe
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -59,6 +63,7 @@ async def update_order_status(id: str, new_status: str) -> OrderResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -69,4 +74,5 @@ async def delete_order(id: str):
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")

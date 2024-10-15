@@ -4,9 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 
-from cart.adapters.order_table import Base as OrderBase
-from client.adapters.client_table import Base as ClientBase
-from product.adapters.product_table import Base as ProductBase
+from src.cart.adapters.order_table import Base as OrderBase
+from src.client.adapters.client_table import Base as ClientBase
+from src.product.adapters.product_table import Base as ProductBase
 
 
 def postgresql_session_factory() -> sessionmaker[Session]:

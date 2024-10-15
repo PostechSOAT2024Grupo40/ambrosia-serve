@@ -60,6 +60,8 @@ class PostgreSqlClientGateway(IUserGateway):
 
     @staticmethod
     def build_user_entity(user):
+        if not user:
+            return None
         return User(_id=user['id'],
                     first_name=user['first_name'],
                     last_name=user['last_name'],

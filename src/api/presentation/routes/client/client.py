@@ -16,6 +16,7 @@ async def create_user(create_user: CreateUserRequestDTO) -> ClientResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -26,6 +27,7 @@ async def get_users() -> list[ClientResponseDto]:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -36,6 +38,7 @@ async def get_user_by_cpf(cpf: str) -> ClientResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -46,6 +49,7 @@ async def update_user(update_user: CreateUserRequestDTO) -> ClientResponseDto:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
 
 
@@ -56,4 +60,5 @@ async def delete_user(id: str) -> bool:
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
+        print(exc)
         raise HTTPException(status_code=500, detail="Server Error")
