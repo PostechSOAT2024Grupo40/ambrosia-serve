@@ -13,7 +13,9 @@ authors = [
   { name = "Rafael Camargo da Silva" }
 ]
 dependencies = [
+  "dependency-injector==4.42.0",
   "fastapi[standard]==0.115.0",
+  "sqlalchemy==2.0.35",
 ]
 
 [tool.uv]
