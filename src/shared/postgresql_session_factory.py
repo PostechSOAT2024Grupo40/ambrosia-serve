@@ -23,8 +23,6 @@ def postgresql_session_factory() -> sessionmaker[Session]:
         all_bases = [ProductBase, ClientBase, OrderBase]
         for base in all_bases:
             base.metadata.create_all(ENGINE, checkfirst=True)
-
-        print("Tabelas criadas com sucesso!")
     except Exception as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
 
