@@ -31,6 +31,10 @@ class PostgreSqlRepository(IRepository):
 
     def insert_update(self, values: Dict[str, Any]):
         stmt = insert(ProductTable).values(**values)
+        stmt = stmt.on_conflict_do_update(
+            index_elements='sku',
+            set_=values
+        )
         self.session.execute(stmt)
 
     def delete(self, sku: str):
