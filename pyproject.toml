@@ -9,10 +9,8 @@ pedidos e aumentar a satisfação dos clientes."""
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-  { name = "Rodrigo dos Santos Felix", email = "felixs.rodrigo@gmail.com" },
-  { name = "Rafael Camargo da Silva", email = "rafael.camargo.rs@gmail.com" },
-  { name = "Miriã Fernandes Costa", email = "miriamfernandes.c15@gmail.com" },
-  { name = "Vinicius Nascimento Morato", email = "vinicius.morato98@outlook.com" }
+  { name = "Rodrigo dos Santos Felix" },
+  { name = "Rafael Camargo da Silva" }
 ]
 dependencies = [
   "fastapi[standard]==0.115.0",
