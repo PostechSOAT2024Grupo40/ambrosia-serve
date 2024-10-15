@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from product.ports.repository_interface import IProductRepository
+#from product.ports.repository_interface import IProductRepository
 
 
 class IProductUnitOfWork(ABC):
