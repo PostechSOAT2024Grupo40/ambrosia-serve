@@ -1,11 +1,13 @@
 from fastapi import APIRouter
+
+from src.api.presentation.shared.dtos.product_response_dto import ProductResponseDto
 from src.product.product_controller import ProductController
 from src.api.presentation.shared.dtos.create_product_request_dto import CreateProductRequestDto
 
 router = APIRouter()
 
 @router.post("/api/v1/product")
-async def create_product(product: CreateProductRequestDto):
+async def create_product(product: CreateProductRequestDto)->ProductResponseDto:
     product_dict = product.dict()
     return ProductController.create_product(request_data=product_dict)
 

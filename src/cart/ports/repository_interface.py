@@ -13,9 +13,9 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def insert_update(self, values: Dict[str, Any]) -> Dict:
+    def insert_update(self, values: Dict[str, Any]):
         ...
 
     @abstractmethod
-    def delete(self, sku: str) -> bool:
+    def delete(self, sku: str):
         ...

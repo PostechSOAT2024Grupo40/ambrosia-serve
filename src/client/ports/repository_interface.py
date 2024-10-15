@@ -17,15 +17,15 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def create_user(self, user: Dict) -> Dict:
+    def create_user(self, user: Dict):
         ...
 
     @abstractmethod
-    def update_user(self, user: Dict) -> Dict:
+    def update_user(self, user: Dict):
         ...
 
     @abstractmethod
-    def delete_user(self, user_id: int) -> bool:
+    def delete_user(self, user_id: int):
         ...
 
     @abstractmethod
