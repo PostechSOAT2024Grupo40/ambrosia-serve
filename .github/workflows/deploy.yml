@@ -23,7 +23,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ambrosia-serve
+      IMAGE_NAME: rodrigodossantosfelix/ambrosia-serve
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
