@@ -10,9 +10,10 @@ class ProductTable(Base):
 
     id = Column(String(255), primary_key=True, nullable=False, autoincrement=False)
     sku = Column(String(255), nullable=False)
-    name = Column(String(255), nullable=False)
+    description = Column(String(255), nullable=False)
     price = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False)
+    category = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=now())
     updated_at = Column(DateTime, nullable=False, default=now(), onupdate=now())
 
