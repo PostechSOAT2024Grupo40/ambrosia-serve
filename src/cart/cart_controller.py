@@ -29,6 +29,7 @@ class CartController:
         product_uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         product_gateway: IProductGateway = PostgreSqlProductGateway(product_uow)
         presenter: ICartPresenter = PydanticCartPresenter()
+
         order = CartUseCase.create_new_order(request_data=request_data,
                                              cart_gateway=cart_gateway,
                                              user_gateway=user_gateway,

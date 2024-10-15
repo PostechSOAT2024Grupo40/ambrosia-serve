@@ -56,7 +56,7 @@ class PostgreSqlClientGateway(IUserGateway):
     def get_user_by_id(self, user_id: int) -> User:
         with self.uow:
             user = self.uow.repository.get_user_by_id(user_id)
-            return User(**user)
+            return self.build_user_entity(user)
 
     @staticmethod
     def build_user_entity(user):

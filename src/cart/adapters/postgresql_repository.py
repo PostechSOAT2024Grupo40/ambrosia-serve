@@ -30,19 +30,20 @@ class PostgreSqlRepository(IRepository):
         return results[0].to_dict()
 
     def insert_update(self, values: Dict[str, Any]):
-        stmt_product = insert(OrderProductTable).values(**values['products'])
-        stmt_product = stmt_product.on_conflict_do_update(
-            index_elements=[OrderProductTable.id],
-            set_=values['products']
-        )
-        self.session.execute(stmt_product)
-
-        stmt = insert(OrderTable).values(**values)
-        stmt = stmt.on_conflict_do_update(
+        stmt_order = insert(OrderTable).values({key: values[key] for key in values if key != 'products'})
+        stmt_order = stmt_order.on_conflict_do_update(
             index_elements=[OrderTable.id],
-            set_=values
+            set_={key: values[key] for key in values if key != 'id' and key != 'products'}
         )
-        self.session.execute(stmt)
+        self.session.execute(stmt_order)
+
+        for product in values['products']:
+            stmt_product = insert(OrderProductTable).values(product)
+            stmt_product = stmt_product.on_conflict_do_update(
+                index_elements=[OrderProductTable.id],
+                set_={key: product[key] for key in product if key != 'id'}
+            )
+            self.session.execute(stmt_product)
 
     def delete(self, sku: str):
         stmt = delete(OrderTable).where(OrderTable.id == sku)

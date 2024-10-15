@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class OrderProductResponseDto(BaseModel):
     product: str
     quantity: int
-    observation: Optional[str] = None
+    observation: Optional[str] = ''
 
 
 class OrderResponseDto(BaseModel):

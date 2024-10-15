@@ -1,8 +1,11 @@
 from fastapi import APIRouter, HTTPException
+from loguru import logger
 from pydantic import ValidationError
 
 from src.api.presentation.shared.dtos.create_product_request_dto import CreateProductRequestDto
 from src.api.presentation.shared.dtos.product_response_dto import ProductResponseDto
+from src.product.domain_exception import ProductDomainException
+from src.product.exceptions import ProductExistsError, ProductNotFoundError
 from src.product.product_controller import ProductController
 
 router = APIRouter()
@@ -15,9 +18,12 @@ async def create_product(product: CreateProductRequestDto) -> ProductResponseDto
         return ProductController.create_product(request_data=product_dict)
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
+    except (ProductDomainException, ProductExistsError, ProductNotFoundError) as domain_exc:
+        logger.exception(f"Server Error | {product=}")
+        raise HTTPException(status_code=409, detail=domain_exc.args)
     except Exception as exc:
-        print(exc)
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {product=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.get("/api/v1/product/{sku}")
@@ -26,9 +32,12 @@ async def get_product_by_id(sku: str):
         return ProductController.get_product_by_id(sku)
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
+    except (ProductDomainException, ProductExistsError, ProductNotFoundError) as domain_exc:
+        logger.exception(f"Server Error | {sku=}")
+        raise HTTPException(status_code=409, detail=domain_exc.args)
     except Exception as exc:
-        print(exc)
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {sku=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.get("/api/v1/products")
@@ -38,8 +47,8 @@ async def get_all_products():
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
-        print(exc)
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception("Server Error")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.delete("/api/v1/product/{sku}")
@@ -48,17 +57,23 @@ async def delete_product(sku: str):
         return ProductController.delete_product(sku)
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
+    except (ProductDomainException, ProductNotFoundError) as domain_exc:
+        logger.exception(f"Server Error | {sku=}")
+        raise HTTPException(status_code=409, detail=domain_exc.args)
     except Exception as exc:
-        print(exc)
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {sku=}")
+        raise HTTPException(status_code=500, detail=exc.args)
 
 
 @router.put("/api/v1/product/{sku}")
 async def update_product(sku: str, update_product: CreateProductRequestDto):
     try:
-        return ProductController.update_product(sku=sku, request_data=update_product)
+        return ProductController.update_product(sku=sku, request_data=update_product.model_dump())
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
+    except (ProductDomainException, ProductExistsError, ProductNotFoundError) as domain_exc:
+        logger.exception(f"Server Error | {sku=} {update_product=}")
+        raise HTTPException(status_code=409, detail=domain_exc.args)
     except Exception as exc:
-        print(exc)
-        raise HTTPException(status_code=500, detail="Server Error")
+        logger.exception(f"Server Error | {sku=} {update_product=}")
+        raise HTTPException(status_code=500, detail=exc.args)

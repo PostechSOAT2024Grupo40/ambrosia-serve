@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 from src.cart.domain.entities.order import Order
 from src.cart.domain.entities.order_product import OrderProduct
@@ -25,7 +25,7 @@ class CartUseCase:
         user_id = request_data['user_id']
         if not user_gateway.get_user_by_id(user_id):
             raise ClientError(client=user_id)
-        products_required = CartUseCase.build_products_required_list(product_gateway, request_data)
+        products_required = CartUseCase.build_products_required_list(product_gateway, request_data['products'])
 
         order = Order(user=user_id,
                       order_datetime=datetime.now(),
@@ -38,17 +38,17 @@ class CartUseCase:
         return cart_gateway.create_update_order(order)
 
     @staticmethod
-    def build_products_required_list(product_gateway: IProductGateway, request_data: Dict):
+    def build_products_required_list(product_gateway: IProductGateway, products: List[Dict]):
         products_required = []
-        for product_required in request_data['products']:
-            sku = product_required['sku']
+        for product_required in products:
+            sku = product_required['product_sku']
             product_entity = product_gateway.get_product_by_sku(sku)
             if not product_entity:
                 raise ProductNotFoundError(product=sku)
 
-            order_product = OrderProduct(product=product_entity.sku,
+            order_product = OrderProduct(product=product_entity,
                                          quantity=product_required['quantity'],
-                                         observation=product_required.get('observation'))
+                                         observation=product_required.get('observation', ''))
             product_entity.stock -= order_product.quantity if product_entity.stock - order_product.quantity > 0 else 0
             product_gateway.create_update_product(product=product_entity)
 
@@ -69,7 +69,7 @@ class CartUseCase:
                      gateway: ICartGateway,
                      product_gateway: IProductGateway):
         order = CartUseCase.get_order_by_id(order_id, gateway)
-        if order:
+        if not order:
             raise OrderNotFoundError(order=order_id)
 
         products_sku = [p.product for p in order.products]
@@ -99,8 +99,8 @@ class CartUseCase:
 
         for original_order_product in original_order_products:
             product = original_order_product.product
-            updated_product = updated_order_products_sku.get(product)
-            product_entity = product_gateway.get_product_by_sku(product)
+            updated_product = updated_order_products_sku.get(product.sku)
+            product_entity = product_gateway.get_product_by_sku(product.sku)
             quantity = updated_product['quantity']
             original_order_product.quantity = quantity
             original_order_product.observation = updated_product.get('observation')
@@ -122,7 +122,7 @@ class CartUseCase:
     @staticmethod
     def update_order_status(order_id: str, new_status: str, gateway: ICartGateway):
         order = CartUseCase.get_order_by_id(order_id, gateway)
-        if order:
+        if not order:
             raise OrderNotFoundError(order=order_id)
         order.order_status = new_status
         OrderValidator.validate(order)

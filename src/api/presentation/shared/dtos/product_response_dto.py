@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 
 class ProductResponseDto(BaseModel):
-    id: Optional[str] = None
-    sku: Optional[str] = None
-    description: Optional[str] = None
-    category: Optional[str] = None
+    id: Optional[str] = ''
+    sku: Optional[str] = ''
+    description: Optional[str] = ''
+    category: Optional[str] = ''
     stock: Optional[int] = None
     price: Optional[float] = None

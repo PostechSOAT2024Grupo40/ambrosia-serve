@@ -11,8 +11,8 @@ class OrderTable(Base):
     id = Column(String(255), primary_key=True, nullable=False, autoincrement=False)
     user_id = Column(String(255), nullable=False)
     status = Column(Integer, nullable=False)
-    payment_condition = Column(Integer, nullable=False)
-    products = relationship("OrderProductTable", back_populates="order")
+    payment_condition = Column(String(255), nullable=False)
+    products = relationship("OrderProductTable", back_populates="order", cascade="all, delete-orphan")
     created_at = Column(DateTime, nullable=False, default=now())
     updated_at = Column(DateTime, nullable=False, default=now(), onupdate=now())
 
@@ -31,6 +31,7 @@ class OrderProductTable(Base):
     updated_at = Column(DateTime, nullable=False, default=now(), onupdate=now())
 
     order_id = Column(String(255), ForeignKey("orders.id"), nullable=False)
+    order = relationship("OrderTable", back_populates="products")
 
     def to_dict(self):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
