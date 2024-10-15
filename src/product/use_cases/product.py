@@ -28,7 +28,7 @@ class ProductUseCase:
 
     @staticmethod
     def update_product(sku: str, request_data: Dict, gateway: IProductGateway):
-        if ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway):
+        if not ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway):
             raise ProductNotFoundError(product=sku)
 
         product = Product(
