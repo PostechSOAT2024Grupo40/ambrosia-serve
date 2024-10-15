@@ -1,8 +1,8 @@
 from typing import Dict
 
-from src.product.adapters.json_presenter import JsonProductPresenter
 from src.product.adapters.postgres_gateway import PostgreSqlProductGateway
 from src.product.adapters.postgresql_uow import PostgreSqlUow
+from src.product.adapters.pydantic_presenter import PydanticProductPresenter
 from src.product.ports.product_gateway import IProductGateway
 from src.product.ports.product_presenter import IProductPresenter
 from src.product.ports.unit_of_work_interface import IProductUnitOfWork
@@ -16,7 +16,7 @@ class ProductController:
     def create_product(request_data: Dict):
         uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
-        presenter: IProductPresenter = JsonProductPresenter()
+        presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.create_new_product(request_data=request_data, gateway=gateway)
         return presenter.present(product)
 
@@ -24,7 +24,7 @@ class ProductController:
     def get_products():
         uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
-        presenter: IProductPresenter = JsonProductPresenter()
+        presenter: IProductPresenter = PydanticProductPresenter()
         products = ProductUseCase.get_products(gateway=gateway)
         return presenter.present(products)
 
@@ -32,7 +32,7 @@ class ProductController:
     def get_product_by_id(sku: str):
         uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
-        presenter: IProductPresenter = JsonProductPresenter()
+        presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway)
         return presenter.present(product)
 
@@ -40,7 +40,7 @@ class ProductController:
     def update_product(sku: str, request_data: Dict):
         uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
-        presenter: IProductPresenter = JsonProductPresenter()
+        presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.update_product(sku=sku, request_data=request_data, gateway=gateway)
         return presenter.present(product)
 
