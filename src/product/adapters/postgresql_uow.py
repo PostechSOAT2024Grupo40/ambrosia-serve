@@ -4,7 +4,7 @@ from src.product.adapters.postgresql_repository import PostgreSqlRepository
 from src.product.ports.unit_of_work_interface import IProductUnitOfWork
 
 
-class PostgreSqlUow(IProductUnitOfWork):
+class ProductPostgreSqlUow(IProductUnitOfWork):
 
     def __init__(self, session_factory):
         self.session_factory = session_factory()

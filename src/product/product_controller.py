@@ -1,7 +1,7 @@
 from typing import Dict
 
 from src.product.adapters.postgres_gateway import PostgreSqlProductGateway
-from src.product.adapters.postgresql_uow import PostgreSqlUow
+from src.product.adapters.postgresql_uow import ProductPostgreSqlUow
 from src.product.adapters.pydantic_presenter import PydanticProductPresenter
 from src.product.ports.product_gateway import IProductGateway
 from src.product.ports.product_presenter import IProductPresenter
@@ -14,7 +14,7 @@ class ProductController:
 
     @staticmethod
     def create_product(request_data: Dict):
-        uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
+        uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.create_new_product(request_data=request_data, gateway=gateway)
@@ -22,7 +22,7 @@ class ProductController:
 
     @staticmethod
     def get_products():
-        uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
+        uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
         products = ProductUseCase.get_products(gateway=gateway)
@@ -30,7 +30,7 @@ class ProductController:
 
     @staticmethod
     def get_product_by_id(sku: str):
-        uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
+        uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway)
@@ -38,7 +38,7 @@ class ProductController:
 
     @staticmethod
     def update_product(sku: str, request_data: Dict):
-        uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
+        uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
         product = ProductUseCase.update_product(sku=sku, request_data=request_data, gateway=gateway)
@@ -46,7 +46,7 @@ class ProductController:
 
     @staticmethod
     def delete_product(sku: str):
-        uow: IProductUnitOfWork = PostgreSqlUow(session_factory=postgresql_session_factory())
+        uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         ProductUseCase.delete_product(sku=sku, gateway=gateway)
         return True
