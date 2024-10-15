@@ -13,8 +13,8 @@ authors = [
   { name = "Rafael Camargo da Silva" }
 ]
 dependencies = [
-  "dependency-injector==4.42.0",
   "fastapi[standard]==0.115.0",
+  "psycopg2-binary==2.9.9",
   "sqlalchemy==2.0.35",
 ]
 
