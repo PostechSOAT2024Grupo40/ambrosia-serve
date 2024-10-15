@@ -53,19 +53,6 @@ class CartController:
         return presenter.present(order)
 
     @staticmethod
-    def update_order(order_id: str, request_data: Dict):
-        uow: ICartUnitOfWork = CartPostgreSqlUow(session_factory=postgresql_session_factory())
-        cart_gateway: ICartGateway = PostgreSqlOrderGateway(uow)
-        product_uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
-        product_gateway: IProductGateway = PostgreSqlProductGateway(product_uow)
-        presenter: ICartPresenter = PydanticCartPresenter()
-        order = CartUseCase.update_order(order_id=order_id,
-                                         request_data=request_data,
-                                         gateway=cart_gateway,
-                                         product_gateway=product_gateway)
-        return presenter.present(order)
-
-    @staticmethod
     def update_order_status(order_id: str, new_status: str):
         uow: ICartUnitOfWork = CartPostgreSqlUow(session_factory=postgresql_session_factory())
         cart_gateway: ICartGateway = PostgreSqlOrderGateway(uow)

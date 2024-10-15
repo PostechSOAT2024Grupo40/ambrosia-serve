@@ -44,19 +44,6 @@ async def get_order_by_id(id: str) -> OrderResponseDto:
         logger.exception(f"Server Error | {id=}")
         raise HTTPException(status_code=500, detail=exc.args)
 
-
-@router.put("/api/v1/order/{id}")
-async def update_order(id: str, order_request: CreateOrderRequestDto) -> OrderResponseDto:
-    try:
-        order_request_dict = order_request.model_dump()
-        return CartController.update_order(order_id=id, request_data=order_request_dict)
-    except ValidationError as pydantic_exc:
-        raise HTTPException(status_code=400, detail=pydantic_exc.errors())
-    except Exception as exc:
-        logger.exception(f"Server Error | {id=} {order_request=}")
-        raise HTTPException(status_code=500, detail=exc.args)
-
-
 @router.put("/api/v1/order/{id}/status")
 async def update_order_status(id: str, new_status: str) -> OrderResponseDto:
     try:
