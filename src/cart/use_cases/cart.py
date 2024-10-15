@@ -67,17 +67,6 @@ class CartUseCase:
         gateway.delete_order(order_id=order_id)
 
     @staticmethod
-    def add_new_product_to_order(original_order_products, product_gateway, updated_order_products_sku):
-        product_entity = product_gateway.get_product_by_sku(updated_order_products_sku['sku'])
-        quantity = updated_order_products_sku['quantity']
-        new_order_product = OrderProduct(product=product_entity,
-                                         quantity=quantity,
-                                         observation=updated_order_products_sku.get('observation'))
-        original_order_products.append(new_order_product)
-        product_entity.stock -= quantity if product_entity.stock - quantity > 0 else 0
-        product_gateway.create_update_product(product=product_entity)
-
-    @staticmethod
     def update_order_status(order_id: str, new_status: str, gateway: ICartGateway):
         order = CartUseCase.get_order_by_id(order_id, gateway)
         if not order:
