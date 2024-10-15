@@ -266,11 +266,11 @@ uv pip sync requirements.txt
 ```
 
 ## Estrutura
-
-Diagrama da arquitetura do servidor
+1. **Diagrama da implementação do servidor**
 ![server-arquitecture](docs/architecture-diagram.png)
 
-
+2. **Diagrama da infra**
+![server-arquitecture](docs/architecture-diagram.png)
 
 ## Executando
 
