@@ -13,17 +13,17 @@ class PostgreSqlClientGateway(IUserGateway):
     def get_users(self) -> List[User]:
         with self.uow:
             users = self.uow.repository.get_users()
-            return [User(**u) for u in users]
+            return [self.build_user_entity(u) for u in users]
 
     def get_user_by_cpf(self, cpf: str) -> User:
         with self.uow:
             user = self.uow.repository.get_user_by_cpf(cpf)
-            return User(**user)
+            return self.build_user_entity(user)
 
     def get_user_by_email(self, email: str) -> User:
         with self.uow:
             user = self.uow.repository.get_user_by_email(email)
-            return User(**user)
+            return self.build_user_entity(user)
 
     def create_user(self, user: User) -> User:
         with self.uow:
@@ -57,3 +57,12 @@ class PostgreSqlClientGateway(IUserGateway):
         with self.uow:
             user = self.uow.repository.get_user_by_id(user_id)
             return User(**user)
+
+    @staticmethod
+    def build_user_entity(user):
+        return User(_id=user['id'],
+                    first_name=user['first_name'],
+                    last_name=user['last_name'],
+                    cpf=user['cpf'],
+                    email=user['email'],
+                    password=user['password'])
