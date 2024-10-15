@@ -51,7 +51,7 @@ https://miro.com/app/board/uXjVKzFU2VA=/
 
 1. **Sessão de Brainstorming**
 
-![Brainstorming](docs/Brainstorming.jpg)  
+![Brainstorming](docs/Brainstorming.jpg)
 Nesta sessão, foram discutidos todos os eventos que ocorrem no negócio.
 
 2. **Ajuste dos Eventos em Ordem Cronológica**
@@ -267,7 +267,10 @@ uv pip sync requirements.txt
 
 ## Estrutura
 
-todo
+Diagrama da arquitetura do servidor
+![server-arquitecture](docs/architecture-diagram.png)
+
+
 
 ## Executando
 
