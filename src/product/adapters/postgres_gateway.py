@@ -2,12 +2,9 @@ from typing import List
 
 from src.product.domain.entities.product import Product
 from src.product.ports.product_gateway import IProductGateway
-from src.product.ports.unit_of_work_interface import IProductUnitOfWork
 
 
 class PostgreSqlProductGateway(IProductGateway):
-    def __init__(self, ouw: IProductUnitOfWork):
-        self.ouw = ouw
 
     def get_products(self) -> List[Product]:
         with self.uow as uow:
@@ -21,7 +18,7 @@ class PostgreSqlProductGateway(IProductGateway):
 
     def create_update_product(self, product: Product) -> Product:
         with self.uow as uow:
-            uow.repository.insert_update({'is': product.id,
+            uow.repository.insert_update({'id': product.id,
                                           'sku': product.sku,
                                           'category': product.category,
                                           'description': product.description,
