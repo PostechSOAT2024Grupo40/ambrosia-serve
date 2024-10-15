@@ -2,9 +2,14 @@ from typing import List
 
 from src.product.domain.entities.product import Product
 from src.product.ports.product_gateway import IProductGateway
+from src.product.ports.unit_of_work_interface import IProductUnitOfWork
 
 
 class PostgreSqlProductGateway(IProductGateway):
+
+    def __init__(self, uow: IProductUnitOfWork):
+        super().__init__()
+        self.uow = uow
 
     def get_products(self) -> List[Product]:
         with self.uow as uow:
