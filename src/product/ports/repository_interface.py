@@ -3,9 +3,6 @@ from typing import List, Dict, Any
 
 
 class IProductRepository(ABC):
-    """
-    Repository interface definition for all repositories.
-    """
 
     @abstractmethod
     def get_all(self) -> List[Dict]:

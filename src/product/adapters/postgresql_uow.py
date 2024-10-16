@@ -9,7 +9,6 @@ class ProductPostgreSqlUow(IProductUnitOfWork):
     def __init__(self, session_factory):
         self.session_factory = session_factory()
 
-
     def __enter__(self):
         self.session: Session = self.session_factory
         self.repository = PostgreSqlProductRepository(session=self.session)

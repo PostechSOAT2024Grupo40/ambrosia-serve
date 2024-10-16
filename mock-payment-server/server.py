@@ -1,27 +1,33 @@
-from pydantic import BaseModel
-import uvicorn
-from fastapi import Body, FastAPI, Request
 from typing import Annotated, Literal
+
 import httpx
+import uvicorn
+from fastapi import Body, FastAPI
+from pydantic import BaseModel
 
 fake_db = {}
 
+
 async def set_webhook_url_for_user_payment(user_id: int, webhook_url: str):
     fake_db[user_id] = webhook_url
-    
+
 
 async def get_webhook_urls():
     return list(fake_db.values())
+
 
 class Payment(BaseModel):
     user_id: str
     user_amount: float
     total_sale_amount: float
 
+
 class WebHookResponse(BaseModel):
     status: Literal["ok", "error"]
 
+
 app = FastAPI()
+
 
 @app.webhooks.post("payment-status-webhook")
 async def payment_webhook(paymeny_data: Payment):
@@ -33,7 +39,7 @@ async def payment_webhook(paymeny_data: Payment):
     Args:
         paymeny_data (Payment): _description_
     """
-    
+
     pass
 
 
@@ -59,11 +65,11 @@ async def user_paymeny(paymeny_info: Payment):
         result = "ok"
     else:
         result = "error"
-    
+
     notification_data = {
         "payment_status": result
     }
-    
+
     webhook_urls = await get_webhook_urls()
     async with httpx.AsyncClient() as client:
         for webhook_url in webhook_urls:
@@ -71,6 +77,7 @@ async def user_paymeny(paymeny_info: Payment):
             if (resp.status_code != 200):
                 print(f"Failed to send notification to {webhook_url}")
     return notification_data
+
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="127.0.0.1", port=8001, reload=True)

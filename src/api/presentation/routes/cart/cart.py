@@ -44,6 +44,7 @@ async def get_order_by_id(id: str) -> OrderResponseDto:
         logger.exception(f"Server Error | {id=}")
         raise HTTPException(status_code=500, detail=exc.args)
 
+
 @router.put("/api/v1/order/{id}/status")
 async def update_order_status(id: str, new_status: str) -> OrderResponseDto:
     try:
