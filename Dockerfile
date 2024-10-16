@@ -25,4 +25,5 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 
-ENTRYPOINT ["uv", "run", "main.py"]
+ENTRYPOINT []
+CMD ["fastapi", "run", "--workers", "4", "src/api/presentation/http/http.py"]
