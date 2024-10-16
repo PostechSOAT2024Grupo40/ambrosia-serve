@@ -20,18 +20,18 @@ spec:
         ports:
         - containerPort: 8000
         env:
-        - name: DB_HOST
+        - name: POSTGRES_HOST
           value: "postgres-service"
-        - name: DB_PORT
+        - name: POSTGRES_PORT
           value: "5432"
-        - name: DB_NAME
-          value: "orders_db"
-        - name: DB_USER
+        - name: POSTGRES_DB
+          value: "ambrosia_db"
+        - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_USER
-        - name: DB_PASSWORD
+        - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: postgres-secret
@@ -39,21 +39,22 @@ spec:
         readinessProbe:
           httpGet:
             path: /health
-            port: 8000
+            port: 30000
           initialDelaySeconds: 30
           periodSeconds: 10
         livenessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 30000
             initialDelaySeconds: 30
             periodSeconds: 60
         startupProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 30000
             failureThreshold: 3
             periodSeconds: 10
+            initialDelaySeconds: 60
         resources:
           requests:
             cpu: 1m
