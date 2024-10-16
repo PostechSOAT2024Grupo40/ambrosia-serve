@@ -1,6 +1,4 @@
-from uuid import uuid4
-
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from src.api.presentation.shared.enums.categories import Categories
 
