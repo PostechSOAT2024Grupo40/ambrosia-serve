@@ -1,7 +1,8 @@
 from typing import List
 
+from cart.domain.entities.order_product import OrderProduct
+from product.domain.entities.product import Product
 from src.cart.domain.entities.order import Order
-from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.paymentConditions import PaymentConditions
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
@@ -32,7 +33,7 @@ class PostgreSqlOrderGateway(ICartGateway):
                 'status': order.order_status.value,
                 'payment_condition': condition.name,
                 'products': [{'id': p.id,
-                              'product_id': p.product.sku, # sku
+                              'product_id': p.product.sku,  # sku
                               'quantity': p.quantity,
                               'observation': p.observation} for p in order.products]
             })
@@ -44,21 +45,28 @@ class PostgreSqlOrderGateway(ICartGateway):
             self.uow.repository.delete(order_id)
             self.uow.commit()
 
-    def build_order_entity(self, order):
+    @staticmethod
+    def build_order_entity(order):
         if not order:
             return None
-        products = [self.build_order_product_entity(p) for p in order['products']]
-
+        payment_condition = PaymentConditions[order['payment_condition']]
+        products = []
+        for p in order['products']:
+            products.append(
+                OrderProduct(
+                    product=Product(_id=p['id'],
+                                    sku=p['sku'],
+                                    description=p['description'],
+                                    category=p['category'],
+                                    stock=p['stock'],
+                                    price=p['price']),
+                    quantity=p['quantity'],
+                    observation=p['observation']
+                )
+            )
         return Order(_id=order['id'],
                      user=order['user_id'],
-                     order_datetime=order['order_datetime'],
-                     order_status=order['order_status'],
-                     payment_condition=order['payment_condition'],
+                     order_datetime=order['created_at'],
+                     order_status=order['status'],
+                     payment_condition=payment_condition.value,
                      products=products)
-
-    @staticmethod
-    def build_order_product_entity(product):
-        return OrderProduct(_id=product['id'],
-                            product=product['product'], # sku
-                            quantity=product['quantity'],
-                            observation=product.get('observation', ''))

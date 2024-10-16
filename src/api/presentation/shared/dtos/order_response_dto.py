@@ -11,7 +11,7 @@ class OrderProductResponseDto(BaseModel):
 
 class OrderResponseDto(BaseModel):
     id: str
-    user: int
+    user: str
     total_order: float
     order_status: str
     payment_condition: str
