@@ -314,7 +314,9 @@ uv pip sync requirements.txt
 </p>
 
 2. **Diagrama da infra**
-   TODO ADD K8s DIAGRAM
+<p align="center">
+  <img src="docs/k8s.png" />
+</p>
 
 ## Executando
 
