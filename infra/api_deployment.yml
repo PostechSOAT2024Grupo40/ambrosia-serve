@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: ambrosia-serve
   name: ambrosia-server
   labels:
     app: ambrosia-server
@@ -57,11 +58,13 @@ spec:
             initialDelaySeconds: 60
         resources:
           requests:
-            cpu: 1m
+            cpu: 50m
+            memory: 32Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: ambrosia-serve
   name: ambrosia-server
 spec:
   type: NodePort
