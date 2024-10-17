@@ -341,10 +341,10 @@ kubectl apply -f infra/
 ```
 
 
-3. Conecte-se ao serviço `ambrosia-serve`:
+3. Conecte-se ao serviço `ambrosia-server`:
 
 ```shell
-minikube service ambrosia-serve
+minikube service ambrosia-server
 ```
 
 4. Acesse o endpoint de documentação `swagger` no navegador `http://<HOST>:30000/docs`
