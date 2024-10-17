@@ -314,7 +314,9 @@ uv pip sync requirements.txt
 </p>
 
 2. **Diagrama da infra**
-   TODO ADD K8s DIAGRAM
+<p align="center">
+  <img src="docs/k8s.png" />
+</p>
 
 ## Executando
 
@@ -327,13 +329,25 @@ git clone git@github.com:PostechSOAT2024Grupo40/ambrosia-serve.git
 cd ambrosia-serve
 ```
 
-2. Inicie os containers Docker:
+2. Crie a infraestrutura kubernetes utilizando o [minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download), instale caso necessario:
 
 ```shell
-docker-compose up --build
+minikube start
 ```
 
-3. Acesse o endpoint de documentação `swagger` no navegador `http://localhost:8000/docs`
+```shell
+kubectl apply -f infra/namespace.yml
+kubectl apply -f infra/
+```
+
+
+3. Conecte-se ao serviço `ambrosia-serve`:
+
+```shell
+minikube service ambrosia-serve
+```
+
+4. Acesse o endpoint de documentação `swagger` no navegador `http://<HOST>:30000/docs`
 
 Os seguintes Status de Pedidos estão disponíveis:
 

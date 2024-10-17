@@ -1,11 +1,11 @@
 from typing import List
 
-from cart.domain.entities.order_product import OrderProduct
-from product.domain.entities.product import Product
 from src.cart.domain.entities.order import Order
+from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.paymentConditions import PaymentConditions
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
+from src.product.domain.entities.product import Product
 
 
 class PostgreSqlOrderGateway(ICartGateway):

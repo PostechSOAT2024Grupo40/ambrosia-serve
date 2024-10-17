@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 from src.product.ports.repository_interface import IProductRepository
 
 
