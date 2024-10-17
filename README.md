@@ -334,6 +334,7 @@ minikube start
 ```
 
 ```shell
+kubectl apply -f infra/namespace.yml
 kubectl apply -f infra/
 ```
 
