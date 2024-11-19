@@ -4,6 +4,7 @@
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/PostechSOAT2024Grupo40/ambrosia-serve)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/PostechSOAT2024Grupo40/ambrosia-serve)
 [![CI](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml/badge.svg)](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml)
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg)](https://sonarcloud.io/summary/new_code?id=PostechSOAT2024Grupo40_ambrosia-serve)
 
 # Ambrosia Serve by **_Grupo 40_**
 
