@@ -20,4 +20,4 @@ class IProductUnitOfWork(ABC):
 
     @abstractmethod
     def rollback(self):
-        pass
+        ...
