@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup uv
+        uses: yezz123/setup-uv@v4
+        with:
+          uv-venv: "venv"
       - name: Cache dependencies
         id: cache-pip
         uses: actions/cache@v3
@@ -20,17 +24,12 @@ jobs:
           path: venv
           key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
           restore-keys: ${{ runner.os }}-venv-
-
       - name: Set up Python
         if: steps.cache-pip.outputs.cache-hit != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
           cache: "pip"
-      - name: Setup uv
-        uses: yezz123/setup-uv@v4
-        with:
-          uv-venv: "venv"
       - name: Run Ruff
         run: uv run ruff check --output-format=github .
 
@@ -38,6 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: yezz123/setup-uv@v4
+        with:
+          uv-venv: "venv"
       - name: Cache dependencies
         id: cache-pip
         uses: actions/cache@v3
@@ -54,9 +56,6 @@ jobs:
         with:
           python-version: 3.11
           cache: "pip"
-      - uses: yezz123/setup-uv@v4
-        with:
-          uv-venv: "venv"
       - name: Test with pytest
         run: |
           uv run pytest
