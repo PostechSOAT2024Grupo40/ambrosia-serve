@@ -37,7 +37,7 @@ def test_create_new_user_already_exists(mock_gateway, sample_user_data):
 
 
 def test_update_user_success(mock_gateway, sample_user_data):
-    user = UsersUseCase.create_new_user(sample_user_data, mock_gateway)
+    UsersUseCase.create_new_user(sample_user_data, mock_gateway)
     updated_data = sample_user_data.copy()
     updated_data["first_name"] = "Jane"
 
