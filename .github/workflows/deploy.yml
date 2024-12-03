@@ -6,10 +6,6 @@ on:
       IMAGE_NAME:
         required: true
         type: string
-      PRODUCTION:
-        required: true
-        type: boolean
-
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -41,20 +37,35 @@ jobs:
         with:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: true
+          outputs: type=docker,dest=/tmp/docker-image.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp/docker-image.tar
 
   deploy-homolog:
-    if: ${{inputs.PRODUCTION!=true}}
+    if: github.event == 'push' && github.ref == 'refs/heads/homolog'
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp
       - name: Deploy to Homolog
         run: echo "Deploying to Homolog"
 
   deploy-prod:
-    if: ${{inputs.PRODUCTION==true}}
+    if: github.event == 'push' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp
       - name: Deploy to Homolog
         run: echo "Deploying to Homolog"

@@ -10,11 +10,9 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   CD:
     needs: CI
-    if: github.event == 'push' && github.ref == 'refs/heads/homolog' || github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy.yml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       IMAGE_NAME: rodrigodossantosfelix/ambrosia-serve
-      PRODUCTION: ${{github.ref == 'refs/heads/homolog'}}
