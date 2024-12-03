@@ -11,7 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Cache dependencies
+        id: cache-pip
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-pip
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: ${{ runner.os }}-venv-
+
       - name: Set up Python
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
@@ -27,7 +38,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Cache dependencies
+        id: cache-pip
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-pip
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: ${{ runner.os }}-venv-
+
       - name: Set up Python
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
