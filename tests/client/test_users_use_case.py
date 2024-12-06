@@ -2,7 +2,7 @@ import pytest
 
 from src.client.exceptions import UserExistsError, UserNotFoundError
 from src.client.use_cases.user import UsersUseCase
-from tests.mock_user_gateway import MockUserGateway
+from tests.client.mock_user_gateway import MockUserGateway
 
 
 @pytest.fixture
