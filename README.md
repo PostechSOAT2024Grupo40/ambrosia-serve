@@ -360,3 +360,4 @@ Os seguintes Status de Pedidos estão disponíveis:
 | `CONCLUIDO`   | O Pedido foi concluído                           |
 | `CANCELADO`   | O Pedido foi cancelado                           |
 
+
