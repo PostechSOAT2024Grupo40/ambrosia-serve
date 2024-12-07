@@ -21,8 +21,11 @@ dependencies = [
 
 [tool.uv]
 dev-dependencies = [
+  "psycopg2-binary==2.9.9",
   "pytest>=8.3.3",
-  "ruff>=0.6.7"
+  "ruff>=0.6.7",
+  "sqlalchemy==2.0.35",
+  "testcontainers[postgres]>=4.8.2",
 ]
 
 [project.urls]

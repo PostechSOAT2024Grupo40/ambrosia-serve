@@ -25,12 +25,12 @@ class PostgreSqlProductGateway(IProductGateway):
 
     @staticmethod
     def build_product_entity(product):
-        return Product(_id=product['id'],
-                       sku=product['sku'],
-                       description=product['description'],
-                       category=product['category'],
-                       price=product['price'],
-                       stock=product['stock'])
+        return Product(_id=product.id,
+                       sku=product.sku,
+                       description=product.description,
+                       category=product.category,
+                       price=product.price,
+                       stock=product.stock)
 
     def create_update_product(self, product: Product) -> Product:
         with self.uow:

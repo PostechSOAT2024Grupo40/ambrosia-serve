@@ -1,6 +1,6 @@
-from typing import Dict, Any, List, Sequence
+from typing import Dict, Any, Sequence, cast, Optional
 
-from sqlalchemy import select, Row, delete
+from sqlalchemy import ColumnElement, select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
@@ -13,21 +13,23 @@ class PostgreSqlProductRepository(IProductRepository):
         super().__init__()
         self.session = session
 
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> Sequence[Row]:
         stmt = select(ProductTable)
-        results: Sequence[Row[tuple[ProductTable]]] = self.session.execute(stmt).all()
+        results = self.session.execute(stmt).all()
         if not results:
             return []
 
-        return [row[0].to_dict() for row in results]
+        return results
 
-    def filter_by_sku(self, sku: str) -> Dict:
-        stmt = select(ProductTable).where(ProductTable.sku == sku)
+    def filter_by_sku(self, sku: str) -> Optional[Row]:
+        stmt = select(ProductTable).where(
+            cast("ColumnElement[bool]", ProductTable.sku == sku)
+        )
         result = self.session.execute(stmt).first()
         if not result:
-            return {}
+            return
 
-        return result[0].to_dict()
+        return result[0]
 
     def insert_update(self, values: Dict[str, Any]):
         stmt = insert(ProductTable).values(**values)
@@ -38,5 +40,7 @@ class PostgreSqlProductRepository(IProductRepository):
         self.session.execute(stmt)
 
     def delete(self, sku: str):
-        stmt = delete(ProductTable).where(ProductTable.sku == sku)
+        stmt = delete(ProductTable).where(
+            cast("ColumnElement[bool]", ProductTable.sku == sku)
+        )
         self.session.execute(stmt)
