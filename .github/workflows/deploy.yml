@@ -1,30 +1,23 @@
 name: Deploy
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      IMAGE_NAME:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-      - uses: yezz123/setup-uv@v4
-        with:
-          uv-venv: "venv"
-      - name: Test with pytest
-        run: |
-          uv run pytest
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: rodrigodossantosfelix/ambrosia-serve
-    steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -33,9 +26,46 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.IMAGE_NAME }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          tags: ${{ env.IMAGE_NAME }}:latest
-          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=docker,dest=/tmp/docker-image.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp/docker-image.tar
+
+  deploy-homolog:
+    if: github.event == 'push' && github.ref == 'refs/heads/homolog'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp
+      - name: Deploy to Homolog
+        run: echo "Deploying to Homolog"
+
+  deploy-prod:
+    if: github.event == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp
+      - name: Deploy to Homolog
+        run: echo "Deploying to Homolog"

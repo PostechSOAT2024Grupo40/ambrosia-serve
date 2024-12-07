@@ -2,7 +2,7 @@ import pytest
 
 from src.client.exceptions import UserExistsError, UserNotFoundError
 from src.client.use_cases.user import UsersUseCase
-from tests.mock_user_gateway import MockUserGateway
+from tests.client.mock_user_gateway import MockUserGateway
 
 
 @pytest.fixture
@@ -37,7 +37,7 @@ def test_create_new_user_already_exists(mock_gateway, sample_user_data):
 
 
 def test_update_user_success(mock_gateway, sample_user_data):
-    user = UsersUseCase.create_new_user(sample_user_data, mock_gateway)
+    UsersUseCase.create_new_user(sample_user_data, mock_gateway)
     updated_data = sample_user_data.copy()
     updated_data["first_name"] = "Jane"
 
