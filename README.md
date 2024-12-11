@@ -313,6 +313,11 @@ uv pip sync requirements.txt
   <img src="docs/architecture-diagram.png" />
 </p>
 
+**Diagrama da infra**
+<p align="center">
+  <img src="docs/k8s.png" />
+</p>
+
 ## Executando
 
 Para executar a API localmente, siga as seguintes etapas:
@@ -324,6 +329,7 @@ git clone git@github.com:PostechSOAT2024Grupo40/ambrosia-serve.git && cd ambrosi
 ```
 
 2. Crie um arquivo .env com os valores:
+
 ```
 POSTGRES_DB=<Nome do banco de dados>
 POSTGRES_USER=<Nome de usuário>
@@ -335,6 +341,7 @@ POSTGRES_PASSWORD=<Senha de usuário>
 3. Siga as etapas de [Requisitos](#requisitos)
 
 4. Inicie a aplicação:
+
 ```shell
 fastapi run --workers 4 src/api/presentation/http/http.py
 ```
@@ -351,3 +358,23 @@ Os seguintes Status de Pedidos estão disponíveis:
 | `CONCLUIDO`   | O Pedido foi concluído                           |
 | `CANCELADO`   | O Pedido foi cancelado                           |
 
+Para executar o projeto localmente utilizando Docker, siga as seguintes etapas:
+
+1. Crie a infraestrutura kubernetes utilizando
+   o [minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download),
+   instale
+   caso necessario:
+
+```shell
+minikube start
+```
+
+```shell
+kubectl apply -f infra/namespace.yml && kubectl apply -f infra/
+```
+
+2. Conecte-se ao serviço `ambrosia-server`:
+
+```shell
+minikube service ambrosia-server
+```

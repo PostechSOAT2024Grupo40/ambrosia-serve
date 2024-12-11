@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ambrosia-serve
+  name: ambrosia-server
+  labels:
+    app: ambrosia-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ambrosia-server
+  template:
+    metadata:
+      labels:
+        app: ambrosia-server
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: ambrosia-container
+          image: rodrigodossantosfelix/ambrosia-serve:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_HOST
+              value: "postgres-service"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "ambrosia_db"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            failureThreshold: 3
+            periodSeconds: 10
+            initialDelaySeconds: 60
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+              ephemeral-storage: "500Mi"
+            limits:
+              cpu: 500m
+              memory: 256Mi
+              ephemeral-storage: "1Gi"
