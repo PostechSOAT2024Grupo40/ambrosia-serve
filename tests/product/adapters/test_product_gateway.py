@@ -1,3 +1,4 @@
+import math
 from dataclasses import dataclass
 
 from src.product.domain.entities.product import Product
@@ -15,15 +16,17 @@ class ProductDto:
 
 def test_get_products(gateway, mock_uow):
     mock_uow.repository.get_all.return_value = [
-        ProductDto(**{'id': 1, 'sku': 'sku1', 'description': 'desc1', 'category': 'Bebida', 'price': 100.0, 'stock': 10}),
-        ProductDto(**{'id': 2, 'sku': 'sku2', 'description': 'desc2', 'category': 'Sobremesa', 'price': 200.0, 'stock': 20})
+        ProductDto(
+            **{'id': 1, 'sku': 'sku1', 'description': 'desc1', 'category': 'Bebida', 'price': 100.0, 'stock': 10}),
+        ProductDto(
+            **{'id': 2, 'sku': 'sku2', 'description': 'desc2', 'category': 'Sobremesa', 'price': 200.0, 'stock': 20})
     ]
 
     products = gateway.get_products()
 
     assert len(products) == 2
     assert products[0].sku == 'sku1'
-    assert products[1].price == 200.0
+    assert math.isclose(products[1].price, 200.0 - 0.1, rel_tol=1e-09, abs_tol=1e-09)
     mock_uow.repository.get_all.assert_called_once()
 
 

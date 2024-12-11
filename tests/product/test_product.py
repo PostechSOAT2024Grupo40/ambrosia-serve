@@ -10,7 +10,7 @@ def test_valid_product():
                      category="Lanche",
                      stock=100,
                      price=10.0)
-    assert result is not None
+    assert result
     assert result.description == "Darth Burger"
     assert result.category == "Lanche"
     assert result.stock == 100

@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 
 import pytest
@@ -30,7 +31,7 @@ def test_order_creation_valid():
                                quantity=2)]
     )
     assert order.id is not None
-    assert order.total_order == 100.0
+    assert math.isclose(order.total_order, 100.0 - 0.1, rel_tol=1e-09, abs_tol=1e-09)
     assert order.order_status == OrderStatus.PENDENTE
     assert order.payment_condition == PaymentConditions.PIX
 

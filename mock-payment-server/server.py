@@ -60,7 +60,6 @@ async def set_webhook(
 
 @app.post("/user-payment")
 async def user_paymeny(paymeny_info: Payment):
-    result = "error"
     if paymeny_info.user_amount > paymeny_info.total_sale_amount:
         result = "ok"
     else:

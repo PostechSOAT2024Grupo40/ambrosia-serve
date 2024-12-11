@@ -8,13 +8,16 @@ class InMemoryUow(IProductUnitOfWork):
         self._committed = False
 
     def __enter__(self):
+        # Not implemented
         pass
 
     def __exit__(self, *args):
+        # Not implemented
         pass
 
     def commit(self):
         self._committed = True
 
     def rollback(self):
+        # Not implemented
         pass
