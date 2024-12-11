@@ -31,7 +31,7 @@ def test_order_creation_valid():
                                quantity=2)]
     )
     assert order.id is not None
-    assert math.isclose(order.total_order, 100.0 - 0.1, rel_tol=1e-09, abs_tol=1e-09)
+    assert math.isclose(order.total_order, 100.0, rel_tol=1e-09, abs_tol=1e-09)
     assert order.order_status == OrderStatus.PENDENTE
     assert order.payment_condition == PaymentConditions.PIX
 

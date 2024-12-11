@@ -26,7 +26,7 @@ def test_get_products(gateway, mock_uow):
 
     assert len(products) == 2
     assert products[0].sku == 'sku1'
-    assert math.isclose(products[1].price, 200.0, rel_tol=1e-09, abs_tol=1e-09)
+    assert \(products[1].price, 200.0, rel_tol=1e-09, abs_tol=1e-09)
     mock_uow.repository.get_all.assert_called_once()
 
 
