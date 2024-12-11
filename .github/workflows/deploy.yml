@@ -44,7 +44,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          tags: latest,$ECR_REGISTRY/${{ inputs.IMAGE_NAME }}:${{ steps.commit.outputs.short }}
+          tags: |
+            ${{ inputs.ECR_REGISTRY }}/${{ inputs.IMAGE_NAME }}:latest
+            ${{ inputs.ECR_REGISTRY }}/${{ inputs.IMAGE_NAME }}:${{ steps.commit.outputs.short }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=docker,dest=/tmp/docker-image.tar
       - name: Upload artifact
