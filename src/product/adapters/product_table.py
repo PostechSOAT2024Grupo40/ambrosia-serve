@@ -1,6 +1,6 @@
 from typing import Any
 
-from sqlalchemy import Integer, Column, String, Float, DateTime
+from sqlalchemy import DateTime
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 

@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List, Any
 
 from src.cart.domain.entities.order import Order
-from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
 
 
