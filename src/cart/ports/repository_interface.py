@@ -5,11 +5,11 @@ from typing import List, Dict, Any
 class IRepository(ABC):
 
     @abstractmethod
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> List[Any]:
         ...
 
     @abstractmethod
-    def filter_by_id(self, order_id: str) -> Dict:
+    def filter_by_id(self, order_id: str) -> Any:
         ...
 
     @abstractmethod
@@ -18,4 +18,8 @@ class IRepository(ABC):
 
     @abstractmethod
     def delete(self, sku: str):
+        ...
+
+    @abstractmethod
+    def get_order_products(self, order_id: str) -> List[Any]:
         ...
