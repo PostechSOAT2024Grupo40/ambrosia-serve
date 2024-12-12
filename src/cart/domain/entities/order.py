@@ -14,7 +14,6 @@ class Order:
                  order_datetime: datetime,
                  order_status: OrderStatus,
                  payment_condition: PaymentConditions,
-                 products: List[OrderProduct],
                  _id: str = generate_id()):
         self._id = _id
         self.user = user
@@ -22,7 +21,7 @@ class Order:
         self.order_datetime = order_datetime
         self.order_status = order_status
         self.payment_condition = payment_condition
-        self.products = products
+        self.products: List[OrderProduct] = []
 
         OrderValidator.validate(order=self)
 
@@ -35,6 +34,9 @@ class Order:
     @property
     def id(self):
         return self._id
+
+    def add_product(self, product: OrderProduct):
+        self.products.append(product)
 
     @property
     def total_order(self):
