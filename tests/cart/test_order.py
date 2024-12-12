@@ -16,20 +16,20 @@ def test_order_creation_valid():
         user=1,
         order_datetime=datetime.now(),
         order_status=OrderStatus.PENDENTE,
-        payment_condition=PaymentConditions.PIX,
-        products=[OrderProduct(product=Product(sku="12345678",
-                                               description="Darth Burger",
-                                               category="Lanche",
-                                               stock=100,
-                                               price=10.0),
-                               quantity=4),
-                  OrderProduct(product=Product(sku="09876542",
-                                               description="Burger Master",
-                                               category="Lanche",
-                                               stock=100,
-                                               price=30.0),
-                               quantity=2)]
-    )
+        payment_condition=PaymentConditions.PIX)
+    order.add_product(OrderProduct(product=Product(sku="12345678",
+                                                   description="Darth Burger",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=10.0),
+                                   quantity=4))
+    order.add_product(OrderProduct(product=Product(sku="09876542",
+                                                   description="Burger Master",
+                                                   category="Lanche",
+                                                   stock=100,
+                                                   price=30.0),
+                                   quantity=2)
+                      )
     assert order.id is not None
     assert math.isclose(order.total_order, 100.0, rel_tol=1e-09, abs_tol=1e-09)
     assert order.order_status == OrderStatus.PENDENTE
@@ -38,47 +38,48 @@ def test_order_creation_valid():
 
 def test_invalid_payment_condition():
     with pytest.raises(OrderDomainException) as exc_info:
-        Order(
+        order = Order(
             user=1,
             order_datetime=datetime.now(),
             order_status=OrderStatus.PENDENTE,
-            payment_condition="INVALID",  # noqa
-            products=[OrderProduct(product=Product(sku="12345678",
-                                                   description="Darth Burger",
-                                                   category="Lanche",
-                                                   stock=100,
-                                                   price=10.0),
-                                   quantity=4),
-                      OrderProduct(product=Product(sku="09876542",
-                                                   description="Burger Master",
-                                                   category="Lanche",
-                                                   stock=100,
-                                                   price=30.0),
-                                   quantity=2)]
-        )
+            payment_condition="INVALID")  # noqa
+        order.add_product(OrderProduct(product=Product(sku="12345678",
+                                                       description="Darth Burger",
+                                                       category="Lanche",
+                                                       stock=100,
+                                                       price=10.0),
+                                       quantity=4))
+        order.add_product(OrderProduct(product=Product(sku="09876542",
+                                                       description="Burger Master",
+                                                       category="Lanche",
+                                                       stock=100,
+                                                       price=30.0),
+                                       quantity=2)
+                          )
     assert str(exc_info.value) == "Forma de Pagamento inválida"
 
 
 def test_invalid_order_status():
     with pytest.raises(OrderDomainException) as exc_info:
-        Order(
+        order = Order(
             user=1,
             order_datetime=datetime.now(),
             order_status="INVALID",  # noqa
-            payment_condition=PaymentConditions.PIX,
-            products=[OrderProduct(product=Product(sku="12345678",
-                                                   description="Darth Burger",
-                                                   category="Lanche",
-                                                   stock=100,
-                                                   price=10.0),
-                                   quantity=4),
-                      OrderProduct(product=Product(sku="09876542",
-                                                   description="Burger Master",
-                                                   category="Lanche",
-                                                   stock=100,
-                                                   price=30.0),
-                                   quantity=2)]
-        )
+            payment_condition=PaymentConditions.PIX)
+
+        order.add_product(OrderProduct(product=Product(sku="12345678",
+                                                       description="Darth Burger",
+                                                       category="Lanche",
+                                                       stock=100,
+                                                       price=10.0),
+                                       quantity=4))
+        order.add_product(OrderProduct(product=Product(sku="09876542",
+                                                       description="Burger Master",
+                                                       category="Lanche",
+                                                       stock=100,
+                                                       price=30.0),
+                                       quantity=2)
+                          )
     assert str(exc_info.value) == "Status do Pedido inválido"
 
 
