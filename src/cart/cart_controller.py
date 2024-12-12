@@ -40,8 +40,10 @@ class CartController:
     def get_orders():
         uow: ICartUnitOfWork = CartPostgreSqlUow(session_factory=postgresql_session_factory())
         cart_gateway: ICartGateway = PostgreSqlOrderGateway(uow)
+        product_uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
+        product_gateway: IProductGateway = PostgreSqlProductGateway(product_uow)
         presenter: ICartPresenter = PydanticCartPresenter()
-        orders = CartUseCase.get_all_orders(gateway=cart_gateway)
+        orders = CartUseCase.get_all_orders(gateway=cart_gateway, product_gateway=product_gateway)
         return presenter.present(orders)
 
     @staticmethod
