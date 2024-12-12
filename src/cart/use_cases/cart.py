@@ -11,6 +11,7 @@ from src.cart.exceptions import (ClientError,
                                  OrderNotFoundError)
 from src.cart.ports.cart_gateway import ICartGateway
 from src.client.ports.user_gateway import IUserGateway
+from src.product.domain.entities.product import Product
 from src.product.ports.product_gateway import IProductGateway
 
 
@@ -29,8 +30,11 @@ class CartUseCase:
         order = Order(user=user_id,
                       order_datetime=datetime.now(),
                       order_status=OrderStatus.PENDENTE,
-                      payment_condition=request_data['payment_condition'],
-                      products=products_required)
+                      payment_condition=request_data['payment_condition'])
+
+        for product in products_required:
+            order.add_product(product)
+
         if CartUseCase.get_order_by_id(order.id, cart_gateway):
             raise OrderExistsError(order=order.id)
 
@@ -55,8 +59,28 @@ class CartUseCase:
         return products_required
 
     @staticmethod
-    def get_all_orders(gateway: ICartGateway):
-        return gateway.get_orders()
+    def get_all_orders(gateway: ICartGateway, product_gateway: IProductGateway):
+        orders: list[Order] = gateway.get_orders()
+        for order in orders:
+            order_products: List[dict] = gateway.get_order_products(order_id=order.id)
+            for row in order_products:
+                product = product_gateway.get_product_by_sku(row['product_id'])
+                order.add_product(
+                    product=OrderProduct(
+                        product=Product(
+                            _id=product.id,
+                            sku=product.sku,
+                            description=product.description,
+                            category=product.category,
+                            stock=product.stock,
+                            price=product.price
+                        ),
+                        quantity=row['quantity'],
+                        observation=row['observation']
+                    )
+                )
+
+        return orders
 
     @staticmethod
     def get_order_by_id(order_id: str, gateway: ICartGateway):
