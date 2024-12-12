@@ -1,7 +1,7 @@
 from typing import Any
 
 from sqlalchemy import Integer, Column, String, Float, DateTime
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 
 Base = declarative_base()
@@ -10,16 +10,14 @@ Base = declarative_base()
 class ProductTable(Base):
     __tablename__ = "products"
 
-    id = Column(String(255), primary_key=True,
-                nullable=False, autoincrement=False)
-    sku = Column(String(255), nullable=False)
-    description = Column(String(255), nullable=False)
-    price = Column(Float, nullable=False)
-    stock = Column(Integer, nullable=False)
-    category = Column(String(255), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=now())
-    updated_at = Column(DateTime, nullable=False,
-                        default=now(), onupdate=now())
+    id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
+    sku: Mapped[str]
+    description: Mapped[str]
+    price: Mapped[float]
+    stock: Mapped[int]
+    category: Mapped[str]
+    created_at: Mapped[DateTime] = mapped_column(default=now())
+    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
