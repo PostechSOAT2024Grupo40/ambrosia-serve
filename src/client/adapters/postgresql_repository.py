@@ -6,12 +6,6 @@ from sqlalchemy.orm import Session
 
 from src.client.adapters.client_table import ClientTable
 
-CLIENT_TABLE_COLUMNS = (ClientTable.id,
-                        ClientTable.first_name,
-                        ClientTable.last_name,
-                        ClientTable.cpf,
-                        ClientTable.email,
-                        ClientTable.password)
 from src.client.ports.repository_interface import IClientRepository
 
 
@@ -21,7 +15,12 @@ class PostgreSqlClientRepository(IClientRepository):
         self.session = session
 
     def get_users(self) -> Optional[Sequence[Row[tuple]]]:
-        stmt = select(*CLIENT_TABLE_COLUMNS)
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password)
         results = self.session.execute(stmt).all()
         if not results:
             return []
@@ -29,7 +28,12 @@ class PostgreSqlClientRepository(IClientRepository):
         return results
 
     def get_user_by_cpf(self, cpf: str) -> Optional[Row]:
-        stmt = select(*CLIENT_TABLE_COLUMNS).where(ClientTable.cpf == cpf)
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.cpf == cpf)
         results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).first()
         if not results:
             return
@@ -37,7 +41,12 @@ class PostgreSqlClientRepository(IClientRepository):
         return results[0]
 
     def get_user_by_email(self, email: str) -> Optional[Row]:
-        stmt = select(*CLIENT_TABLE_COLUMNS).where(ClientTable.email == email)
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.email == email)
         results = self.session.execute(stmt).first()
         if not results:
             return
@@ -45,7 +54,12 @@ class PostgreSqlClientRepository(IClientRepository):
         return results[0]
 
     def create_user(self, user: Dict):
-        stmt = insert(*CLIENT_TABLE_COLUMNS).values(**user)
+        stmt = insert(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).values(**user)
         self.session.execute(stmt)
 
     def update_user(self, user: Dict):
@@ -61,7 +75,12 @@ class PostgreSqlClientRepository(IClientRepository):
         self.session.execute(stmt)
 
     def get_user_by_id(self, user_id: int) -> Optional[Row]:
-        stmt = select(*CLIENT_TABLE_COLUMNS).where(ClientTable.id == user_id)
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.id == user_id)
         results = self.session.execute(stmt).first()
         if not results:
             return
