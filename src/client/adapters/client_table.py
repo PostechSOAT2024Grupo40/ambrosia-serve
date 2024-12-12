@@ -1,21 +1,20 @@
-from sqlalchemy import Column, String, DateTime
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import DateTime
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 
-Base = declarative_base()
+
+class Base:
+    pass
 
 
 class ClientTable(Base):
     __tablename__ = "clients"
 
-    id = Column(String(255), primary_key=True, nullable=False, autoincrement=False)
-    first_name = Column(String(255), nullable=False)
-    last_name = Column(String(255), nullable=False)
-    cpf = Column(String(255), nullable=False)
-    email = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=now())
-    updated_at = Column(DateTime, nullable=False, default=now(), onupdate=now())
-
-    def to_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+    id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
+    first_name: Mapped[str]
+    last_name: Mapped[str]
+    cpf: Mapped[str]
+    email: Mapped[str]
+    password: Mapped[str]
+    created_at: Mapped[DateTime] = mapped_column(default=now())
+    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
