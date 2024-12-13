@@ -9,7 +9,7 @@ class Product:
                  category: str,
                  price: float,
                  stock: int,
-                 _id: int = generate_id()):
+                 _id: str = generate_id()):
         self._id = _id
         self.name = name
         self.description = description
