@@ -9,6 +9,7 @@ from src.cart.ports.repository_interface import IRepository
 
 
 class PostgreSqlRepository(IRepository):
+
     def __init__(self, session: Session):
         super().__init__()
         self.session = session
@@ -78,6 +79,6 @@ class PostgreSqlRepository(IRepository):
             )
             self.session.execute(stmt_product)
 
-    def delete(self, sku: str):
-        stmt = delete(OrderTable).where(OrderTable.id == sku)
+    def delete(self, order_id: str):
+        stmt = delete(OrderTable).where(OrderTable.id == order_id)
         self.session.execute(stmt)

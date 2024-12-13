@@ -17,7 +17,7 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def delete(self, sku: str):
+    def delete(self, order_id: str):
         ...
 
     @abstractmethod

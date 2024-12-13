@@ -44,10 +44,10 @@ class CartUseCase:
     def build_products_required_list(product_gateway: IProductGateway, products: List[Dict]):
         products_required = []
         for product_required in products:
-            sku = product_required['product_sku']
-            product_entity = product_gateway.get_product_by_sku(sku)
+            product_id = product_required['product_id']
+            product_entity = product_gateway.get_product_by_id(product_id)
             if not product_entity:
-                raise ProductNotFoundError(product=sku)
+                raise ProductNotFoundError(product=product_id)
 
             order_product = OrderProduct(product=product_entity,
                                          quantity=product_required['quantity'],
@@ -64,12 +64,12 @@ class CartUseCase:
         for order in orders:
             order_products: List[dict] = gateway.get_order_products(order_id=order.id)
             for row in order_products:
-                product = product_gateway.get_product_by_sku(row['product_id'])
+                product = product_gateway.get_product_by_id(row['product_id'])
                 order.add_product(
                     product=OrderProduct(
                         product=Product(
                             _id=product.id,
-                            sku=product.sku,
+                            name=product.name,
                             description=product.description,
                             category=product.category,
                             stock=product.stock,

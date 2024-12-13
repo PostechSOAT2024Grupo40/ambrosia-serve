@@ -17,13 +17,13 @@ def test_order_creation_valid():
         order_datetime=datetime.now(),
         order_status=OrderStatus.PENDENTE,
         payment_condition=PaymentConditions.PIX)
-    order.add_product(OrderProduct(product=Product(sku="12345678",
+    order.add_product(OrderProduct(product=Product(name="Smoked Onions & Tomato Lamb",
                                                    description="Darth Burger",
                                                    category="Lanche",
                                                    stock=100,
                                                    price=10.0),
                                    quantity=4))
-    order.add_product(OrderProduct(product=Product(sku="09876542",
+    order.add_product(OrderProduct(product=Product(name="Pressure-Fried Parsnip & Pear Duck",
                                                    description="Burger Master",
                                                    category="Lanche",
                                                    stock=100,
@@ -43,13 +43,13 @@ def test_invalid_payment_condition():
             order_datetime=datetime.now(),
             order_status=OrderStatus.PENDENTE,
             payment_condition="INVALID")  # noqa
-        order.add_product(OrderProduct(product=Product(sku="12345678",
+        order.add_product(OrderProduct(product=Product(name="Gentle-Fried Lime & Ginger Ostrich",
                                                        description="Darth Burger",
                                                        category="Lanche",
                                                        stock=100,
                                                        price=10.0),
                                        quantity=4))
-        order.add_product(OrderProduct(product=Product(sku="09876542",
+        order.add_product(OrderProduct(product=Product(name="Smoked Fennel & Lime Chicken",
                                                        description="Burger Master",
                                                        category="Lanche",
                                                        stock=100,
@@ -67,13 +67,13 @@ def test_invalid_order_status():
             order_status="INVALID",  # noqa
             payment_condition=PaymentConditions.PIX)
 
-        order.add_product(OrderProduct(product=Product(sku="12345678",
+        order.add_product(OrderProduct(product=Product(name="Cooked Sweet & Spicy Pheasant",
                                                        description="Darth Burger",
                                                        category="Lanche",
                                                        stock=100,
                                                        price=10.0),
                                        quantity=4))
-        order.add_product(OrderProduct(product=Product(sku="09876542",
+        order.add_product(OrderProduct(product=Product(name="Poached Nuts & Pigeon",
                                                        description="Burger Master",
                                                        category="Lanche",
                                                        stock=100,
@@ -85,7 +85,7 @@ def test_invalid_order_status():
 
 def test_zero_product_quantity():
     with pytest.raises(OrderProductDomainException) as exc_info:
-        OrderProduct(product=Product(sku="09876542",
+        OrderProduct(product=Product(name="Tea-Smoked Basil & Lime Mutton",
                                      description="Burger Master",
                                      category="Lanche",
                                      stock=100,
@@ -96,7 +96,7 @@ def test_zero_product_quantity():
 
 def test_negative_product_quantity():
     with pytest.raises(OrderProductDomainException) as exc_info:
-        OrderProduct(product=Product(sku="09876542",
+        OrderProduct(product=Product(name="Pan-Fried Rice & Pigeon",
                                      description="Burger Master",
                                      category="Lanche",
                                      stock=100,

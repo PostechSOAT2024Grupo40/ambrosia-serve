@@ -16,7 +16,7 @@ class JsonProductPresenter(IProductPresenter):
             return {}
         return {
             "id": p.id,
-            "sku": p.sku,
+            "name": p.name,
             "description": p.description,
             "category": p.category,
             "stock": p.stock,

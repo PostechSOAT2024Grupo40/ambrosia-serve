@@ -6,7 +6,7 @@ from src.cart.domain.enums.paymentConditions import PaymentConditions
 
 
 class OrderProductDto(BaseModel):
-    product_sku: str
+    product_id: str
     quantity: int
     observation: Optional[str] = ''
 

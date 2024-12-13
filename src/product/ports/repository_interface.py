@@ -9,7 +9,7 @@ class IProductRepository(ABC):
         ...
 
     @abstractmethod
-    def filter_by_sku(self, sku: str) -> Any:
+    def filter_by_id(self, product_id: str) -> Any:
         ...
 
     @abstractmethod
@@ -17,5 +17,9 @@ class IProductRepository(ABC):
         ...
 
     @abstractmethod
-    def delete(self, sku: str):
+    def delete(self, product_id: str):
+        ...
+
+    @abstractmethod
+    def find_by_name(self, name: str) -> Any:
         ...

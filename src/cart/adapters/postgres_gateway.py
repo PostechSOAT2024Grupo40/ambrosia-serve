@@ -43,7 +43,7 @@ class PostgreSqlOrderGateway(ICartGateway):
                 'status': order.order_status.value,
                 'payment_condition': condition.name,
                 'products': [{'id': p.id,
-                              'product_id': p.product.sku,  # sku
+                              'name': p.product.name,
                               'quantity': p.quantity,
                               'observation': p.observation} for p in order.products]
             })

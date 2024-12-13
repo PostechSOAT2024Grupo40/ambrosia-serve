@@ -4,7 +4,7 @@ from src.api.presentation.shared.enums.categories import Categories
 
 
 class CreateProductRequestDto(BaseModel):
-    sku: str
+    name: str
     description: str
     price: float
     stock: int

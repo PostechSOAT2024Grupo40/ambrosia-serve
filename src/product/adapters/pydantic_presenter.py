@@ -16,7 +16,7 @@ class PydanticProductPresenter(IProductPresenter):
         if not p:
             return {}
         return ProductResponseDto(id=p.id,
-                                  sku=p.sku,
+                                  name=p.name,
                                   description=p.description,
                                   category=p.category,
                                   stock=int(p.stock),

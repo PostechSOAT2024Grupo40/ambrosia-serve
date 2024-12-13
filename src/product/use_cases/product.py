@@ -10,11 +10,11 @@ class ProductUseCase:
 
     @staticmethod
     def create_new_product(request_data: Dict, gateway: IProductGateway):
-        if ProductUseCase.get_product_by_sku(sku=request_data['sku'], gateway=gateway):
-            raise ProductExistsError(product=request_data['sku'])
+        if ProductUseCase.get_product_by_name(request_data['name'], gateway):
+            raise ProductExistsError(f"Produto {request_data['name']} ja existe")
 
         product = Product(
-            sku=request_data['sku'],
+            name=request_data['name'],
             description=request_data['description'],
             category=request_data['category'],
             price=request_data['price'],
@@ -23,22 +23,21 @@ class ProductUseCase:
         return gateway.create_update_product(product)
 
     @staticmethod
-    def get_product_by_sku(sku: str, gateway: IProductGateway) -> Optional[Product]:
-        return gateway.get_product_by_sku(sku)
+    def get_product_by_id(product_id: str, gateway: IProductGateway) -> Optional[Product]:
+        return gateway.get_product_by_id(product_id=product_id)
 
     @staticmethod
-    def update_product(sku: str, request_data: Dict, gateway: IProductGateway):
-        if not ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway):
-            raise ProductNotFoundError(product=sku)
+    def update_product(product_id: str, request_data: Dict, gateway: IProductGateway):
+        if not ProductUseCase.get_product_by_id(product_id=product_id, gateway=gateway):
+            raise ProductNotFoundError(product=product_id)
 
         product = Product(
-            sku=request_data['sku'],
+            name=request_data['name'],
             description=request_data['description'],
             category=request_data['category'],
             price=request_data['price'],
             stock=request_data['stock'])
 
-        product.sku = request_data['description']
         product.description = request_data['description']
         product.category = request_data['category']
         product.price = request_data['price']
@@ -53,9 +52,13 @@ class ProductUseCase:
         return gateway.get_products()
 
     @staticmethod
-    def delete_product(sku: str, gateway: IProductGateway):
-        product_ = ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway)
+    def delete_product(product_id: str, gateway: IProductGateway):
+        product_ = ProductUseCase.get_product_by_id(product_id=product_id, gateway=gateway)
         if not product_:
-            raise ProductNotFoundError(product=sku)
+            raise ProductNotFoundError(product=product_id)
 
-        gateway.delete_product(sku)
+        gateway.delete_product(product_id)
+
+    @staticmethod
+    def get_product_by_name(product_name: str, gateway: IProductGateway) -> Optional[Product]:
+        return gateway.get_product_by_name(product_name=product_name)

@@ -4,14 +4,14 @@ from src.product.domain.validators.product_validator import ProductValidator
 
 class Product:
     def __init__(self,
-                 sku: str,
+                 name: str,
                  description: str,
                  category: str,
                  price: float,
                  stock: int,
                  _id: int = generate_id()):
         self._id = _id
-        self.sku = sku
+        self.name = name
         self.description = description
         self.category = category
         self.stock = stock
@@ -19,12 +19,12 @@ class Product:
 
         ProductValidator.validate(product=self)
 
-    def __hash__(self):
-        return hash(self.sku)
-
-    def __eq__(self, other):
-        return self.sku == other.sku
-
     @property
     def id(self):
         return self._id
+
+    def __hash__(self):
+        return hash(self._id)
+
+    def __eq__(self, other: 'Product'):
+        return self._id == other.id

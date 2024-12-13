@@ -9,7 +9,7 @@ from src.product.adapters.postgres_gateway import PostgreSqlProductGateway
 def mock_uow():
     uow = MagicMock()
     uow.repository.get_all = MagicMock()
-    uow.repository.filter_by_sku = MagicMock()
+    uow.repository.filter_by_id = MagicMock()
     uow.repository.insert_update = MagicMock()
     uow.repository.delete = MagicMock()
     uow.commit = MagicMock()

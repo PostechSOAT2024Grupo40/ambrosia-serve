@@ -13,7 +13,7 @@ class IProductGateway(ABC):
         ...
 
     @abstractmethod
-    def get_product_by_sku(self, sku: str) -> Product:
+    def get_product_by_id(self, product_id: str) -> Product:
         ...
 
     @abstractmethod
@@ -21,5 +21,8 @@ class IProductGateway(ABC):
         ...
 
     @abstractmethod
-    def delete_product(self, sku: str) -> None:
+    def delete_product(self, product_id: str) -> None:
+        ...
+    @abstractmethod
+    def get_product_by_name(self, product_name:str):
         ...

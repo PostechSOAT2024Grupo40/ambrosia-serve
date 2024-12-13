@@ -29,24 +29,24 @@ class ProductController:
         return presenter.present(products)
 
     @staticmethod
-    def get_product_by_id(sku: str):
+    def get_product_by_id(product_id: str):
         uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
-        product = ProductUseCase.get_product_by_sku(sku=sku, gateway=gateway)
+        product = ProductUseCase.get_product_by_id(product_id=product_id, gateway=gateway)
         return presenter.present(product)
 
     @staticmethod
-    def update_product(sku: str, request_data: Dict):
+    def update_product(product_id: str, request_data: Dict):
         uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
         presenter: IProductPresenter = PydanticProductPresenter()
-        product = ProductUseCase.update_product(sku=sku, request_data=request_data, gateway=gateway)
+        product = ProductUseCase.update_product(product_id=product_id, request_data=request_data, gateway=gateway)
         return presenter.present(product)
 
     @staticmethod
-    def delete_product(sku: str):
+    def delete_product(product_id: str):
         uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IProductGateway = PostgreSqlProductGateway(uow)
-        ProductUseCase.delete_product(sku=sku, gateway=gateway)
+        ProductUseCase.delete_product(product_id=product_id, gateway=gateway)
         return True
