@@ -1,4 +1,4 @@
-from typing import Dict, Any, Sequence, cast, Optional
+from typing import Dict, Any, Sequence, Optional
 
 from sqlalchemy import select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
@@ -29,9 +29,8 @@ class PostgreSqlProductRepository(IProductRepository):
         return result[0]
 
     def filter_by_id(self, product_id: str) -> Optional[Row]:
-        stmt = select(ProductTable).where(
-            cast("ColumnElement[bool]", ProductTable.id == product_id)
-        )
+        stmt = select(ProductTable).where(ProductTable.id == product_id)
+
         result = self.session.execute(stmt).first()
         if not result:
             return
@@ -47,7 +46,6 @@ class PostgreSqlProductRepository(IProductRepository):
         self.session.execute(stmt)
 
     def delete(self, product_id: str):
-        stmt = delete(ProductTable).where(
-            cast("ColumnElement[bool]", ProductTable.id == product_id)
-        )
+        stmt = delete(ProductTable).where(ProductTable.id == product_id)
+
         self.session.execute(stmt)
