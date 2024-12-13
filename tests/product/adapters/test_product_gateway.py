@@ -39,7 +39,7 @@ def test_get_product_by_id(gateway, mock_uow):
 
     assert product is not None
     assert product.name == 'sku1'
-    mock_uow.repository.filter_by_id.assert_called_once_with('sku1')
+    mock_uow.repository.filter_by_id.assert_called_once_with('id')
 
 
 def test_create_update_product(gateway, mock_uow):
