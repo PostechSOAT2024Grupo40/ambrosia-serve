@@ -18,10 +18,8 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "psycopg2-binary" },
     { name = "pytest" },
     { name = "ruff" },
-    { name = "sqlalchemy" },
     { name = "testcontainers" },
 ]
 
@@ -35,10 +33,8 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "psycopg2-binary", specifier = "==2.9.9" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "ruff", specifier = ">=0.6.7" },
-    { name = "sqlalchemy", specifier = "==2.0.35" },
     { name = "testcontainers", extras = ["postgres"], specifier = ">=4.8.2" },
 ]
 
