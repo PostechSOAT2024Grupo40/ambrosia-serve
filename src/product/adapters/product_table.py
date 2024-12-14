@@ -1,6 +1,7 @@
+from datetime import datetime
 from typing import Any
 
-from sqlalchemy import DateTime
+
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 
@@ -17,8 +18,8 @@ class ProductTable(Base):
     stock: Mapped[int]
     category: Mapped[str]
     image: Mapped[str]
-    created_at: Mapped[DateTime] = mapped_column(default=now())
-    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
+    created_at: Mapped[datetime] = mapped_column(default=now())
+    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
