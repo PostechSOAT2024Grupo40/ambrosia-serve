@@ -38,11 +38,15 @@ jobs:
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         with:
           images: $ECR_REGISTRY/${{ inputs.IMAGE_NAME }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         with:
           tags: |
             ${{ inputs.ECR_REGISTRY }}/${{ inputs.IMAGE_NAME }}:latest

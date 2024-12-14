@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ambrosia-container
-          image: rodrigodossantosfelix/ambrosia-serve:latest
+          image: 851725225519.dkr.ecr.us-east-1.amazonaws.com/ambrosia-serve:latest
           ports:
             - containerPort: 80
           env:
