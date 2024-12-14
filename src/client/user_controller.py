@@ -6,7 +6,11 @@ from src.client.adapters.pydantic_presenter import PydanticClientPresenter
 from src.client.ports.unit_of_work_interface import IClientUnitOfWork
 from src.client.ports.user_gateway import IUserGateway
 from src.client.ports.users_presenter import IUserPresenter
-from src.client.use_cases.user import UsersUseCase
+from src.client.use_cases.create_use import CreateUserUseCase
+from src.client.use_cases.delete_user import DeleteUserUseCase
+from src.client.use_cases.get_all_users import GetAllUsersUseCase
+from src.client.use_cases.get_user_by_cpf import GetUserByCpfUseCase
+from src.client.use_cases.update_user import UpdateUserUseCase
 from src.shared.postgresql_session_factory import postgresql_session_factory
 
 
@@ -17,7 +21,8 @@ class UserController:
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
         presenter: IUserPresenter = PydanticClientPresenter()
-        user = UsersUseCase.create_new_user(request_data=request_data, gateway=gateway)
+        create_user_usecase = CreateUserUseCase(gateway=gateway)
+        user = create_user_usecase.execute(request_data=request_data)
         return presenter.present(user)
 
     @staticmethod
@@ -25,7 +30,8 @@ class UserController:
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
         presenter: IUserPresenter = PydanticClientPresenter()
-        users = UsersUseCase.get_users(gateway=gateway)
+        get_all_uses_usecase = GetAllUsersUseCase(gateway=gateway)
+        users = get_all_uses_usecase.execute()
         return presenter.present(users)
 
     @staticmethod
@@ -33,7 +39,8 @@ class UserController:
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
         presenter: IUserPresenter = PydanticClientPresenter()
-        user = UsersUseCase.get_user_by_cpf(cpf=cpf, gateway=gateway)
+        get_user_by_cpf_usecase = GetUserByCpfUseCase(gateway=gateway)
+        user = get_user_by_cpf_usecase.execute(cpf=cpf)
         return presenter.present(user)
 
     @staticmethod
@@ -41,12 +48,14 @@ class UserController:
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
         presenter: IUserPresenter = PydanticClientPresenter()
-        user = UsersUseCase.update_user(request_data=request_data, gateway=gateway)
+        update_user_usecase = UpdateUserUseCase(gateway=gateway)
+        user = update_user_usecase.execute(request_data=request_data)
         return presenter.present(user)
 
     @staticmethod
     def delete_user(user_id: int):
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
-        UsersUseCase.delete_user(user_id=user_id, gateway=gateway)
+        delete_user_usecase = DeleteUserUseCase(gateway=gateway)
+        delete_user_usecase.execute(user_id=user_id)
         return True
