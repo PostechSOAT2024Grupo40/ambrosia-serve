@@ -46,13 +46,13 @@ class PostgreSqlClientGateway(IUserGateway):
             self.uow.commit()
             return user
 
-    def delete_user(self, user_id: int) -> bool:
+    def delete_user(self, user_id: str) -> bool:
         with self.uow:
             self.uow.repository.delete_user(user_id)
             self.uow.commit()
             return True
 
-    def get_user_by_id(self, user_id: int) -> User:
+    def get_user_by_id(self, user_id: str) -> User:
         with self.uow:
             user = self.uow.repository.get_user_by_id(user_id)
             return self.build_user_entity(user)
