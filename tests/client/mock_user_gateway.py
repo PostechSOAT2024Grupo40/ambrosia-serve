@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Optional
 
 from src.client.domain.entities.user import User
 from src.client.exceptions import UserExistsError, UserNotFoundError
@@ -7,8 +7,8 @@ from src.client.ports.user_gateway import IUserGateway
 
 class MockUserGateway(IUserGateway):
     def __init__(self):
-        self.users_by_cpf: Dict[str, User] = {}
-        self.users_by_id: Dict[str, User] = {}
+        self.users_by_cpf: dict[str, User] = {}
+        self.users_by_id: dict[str, User] = {}
 
     def get_users(self) -> list[User]:
         return list(self.users_by_id.values())
