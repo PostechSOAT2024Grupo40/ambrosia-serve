@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 
 
-EXPOSE 8000
+EXPOSE 80
 
 ENTRYPOINT []
-CMD ["fastapi", "run", "--workers", "4", "src/api/presentation/http/http.py"]
+CMD ["fastapi", "run", "--workers", "4", "--port", "80",  "src/api/presentation/http/http.py"]
