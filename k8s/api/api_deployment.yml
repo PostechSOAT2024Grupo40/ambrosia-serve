@@ -20,7 +20,7 @@ spec:
         - name: ambrosia-container
           image: rodrigodossantosfelix/ambrosia-serve:latest
           ports:
-            - containerPort: 8000
+            - containerPort: 80
           env:
             - name: POSTGRES_HOST
               value: "postgres-service"
@@ -41,19 +41,19 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 80
             initialDelaySeconds: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 80
             initialDelaySeconds: 30
             periodSeconds: 60
           startupProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: 80
             failureThreshold: 3
             periodSeconds: 10
             initialDelaySeconds: 60
