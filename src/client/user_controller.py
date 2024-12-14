@@ -53,7 +53,7 @@ class UserController:
         return presenter.present(user)
 
     @staticmethod
-    def delete_user(user_id: int):
+    def delete_user(user_id: str):
         uow: IClientUnitOfWork = ClientPostgreSqlUow(session_factory=postgresql_session_factory())
         gateway: IUserGateway = PostgreSqlClientGateway(uow)
         delete_user_usecase = DeleteUserUseCase(gateway=gateway)

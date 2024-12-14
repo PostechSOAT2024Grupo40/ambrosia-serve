@@ -25,9 +25,9 @@ class IClientRepository(ABC):
         ...
 
     @abstractmethod
-    def delete_user(self, user_id: int):
+    def delete_user(self, user_id: str):
         ...
 
     @abstractmethod
-    def get_user_by_id(self, user_id: int) -> Any:
+    def get_user_by_id(self, user_id: str) -> Any:
         ...

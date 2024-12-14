@@ -6,7 +6,7 @@ class DeleteUserUseCase:
     def __init__(self, gateway: IUserGateway):
         self.gateway = gateway
 
-    def execute(self, user_id: int) -> None:
+    def execute(self, user_id: str) -> None:
         user = self.gateway.get_user_by_id(user_id=user_id)
         if not user:
             raise UserNotFoundError(user=user_id)

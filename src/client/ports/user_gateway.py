@@ -29,9 +29,9 @@ class IUserGateway(ABC):
         ...
 
     @abstractmethod
-    def delete_user(self, user_id: int) -> bool:
+    def delete_user(self, user_id: str) -> bool:
         ...
 
     @abstractmethod
-    def get_user_by_id(self, user_id: int) -> Optional[User]:
+    def get_user_by_id(self, user_id: str) -> Optional[User]:
         ...
