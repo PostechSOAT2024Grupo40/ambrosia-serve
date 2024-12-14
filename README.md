@@ -378,3 +378,14 @@ kubectl apply -f infra/namespace.yml && kubectl apply -f infra/
 ```shell
 minikube service ambrosia-server
 ```
+
+
+## Para executar no EKS
+
+```shell
+aws eks update-kubeconfig --region us-east-1 --name ambrosia-serve-cluster
+```
+
+```shell
+kubectl get svc
+```
