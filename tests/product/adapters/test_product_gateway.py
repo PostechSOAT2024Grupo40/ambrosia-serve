@@ -43,7 +43,7 @@ def test_get_product_by_id(gateway, mock_uow):
 
 
 def test_create_update_product(gateway, mock_uow):
-    product = Product(_id=1, name='sku1', description='desc1', category='Bebida', price=100.0, stock=10)
+    product = Product(_id='1', name='sku1', description='desc1', category='Bebida', price=100.0, stock=10)
 
     updated_product = gateway.create_update_product(product)
 

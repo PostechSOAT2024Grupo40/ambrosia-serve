@@ -1,6 +1,8 @@
 import pytest
 
+from src.client.domain.entities.user import User
 from src.client.exceptions import UserExistsError, UserNotFoundError
+from tests.client.mock_user_gateway import MockUserGateway
 
 
 def test_create_new_user_success(mock_gateway, sample_user_data, create_user_usecase):
@@ -57,13 +59,20 @@ def test_get_user_by_cpf_not_found(mock_gateway, sample_user_data, get_user_by_c
     assert user is None
 
 
-def test_get_users(mock_gateway, sample_user_data, create_user_usecase, get_all_users_usecase):
-    create_user_usecase.execute(sample_user_data)
-    second_user_data = sample_user_data.copy()
-    second_user_data["cpf"] = "98765432100"
-    second_user_data["email"] = "jane.doe@example.com"
-    create_user_usecase.execute(second_user_data)
+def test_get_users(sample_user_data):
+    gateway = MockUserGateway()
 
-    users = get_all_users_usecase.execute()
+    user1 = User(_id="1", **sample_user_data)
+    user2 = User(_id="2",
+                 first_name="Jane",
+                 last_name="Doe",
+                 cpf="23456789012",
+                 email="jane@mail.com",
+                 password="123456123123")
+
+    gateway.create_user(user1)
+    gateway.create_user(user2)
+
+    users = gateway.get_users()
 
     assert len(users) == 2
