@@ -1,4 +1,5 @@
-from sqlalchemy import DateTime
+from datetime import datetime
+
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 
@@ -16,8 +17,8 @@ class ClientTable(Base):
     cpf: Mapped[str]
     email: Mapped[str]
     password: Mapped[str]
-    created_at: Mapped[DateTime] = mapped_column(default=now())
-    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
+    created_at: Mapped[datetime] = mapped_column(default=now())
+    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
