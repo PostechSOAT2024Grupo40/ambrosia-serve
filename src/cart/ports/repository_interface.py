@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any
+from typing import Any
 
 
 class IRepository(ABC):
@@ -13,7 +13,7 @@ class IRepository(ABC):
         ...
 
     @abstractmethod
-    def insert_update(self, values: Dict[str, Any]):
+    def insert_update(self, values: dict[str, Any]):
         ...
 
     @abstractmethod

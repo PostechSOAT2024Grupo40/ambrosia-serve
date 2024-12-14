@@ -1,4 +1,4 @@
-from typing import Dict, Any, Sequence, Optional
+from typing import Any, Sequence, Optional
 
 from sqlalchemy import select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
@@ -37,7 +37,7 @@ class PostgreSqlProductRepository(IProductRepository):
 
         return result[0]
 
-    def insert_update(self, values: Dict[str, Any]):
+    def insert_update(self, values: dict[str, Any]):
         stmt = insert(ProductTable).values(**values)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ProductTable.id],
