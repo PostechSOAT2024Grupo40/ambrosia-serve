@@ -70,11 +70,11 @@ class PostgreSqlClientRepository(IClientRepository):
         )
         self.session.execute(stmt)
 
-    def delete_user(self, user_id: int):
+    def delete_user(self, user_id: str):
         stmt = delete(ClientTable).where(ClientTable.id == user_id)
         self.session.execute(stmt)
 
-    def get_user_by_id(self, user_id: int) -> Optional[Row]:
+    def get_user_by_id(self, user_id: str) -> Optional[Row]:
         stmt = select(ClientTable.id,
                       ClientTable.first_name,
                       ClientTable.last_name,
