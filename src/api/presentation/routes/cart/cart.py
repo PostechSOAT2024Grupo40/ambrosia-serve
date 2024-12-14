@@ -1,4 +1,3 @@
-from typing import List
 
 from fastapi import APIRouter, HTTPException
 from loguru import logger
@@ -24,7 +23,7 @@ async def create_order(order_request: CreateOrderRequestDto) -> OrderResponseDto
 
 
 @router.get("/api/v1/orders")
-async def get_all_orders() -> List[OrderResponseDto]:
+async def get_all_orders() -> list[OrderResponseDto]:
     try:
         return CartController.get_orders()
     except ValidationError as pydantic_exc:

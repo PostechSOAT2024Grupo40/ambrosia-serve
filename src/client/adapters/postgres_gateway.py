@@ -1,4 +1,3 @@
-from typing import List
 
 from src.client.domain.entities.user import User
 from src.client.ports.unit_of_work_interface import IClientUnitOfWork
@@ -10,7 +9,7 @@ class PostgreSqlClientGateway(IUserGateway):
         super().__init__()
         self.uow = uow
 
-    def get_users(self) -> List[User]:
+    def get_users(self) -> list[User]:
         with self.uow:
             users = self.uow.repository.get_users()
             return [self.build_user_entity(u) for u in users]

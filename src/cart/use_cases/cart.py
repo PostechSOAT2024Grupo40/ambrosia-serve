@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict
 
 from src.cart.domain.entities.order import Order
 from src.cart.domain.entities.order_product import OrderProduct
@@ -41,7 +41,7 @@ class CartUseCase:
         return cart_gateway.create_update_order(order)
 
     @staticmethod
-    def build_products_required_list(product_gateway: IProductGateway, products: List[Dict]):
+    def build_products_required_list(product_gateway: IProductGateway, products: list[Dict]):
         products_required = []
         for product_required in products:
             product_id = product_required['product_id']
@@ -62,7 +62,7 @@ class CartUseCase:
     def get_all_orders(gateway: ICartGateway, product_gateway: IProductGateway):
         orders: list[Order] = gateway.get_orders()
         for order in orders:
-            order_products: List[dict] = gateway.get_order_products(order_id=order.id)
+            order_products: list[dict] = gateway.get_order_products(order_id=order.id)
             for row in order_products:
                 product = product_gateway.get_product_by_id(row['product_id'])
                 order.add_product(

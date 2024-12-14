@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
+from typing import Any
 
 from src.cart.domain.entities.order import Order
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
@@ -9,7 +9,7 @@ class ICartGateway(ABC):
     uow: ICartUnitOfWork
 
     @abstractmethod
-    def get_orders(self) -> List[Order]:
+    def get_orders(self) -> list[Order]:
         ...
 
     @abstractmethod
@@ -25,5 +25,5 @@ class ICartGateway(ABC):
         ...
 
     @abstractmethod
-    def get_order_products(self, order_id) -> List[Any]:
+    def get_order_products(self, order_id) -> list[Any]:
         ...

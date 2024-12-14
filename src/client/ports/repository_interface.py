@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
+from typing import Any
 
 
 class IClientRepository(ABC):
 
     @abstractmethod
-    def get_users(self) -> List[Any]:
+    def get_users(self) -> list[Any]:
         ...
 
     @abstractmethod

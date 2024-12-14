@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 
 class IProductRepository(ABC):
 
     @abstractmethod
-    def get_all(self) -> List[Any]:
+    def get_all(self) -> list[Any]:
         ...
 
     @abstractmethod

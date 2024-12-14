@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from sqlalchemy import Row
 
@@ -14,9 +14,9 @@ class PostgreSqlOrderGateway(ICartGateway):
         super().__init__()
         self.uow = uow
 
-    def get_order_products(self, order_id) -> List[dict]:
+    def get_order_products(self, order_id) -> list[dict]:
         with self.uow:
-            order_products: List[Row] = self.uow.repository.get_order_products(order_id)
+            order_products: list[Row] = self.uow.repository.get_order_products(order_id)
             return [{
                 'id': p.id,
                 'product_id': p.product_id,
@@ -24,9 +24,9 @@ class PostgreSqlOrderGateway(ICartGateway):
                 'observation': p.observation
             } for p in order_products]
 
-    def get_orders(self) -> List[Order]:
+    def get_orders(self) -> list[Order]:
         with self.uow:
-            orders: Optional[List[Row]] = self.uow.repository.get_all()
+            orders: Optional[list[Row]] = self.uow.repository.get_all()
             return [self.build_order_entity(o) for o in orders]
 
     def get_order_by_id(self, order_id: str) -> Order:

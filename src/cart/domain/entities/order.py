@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 
 from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
@@ -21,7 +20,7 @@ class Order:
         self.order_datetime = order_datetime
         self.order_status = order_status
         self.payment_condition = payment_condition
-        self.products: List[OrderProduct] = []
+        self.products: list[OrderProduct] = []
 
         OrderValidator.validate(order=self)
 

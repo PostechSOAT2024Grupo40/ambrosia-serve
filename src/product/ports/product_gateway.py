@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 from src.product.domain.entities.product import Product
 from src.product.ports.unit_of_work_interface import IProductUnitOfWork
@@ -9,7 +8,7 @@ class IProductGateway(ABC):
     uow: IProductUnitOfWork
 
     @abstractmethod
-    def get_products(self) -> List[Product]:
+    def get_products(self) -> list[Product]:
         ...
 
     @abstractmethod

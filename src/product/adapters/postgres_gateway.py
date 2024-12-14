@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from sqlalchemy import Row
 
@@ -13,7 +13,7 @@ class PostgreSqlProductGateway(IProductGateway):
         super().__init__()
         self.uow = uow
 
-    def get_products(self) -> List[Product]:
+    def get_products(self) -> list[Product]:
         with self.uow:
             products = self.uow.repository.get_all()
             return [self.build_product_entity(p) for p in products]
