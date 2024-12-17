@@ -4,14 +4,15 @@ from src.product.domain.validators.product_validator import ProductValidator
 
 class Product:
     def __init__(self,
+
                  name: str,
                  description: str,
                  category: str,
                  price: float,
                  stock: int,
                  image: str = "",
-                 _id: str = generate_id()):
-        self._id = _id
+                 _id: str = None):
+        self._id = _id or generate_id()
         self.name = name
         self.description = description
         self.category = category
