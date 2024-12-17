@@ -9,6 +9,7 @@ class Product:
                  category: str,
                  price: float,
                  stock: int,
+                 image: str = "",
                  _id: str = generate_id()):
         self._id = _id
         self.name = name
@@ -16,6 +17,7 @@ class Product:
         self.category = category
         self.stock = stock
         self.price = price
+        self.image = image
 
         ProductValidator.validate(product=self)
 
