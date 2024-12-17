@@ -5,6 +5,7 @@ from pydantic import ValidationError
 
 from src.api.presentation.shared.dtos.create_order_request_dto import CreateOrderRequestDto
 from src.api.presentation.shared.dtos.order_response_dto import OrderResponseDto
+from src.api.presentation.shared.enums.status import OrderStatus
 from src.cart.cart_controller import CartController
 
 router = APIRouter()
@@ -45,9 +46,9 @@ async def get_order_by_id(id: str) -> OrderResponseDto:
 
 
 @router.put("/api/v1/order/{id}/status")
-async def update_order_status(id: str, new_status: str) -> OrderResponseDto:
+async def update_order_status(id: str, new_status: OrderStatus) -> OrderResponseDto:
     try:
-        return CartController.update_order_status(order_id=id, new_status=new_status)
+        return CartController.update_order_status(order_id=id, new_status=new_status.value)
     except ValidationError as pydantic_exc:
         raise HTTPException(status_code=400, detail=pydantic_exc.errors())
     except Exception as exc:
