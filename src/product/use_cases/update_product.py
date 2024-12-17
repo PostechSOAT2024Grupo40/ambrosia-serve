@@ -15,6 +15,7 @@ class UpdateProductUseCase:
             raise ProductNotFoundError(product=product_id)
 
         product = Product(
+            _id=product_id,
             name=request_data['name'],
             description=request_data['description'],
             category=request_data['category'],
