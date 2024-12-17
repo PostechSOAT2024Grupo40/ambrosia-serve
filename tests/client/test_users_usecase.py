@@ -54,9 +54,9 @@ def test_get_user_by_cpf(mock_gateway, sample_user_data, create_user_usecase, ge
 
 
 def test_get_user_by_cpf_not_found(mock_gateway, sample_user_data, get_user_by_cpf_usecase):
-    user = get_user_by_cpf_usecase.execute("nonexistentcpf")
 
-    assert user is None
+    with pytest.raises(UserNotFoundError):
+        get_user_by_cpf_usecase.execute("nonexistentcpf")
 
 
 def test_get_users(sample_user_data):
