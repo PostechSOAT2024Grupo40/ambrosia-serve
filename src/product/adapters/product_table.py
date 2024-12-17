@@ -1,11 +1,12 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
-
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy.sql.functions import now
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
 
 
 class ProductTable(Base):
@@ -17,7 +18,7 @@ class ProductTable(Base):
     price: Mapped[float]
     stock: Mapped[int]
     category: Mapped[str]
-    image: Mapped[str]
+    image: Mapped[Optional[str]]
     created_at: Mapped[datetime] = mapped_column(default=now())
     updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
