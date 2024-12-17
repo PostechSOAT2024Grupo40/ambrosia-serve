@@ -9,12 +9,13 @@ from src.cart.domain.validators.order_validator import OrderValidator
 
 class Order:
     def __init__(self,
+
                  user: int,
                  order_datetime: datetime,
                  order_status: OrderStatus,
                  payment_condition: PaymentConditions,
-                 _id: str = generate_id()):
-        self._id = _id
+                 _id: str = None):
+        self._id = _id or generate_id()
         self.user = user
         self._total_order = 0.0
         self.order_datetime = order_datetime
