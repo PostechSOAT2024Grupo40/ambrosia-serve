@@ -63,21 +63,33 @@ class PostgreSqlRepository(IRepository):
         return results
 
     def insert_update(self, values: dict[str, Any]):
-        stmt_order = insert(OrderTable).values({key: values[key] for key in values if key != 'products'})
-        stmt_order = stmt_order.on_conflict_do_update(
-            index_elements=[OrderTable.id],
-            set_={key: values[key] for key in values if key != 'id' and key != 'products'}
-        )
-        self.session.execute(stmt_order)
+        """Realiza insert ou update (UPSERT) na tabela de pedidos e seus produtos."""
+        self._upsert_order(values)
+        self._upsert_order_products(values["id"], values.get("products", []))
 
-        for product in values['products']:
-            product['order_id'] = values['id']
-            stmt_product = insert(OrderProductTable).values(product)
-            stmt_product = stmt_product.on_conflict_do_update(
+    def _upsert_order(self, values: dict[str, Any]):
+        """Inserção ou atualização de um pedido."""
+        order_data = {key: values[key] for key in values if key != "products"}
+
+        stmt = insert(OrderTable).values(order_data)
+        stmt = stmt.on_conflict_do_update(
+            index_elements=[OrderTable.id],
+            set_={key: order_data[key] for key in order_data if key != "id"}
+        )
+        self.session.execute(stmt)
+
+    def _upsert_order_products(self, order_id: str, products: list[dict[str, Any]]):
+        """Inserção ou atualização dos produtos relacionados a um pedido."""
+        for product in products:
+            product_data = product.copy()
+            product_data["order_id"] = order_id
+
+            stmt = insert(OrderProductTable).values(product_data)
+            stmt = stmt.on_conflict_do_update(
                 index_elements=[OrderProductTable.id],
-                set_={key: product[key] for key in product if key != 'id'}
+                set_={key: product_data[key] for key in product_data if key != "id"}
             )
-            self.session.execute(stmt_product)
+            self.session.execute(stmt)
 
     def delete(self, order_id: str):
         stmt = delete(OrderTable).where(OrderTable.id == order_id)

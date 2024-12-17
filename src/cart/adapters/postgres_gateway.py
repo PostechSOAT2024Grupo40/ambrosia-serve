@@ -29,9 +29,11 @@ class PostgreSqlOrderGateway(ICartGateway):
             orders: Optional[list[Row]] = self.uow.repository.get_all()
             return [self.build_order_entity(o) for o in orders]
 
-    def get_order_by_id(self, order_id: str) -> Order:
+    def get_order_by_id(self, order_id: str) -> Optional[Order]:
         with self.uow:
             order = self.uow.repository.filter_by_id(order_id)
+            if not order:
+                return
             return self.build_order_entity(order)
 
     def create_update_order(self, order: Order) -> Order:
@@ -42,8 +44,9 @@ class PostgreSqlOrderGateway(ICartGateway):
                 'user_id': order.user,
                 'status': order.order_status.value,
                 'payment_condition': condition.name,
+                'total': order.total_order,
                 'products': [{'id': p.id,
-                              'name': p.product.name,
+                              'product_id': p.product.id,
                               'quantity': p.quantity,
                               'observation': p.observation} for p in order.products]
             })
@@ -62,7 +65,7 @@ class PostgreSqlOrderGateway(ICartGateway):
 
         payment_condition = PaymentConditions[order.payment_condition]
 
-        return Order(_id=order.order_id,
+        return Order(_id=order.id,
                      user=order.user_id,
                      order_datetime=order.created_at,
                      order_status=order.status,
