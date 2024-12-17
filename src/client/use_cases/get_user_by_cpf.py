@@ -1,6 +1,7 @@
 from typing import Optional
 
 from src.client.domain.entities.user import User
+from src.client.exceptions import UserNotFoundError
 from src.client.ports.user_gateway import IUserGateway
 
 
@@ -9,4 +10,7 @@ class GetUserByCpfUseCase:
         self.gateway = gateway
 
     def execute(self, cpf: str) -> Optional[User]:
-        return self.gateway.get_user_by_cpf(cpf=cpf)
+        user = self.gateway.get_user_by_cpf(cpf=cpf)
+        if not user:
+            raise UserNotFoundError(cpf)
+        return user
