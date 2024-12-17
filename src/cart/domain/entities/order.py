@@ -9,7 +9,6 @@ from src.cart.domain.validators.order_validator import OrderValidator
 
 class Order:
     def __init__(self,
-
                  user: int,
                  order_datetime: datetime,
                  order_status: OrderStatus,
