@@ -5,7 +5,6 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from src.client.adapters.client_table import ClientTable
-
 from src.client.ports.repository_interface import IClientRepository
 
 
@@ -34,11 +33,11 @@ class PostgreSqlClientRepository(IClientRepository):
                       ClientTable.cpf,
                       ClientTable.email,
                       ClientTable.password).where(ClientTable.cpf == cpf)
-        results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).first()
+        results = self.session.execute(stmt).first()
         if not results:
             return
 
-        return results[0]
+        return results
 
     def get_user_by_email(self, email: str) -> Optional[Row]:
         stmt = select(ClientTable.id,
@@ -51,15 +50,10 @@ class PostgreSqlClientRepository(IClientRepository):
         if not results:
             return
 
-        return results[0]
+        return results
 
     def create_user(self, user: Dict):
-        stmt = insert(ClientTable.id,
-                      ClientTable.first_name,
-                      ClientTable.last_name,
-                      ClientTable.cpf,
-                      ClientTable.email,
-                      ClientTable.password).values(**user)
+        stmt = insert(ClientTable).values(**user)
         self.session.execute(stmt)
 
     def update_user(self, user: Dict):
@@ -85,4 +79,4 @@ class PostgreSqlClientRepository(IClientRepository):
         if not results:
             return
 
-        return results[0]
+        return results
