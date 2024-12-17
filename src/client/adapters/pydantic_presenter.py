@@ -1,4 +1,3 @@
-from typing import List
 
 from src.api.presentation.shared.dtos.client_response_dto import ClientResponseDto
 from src.client.domain.entities.user import User
@@ -6,7 +5,7 @@ from src.client.ports.users_presenter import IUserPresenter
 
 
 class PydanticClientPresenter(IUserPresenter):
-    def present(self, output: User | List[User]) -> ClientResponseDto | List[ClientResponseDto]:
+    def present(self, output: User | list[User]) -> ClientResponseDto | list[ClientResponseDto]:
         if isinstance(output, list):
             return [self.formater(user) for user in output]
         return self.formater(output)

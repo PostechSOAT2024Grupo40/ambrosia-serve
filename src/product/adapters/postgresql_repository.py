@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Sequence
+from typing import Any, Sequence, Optional
 
 from sqlalchemy import select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
@@ -13,23 +13,31 @@ class PostgreSqlProductRepository(IProductRepository):
         super().__init__()
         self.session = session
 
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> Sequence[Row]:
         stmt = select(ProductTable)
-        results: Sequence[Row[tuple[ProductTable]]] = self.session.execute(stmt).all()
+        results = self.session.execute(stmt).all()
         if not results:
             return []
 
-        return [row[0].to_dict() for row in results]
+        return results
 
-    def filter_by_sku(self, sku: str) -> Dict:
-        stmt = select(ProductTable).where(ProductTable.sku == sku)
+    def find_by_name(self, name: str) -> Optional[Row]:
+        stmt = select(ProductTable).where(ProductTable.name == name)
         result = self.session.execute(stmt).first()
         if not result:
-            return {}
+            return
+        return result[0]
 
-        return result[0].to_dict()
+    def filter_by_id(self, product_id: str) -> Optional[Row]:
+        stmt = select(ProductTable).where(ProductTable.id == product_id)
 
-    def insert_update(self, values: Dict[str, Any]):
+        result = self.session.execute(stmt).first()
+        if not result:
+            return
+
+        return result[0]
+
+    def insert_update(self, values: dict[str, Any]):
         stmt = insert(ProductTable).values(**values)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ProductTable.id],
@@ -37,6 +45,7 @@ class PostgreSqlProductRepository(IProductRepository):
         )
         self.session.execute(stmt)
 
-    def delete(self, sku: str):
-        stmt = delete(ProductTable).where(ProductTable.sku == sku)
+    def delete(self, product_id: str):
+        stmt = delete(ProductTable).where(ProductTable.id == product_id)
+
         self.session.execute(stmt)

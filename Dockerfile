@@ -15,7 +15,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project --no-dev
 
-COPY . /app
+COPY ./mock-payment-server /app/mock-payment-server
+COPY ./src /app/src
+COPY ./pyproject.toml /app
+COPY ./uv.lock /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
@@ -23,7 +26,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 
 
-EXPOSE 8000
+EXPOSE 80
 
 ENTRYPOINT []
-CMD ["fastapi", "run", "--workers", "4", "src/api/presentation/http/http.py"]
+CMD ["fastapi", "run", "--workers", "4", "--port", "80",  "src/api/presentation/http/http.py"]

@@ -26,7 +26,7 @@ class UserValidator:
     def _cpf_validator(user):
         if not user.cpf or not user.cpf.strip():
             raise ClientDomainException("CPF não pode ser vazio")
-        if re.match(r"[0-9]{11}", user.cpf) is None:
+        if re.match(r"\d{11}", user.cpf) is None:
             raise ClientDomainException("CPF inválido")
 
     @staticmethod

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 
 from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
@@ -14,15 +13,14 @@ class Order:
                  order_datetime: datetime,
                  order_status: OrderStatus,
                  payment_condition: PaymentConditions,
-                 products: List[OrderProduct],
-                 _id: str = generate_id()):
-        self._id = _id
+                 _id: str = None):
+        self._id = _id or generate_id()
         self.user = user
         self._total_order = 0.0
         self.order_datetime = order_datetime
         self.order_status = order_status
         self.payment_condition = payment_condition
-        self.products = products
+        self.products: list[OrderProduct] = []
 
         OrderValidator.validate(order=self)
 
@@ -35,6 +33,9 @@ class Order:
     @property
     def id(self):
         return self._id
+
+    def add_product(self, product: OrderProduct):
+        self.products.append(product)
 
     @property
     def total_order(self):

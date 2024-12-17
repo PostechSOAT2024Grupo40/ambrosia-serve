@@ -10,7 +10,7 @@ def test_user_valid():
                   cpf="66007637018",
                   email="j.silva@hotmail.com",
                   password="12345678")
-    assert result is not None
+    assert result
     assert result.cpf == "66007637018"
     assert result.email == "j.silva@hotmail.com"
     assert result.password == "12345678"
