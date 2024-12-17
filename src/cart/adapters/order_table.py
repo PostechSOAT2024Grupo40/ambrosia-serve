@@ -1,9 +1,11 @@
-from sqlalchemy import String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from datetime import datetime
+
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column, DeclarativeBase
 from sqlalchemy.sql.functions import now
 
 
-class Base:
+class Base(DeclarativeBase):
     pass
 
 
@@ -15,8 +17,8 @@ class OrderTable(Base):
     status: Mapped[int]
     payment_condition: Mapped[str]
     products: Mapped["OrderProductTable"] = relationship("OrderProductTable", back_populates="order")
-    created_at: Mapped[DateTime] = mapped_column(default=now())
-    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
+    created_at: Mapped[datetime] = mapped_column(default=now())
+    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -43,8 +45,8 @@ class OrderProductTable(Base):
     product_id: Mapped[str]
     quantity: Mapped[int]
     observation: Mapped[str]
-    created_at: Mapped[DateTime] = mapped_column(default=now())
-    updated_at: Mapped[DateTime] = mapped_column(default=now(), onupdate=now())
+    created_at: Mapped[datetime] = mapped_column(default=now())
+    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"))
     order = relationship("OrderTable", back_populates="products")
