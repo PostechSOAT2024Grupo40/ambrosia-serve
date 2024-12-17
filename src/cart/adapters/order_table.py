@@ -16,6 +16,7 @@ class OrderTable(Base):
     user_id: Mapped[str]
     status: Mapped[int]
     payment_condition: Mapped[str]
+    total: Mapped[float]
     products: Mapped["OrderProductTable"] = relationship("OrderProductTable", back_populates="order")
     created_at: Mapped[datetime] = mapped_column(default=now())
     updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
