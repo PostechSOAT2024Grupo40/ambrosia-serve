@@ -1,21 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import Any
 
 
 class IRepository(ABC):
 
     @abstractmethod
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> list[Any]:
         ...
 
     @abstractmethod
-    def filter_by_id(self, order_id: str) -> Dict:
+    def filter_by_id(self, order_id: str) -> Any:
         ...
 
     @abstractmethod
-    def insert_update(self, values: Dict[str, Any]):
+    def insert_update(self, values: dict[str, Any]):
         ...
 
     @abstractmethod
-    def delete(self, sku: str):
+    def delete(self, order_id: str):
+        ...
+
+    @abstractmethod
+    def get_order_products(self, order_id: str) -> list[Any]:
         ...

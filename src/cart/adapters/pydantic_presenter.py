@@ -1,4 +1,3 @@
-from typing import List
 
 from src.api.presentation.shared.dtos.order_response_dto import OrderResponseDto, OrderProductResponseDto
 from src.cart.domain.entities.order import Order
@@ -8,7 +7,7 @@ from src.cart.ports.cart_presenter import ICartPresenter
 
 class PydanticCartPresenter(ICartPresenter):
 
-    def present(self, output: Order | List[Order]) -> OrderResponseDto | List[OrderResponseDto]:
+    def present(self, output: Order | list[Order]) -> OrderResponseDto | list[OrderResponseDto]:
         if isinstance(output, list):
             return [self.formater(order) for order in output]
         return self.formater(output)

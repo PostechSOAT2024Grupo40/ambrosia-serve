@@ -1,21 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import Any
 
 
 class IProductRepository(ABC):
 
     @abstractmethod
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> list[Any]:
         ...
 
     @abstractmethod
-    def filter_by_sku(self, sku: str) -> Dict:
+    def filter_by_id(self, product_id: str) -> Any:
         ...
 
     @abstractmethod
-    def insert_update(self, values: Dict[str, Any]) -> Dict:
+    def insert_update(self, values: dict[str, Any]):
         ...
 
     @abstractmethod
-    def delete(self, sku: str) -> bool:
+    def delete(self, product_id: str):
+        ...
+
+    @abstractmethod
+    def find_by_name(self, name: str) -> Any:
         ...

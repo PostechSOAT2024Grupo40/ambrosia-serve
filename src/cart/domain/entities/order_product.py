@@ -4,8 +4,12 @@ from src.product.domain.entities.product import Product
 
 
 class OrderProduct:
-    def __init__(self, product: Product, quantity: int, observation: str = "", _id: str = generate_id()):
-        self._id = _id
+    def __init__(self,
+                 product: Product,
+                 quantity: int,
+                 observation: str = "",
+                 _id: str = None):
+        self._id = _id or generate_id()
         self.product = product
         self.quantity = quantity
         self.observation = observation.strip().lower()

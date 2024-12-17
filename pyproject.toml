@@ -22,7 +22,8 @@ dependencies = [
 [tool.uv]
 dev-dependencies = [
   "pytest>=8.3.3",
-  "ruff>=0.6.7"
+  "ruff>=0.6.7",
+  "testcontainers[postgres]>=4.8.2",
 ]
 
 [project.urls]

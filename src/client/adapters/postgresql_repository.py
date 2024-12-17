@@ -1,4 +1,4 @@
-from typing import Dict, List, Sequence
+from typing import Dict, Sequence, Optional
 
 from sqlalchemy import select, Row, delete
 from sqlalchemy.dialects.postgresql import insert
@@ -13,29 +13,44 @@ class PostgreSqlClientRepository(IClientRepository):
         super().__init__()
         self.session = session
 
-    def get_users(self) -> List[Dict]:
-        stmt = select(ClientTable)
-        results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).all()
+    def get_users(self) -> Optional[Sequence[Row[tuple]]]:
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password)
+        results = self.session.execute(stmt).all()
         if not results:
             return []
 
-        return [row[0].to_dict() for row in results]
+        return results
 
-    def get_user_by_cpf(self, cpf: str) -> Dict:
-        stmt = select(ClientTable).where(ClientTable.cpf == cpf)
-        results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).first()
+    def get_user_by_cpf(self, cpf: str) -> Optional[Row]:
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.cpf == cpf)
+        results = self.session.execute(stmt).first()
         if not results:
-            return {}
+            return
 
-        return results[0].to_dict()
+        return results
 
-    def get_user_by_email(self, email: str) -> Dict:
-        stmt = select(ClientTable).where(ClientTable.email == email)
-        results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).first()
+    def get_user_by_email(self, email: str) -> Optional[Row]:
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.email == email)
+        results = self.session.execute(stmt).first()
         if not results:
-            return {}
+            return
 
-        return results[0].to_dict()
+        return results
 
     def create_user(self, user: Dict):
         stmt = insert(ClientTable).values(**user)
@@ -49,14 +64,19 @@ class PostgreSqlClientRepository(IClientRepository):
         )
         self.session.execute(stmt)
 
-    def delete_user(self, user_id: int):
+    def delete_user(self, user_id: str):
         stmt = delete(ClientTable).where(ClientTable.id == user_id)
         self.session.execute(stmt)
 
-    def get_user_by_id(self, user_id: int) -> Dict:
-        stmt = select(ClientTable).where(ClientTable.id == user_id)
-        results: Sequence[Row[tuple[ClientTable]]] = self.session.execute(stmt).first()
+    def get_user_by_id(self, user_id: str) -> Optional[Row]:
+        stmt = select(ClientTable.id,
+                      ClientTable.first_name,
+                      ClientTable.last_name,
+                      ClientTable.cpf,
+                      ClientTable.email,
+                      ClientTable.password).where(ClientTable.id == user_id)
+        results = self.session.execute(stmt).first()
         if not results:
-            return {}
+            return
 
-        return results[0].to_dict()
+        return results

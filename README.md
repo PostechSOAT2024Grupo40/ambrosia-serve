@@ -3,7 +3,6 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2FPostechSOAT2024Grupo40%2Fambrosia-serve%2Frefs%2Fheads%2Fmain%2Fpyproject.toml)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/PostechSOAT2024Grupo40/ambrosia-serve)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/PostechSOAT2024Grupo40/ambrosia-serve)
-[![CI](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml/badge.svg)](https://github.com/PostechSOAT2024Grupo40/ambrosia-serve/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PostechSOAT2024Grupo40_ambrosia-serve&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PostechSOAT2024Grupo40_ambrosia-serve)
 
 # Ambrosia Serve by **_Grupo 40_**
@@ -308,47 +307,46 @@ uv pip sync requirements.txt
 
 ## Estrutura
 
-1. **Diagrama da implementação do servidor**
+**Diagrama da implementação do servidor**
 
 <p align="center">
   <img src="docs/architecture-diagram.png" />
 </p>
 
-2. **Diagrama da infra**
+**Diagrama da infra**
 <p align="center">
   <img src="docs/k8s.png" />
 </p>
 
 ## Executando
 
-Para executar o projeto localmente utilizando Docker, siga as seguintes etapas:
+Para executar a API localmente, siga as seguintes etapas:
 
 1. Clone o repositório:
 
 ```shell
-git clone git@github.com:PostechSOAT2024Grupo40/ambrosia-serve.git
-cd ambrosia-serve
+git clone git@github.com:PostechSOAT2024Grupo40/ambrosia-serve.git && cd ambrosia-serve
 ```
 
-2. Crie a infraestrutura kubernetes utilizando o [minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download), instale caso necessario:
+2. Crie um arquivo .env com os valores:
+
+```
+POSTGRES_DB=<Nome do banco de dados>
+POSTGRES_USER=<Nome de usuário>
+POSTGRES_HOST=<URL de acesso>
+POSTGRES_PORT=<Porta do banco de dados>
+POSTGRES_PASSWORD=<Senha de usuário>
+```
+
+3. Siga as etapas de [Requisitos](#requisitos)
+
+4. Inicie a aplicação:
 
 ```shell
-minikube start
+fastapi run --workers 4 src/api/presentation/http/http.py
 ```
 
-```shell
-kubectl apply -f infra/namespace.yml
-kubectl apply -f infra/
-```
-
-
-3. Conecte-se ao serviço `ambrosia-server`:
-
-```shell
-minikube service ambrosia-server
-```
-
-4. Acesse o endpoint de documentação `swagger` no navegador `http://<HOST>:30000/docs`
+5. Acesse o endpoint de documentação `swagger` no navegador `http://<HOST>:8000/docs`
 
 Os seguintes Status de Pedidos estão disponíveis:
 
@@ -360,4 +358,36 @@ Os seguintes Status de Pedidos estão disponíveis:
 | `CONCLUIDO`   | O Pedido foi concluído                           |
 | `CANCELADO`   | O Pedido foi cancelado                           |
 
+
+Para executar o projeto localmente utilizando Docker, siga as seguintes etapas:
+
+1. Crie a infraestrutura kubernetes utilizando
+   o [minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download),
+   instale
+   caso necessario:
+
+```shell
+minikube start
+```
+
+```shell
+kubectl apply -f infra/namespace.yml && kubectl apply -f infra/
+```
+
+2. Conecte-se ao serviço `ambrosia-server`:
+
+```shell
+minikube service ambrosia-server
+```
+
+
+## Para executar no EKS
+
+```shell
+aws eks update-kubeconfig --region us-east-1 --name ambrosia-serve-cluster
+```
+
+```shell
+kubectl get svc
+```
 

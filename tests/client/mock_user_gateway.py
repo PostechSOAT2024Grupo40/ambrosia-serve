@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import Optional
 
 from src.client.domain.entities.user import User
 from src.client.exceptions import UserExistsError, UserNotFoundError
@@ -7,10 +7,10 @@ from src.client.ports.user_gateway import IUserGateway
 
 class MockUserGateway(IUserGateway):
     def __init__(self):
-        self.users_by_cpf: Dict[str, User] = {}
-        self.users_by_id: Dict[str, User] = {}
+        self.users_by_cpf: dict[str, User] = {}
+        self.users_by_id: dict[str, User] = {}
 
-    def get_users(self) -> List[User]:
+    def get_users(self) -> list[User]:
         return list(self.users_by_id.values())
 
     def get_user_by_cpf(self, cpf: str) -> Optional[User]:
@@ -23,17 +23,17 @@ class MockUserGateway(IUserGateway):
         if user.cpf in self.users_by_cpf:
             raise UserExistsError(user=user.cpf)
         self.users_by_cpf[user.cpf] = user
-        self.users_by_id[user.cpf] = user
+        self.users_by_id[user.id] = user
         return user
 
     def update_user(self, user: User) -> User:
         if user.cpf not in self.users_by_cpf:
             raise UserNotFoundError(user=user.cpf)
         self.users_by_cpf[user.cpf] = user
-        self.users_by_id[user.cpf] = user
+        self.users_by_id[user.id] = user
         return user
 
-    def delete_user(self, user_id: int) -> None:
+    def delete_user(self, user_id: str) -> None:
         user = self.users_by_id.pop(str(user_id), None)
         if user:
             self.users_by_cpf.pop(user.cpf, None)

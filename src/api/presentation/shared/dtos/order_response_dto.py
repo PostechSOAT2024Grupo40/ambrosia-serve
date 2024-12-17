@@ -1,6 +1,8 @@
-from typing import Optional, List
+from typing import Optional
 
 from pydantic import BaseModel
+
+from src.api.presentation.shared.enums.status import OrderStatus
 
 
 class OrderProductResponseDto(BaseModel):
@@ -13,6 +15,6 @@ class OrderResponseDto(BaseModel):
     id: str
     user: str
     total_order: float
-    order_status: str
+    order_status: OrderStatus
     payment_condition: str
-    products: List[OrderProductResponseDto]
+    products: list[OrderProductResponseDto]

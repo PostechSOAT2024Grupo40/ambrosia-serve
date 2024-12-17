@@ -8,7 +8,7 @@ from pydantic import BaseModel
 fake_db = {}
 
 
-async def set_webhook_url_for_user_payment(user_id: int, webhook_url: str):
+async def set_webhook_url_for_user_payment(user_id: str, webhook_url: str):
     fake_db[user_id] = webhook_url
 
 
@@ -45,7 +45,7 @@ async def payment_webhook(paymeny_data: Payment):
 
 @app.post("/set-webhook")
 async def set_webhook(
-    user_id: int,
+    user_id: str,
     webhook_url: Annotated[
         str,
         Body(
@@ -60,7 +60,6 @@ async def set_webhook(
 
 @app.post("/user-payment")
 async def user_paymeny(paymeny_info: Payment):
-    result = "error"
     if paymeny_info.user_amount > paymeny_info.total_sale_amount:
         result = "ok"
     else:
