@@ -1,3 +1,4 @@
+from src.cart.exceptions import OrderNotFoundError
 from src.cart.ports.cart_gateway import ICartGateway
 
 
@@ -6,4 +7,7 @@ class GetOrderByIdUseCase:
         self.gateway = gateway
 
     def execute(self, order_id: str):
-        return self.gateway.get_order_by_id(order_id=order_id)
+        order = self.gateway.get_order_by_id(order_id=order_id)
+        if not order:
+            raise OrderNotFoundError(order=order_id)
+        return order
