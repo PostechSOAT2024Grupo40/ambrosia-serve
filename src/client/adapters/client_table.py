@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy.sql.functions import now
 
 
-class Base:
+class Base(DeclarativeBase):
     pass
 
 
