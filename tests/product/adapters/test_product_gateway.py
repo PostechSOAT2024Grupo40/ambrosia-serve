@@ -1,4 +1,3 @@
-import math
 from dataclasses import dataclass
 
 from src.product.domain.entities.product import Product
