@@ -4,12 +4,14 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column, DeclarativeBase
 from sqlalchemy.sql.functions import now
 
+from src.cart.adapters.AuditMixin import AuditMixin
+
 
 class Base(DeclarativeBase):
     pass
 
 
-class OrderTable(Base):
+class OrderTable(Base, AuditMixin):
     __tablename__ = "orders"
 
     id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False, index=True)
@@ -18,8 +20,6 @@ class OrderTable(Base):
     payment_condition: Mapped[str]
     total: Mapped[float]
     products: Mapped["OrderProductTable"] = relationship("OrderProductTable", back_populates="order")
-    created_at: Mapped[datetime] = mapped_column(default=now())
-    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

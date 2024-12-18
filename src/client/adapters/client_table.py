@@ -1,14 +1,13 @@
-from datetime import datetime
-
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-from sqlalchemy.sql.functions import now
+
+from src.client.adapters.AuditMixin import AuditMixin
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class ClientTable(Base):
+class ClientTable(Base, AuditMixin):
     __tablename__ = "clients"
 
     id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
@@ -17,8 +16,6 @@ class ClientTable(Base):
     cpf: Mapped[str]
     email: Mapped[str]
     password: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=now())
-    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
