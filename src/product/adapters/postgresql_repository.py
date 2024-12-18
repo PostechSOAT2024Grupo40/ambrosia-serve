@@ -38,7 +38,7 @@ class PostgreSqlProductRepository(IProductRepository):
         result = self.session.execute(stmt).first()
         if not result:
             return
-        return result[0]
+        return result
 
     def filter_by_id(self, product_id: str) -> Optional[Row]:
         stmt = select(*PRODUCTS_COLS).join(ProductTable.category).where(ProductTable.id == product_id)
@@ -47,12 +47,13 @@ class PostgreSqlProductRepository(IProductRepository):
         if not result:
             return
 
-        return result[0]
+        return result
 
     def insert_update(self, values: dict[str, Any]):
         category = self.create_or_get_category(values['category'])
 
         values['category_id'] = category.id
+        del values['category']
         stmt = insert(ProductTable).values(**values)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ProductTable.id],
@@ -62,15 +63,15 @@ class PostgreSqlProductRepository(IProductRepository):
         self.session.commit()
 
     def create_or_get_category(self, category: str):
-        category = self.session.query(CategoryTable).filter_by(category=category).first()
-        if not category:
-            category = CategoryTable(
+        _category = self.session.query(CategoryTable).filter_by(category=category).first()
+        if not _category:
+            _category = CategoryTable(
                 id=str(uuid.uuid4()),
                 category=category
             )
-            self.session.add(category)
+            self.session.add(_category)
             self.session.commit()
-        return category
+        return _category
 
     def delete(self, product_id: str):
         stmt = delete(ProductTable).where(ProductTable.id == product_id)

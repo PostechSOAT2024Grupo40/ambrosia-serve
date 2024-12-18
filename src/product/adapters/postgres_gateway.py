@@ -16,7 +16,7 @@ class PostgreSqlProductGateway(IProductGateway):
     def get_products(self) -> list[Product]:
         with self.uow:
             products = self.uow.repository.get_all()
-            return [self.build_product_entity(p[0]) for p in products]
+            return [self.build_product_entity(p) for p in products]
 
     def get_product_by_id(self, product_id: str) -> Optional[Product]:
         with self.uow:
@@ -48,7 +48,7 @@ class PostgreSqlProductGateway(IProductGateway):
                                                'name': product.name,
                                                'category': product.category,
                                                'description': product.description,
-                                                  'image': product.image,
+                                               'image': product.image,
                                                'stock': product.stock,
                                                'price': product.price})
             self.uow.commit()
