@@ -1,3 +1,4 @@
+from src.cart.domain.enums.order_status import OrderStatus
 from src.cart.domain.validators.order_validator import OrderValidator
 from src.cart.exceptions import OrderNotFoundError
 from src.cart.ports.cart_gateway import ICartGateway
@@ -13,6 +14,6 @@ class UpdateOrderStatusUseCase:
         order = self.get_order_by_id.execute(order_id)
         if not order:
             raise OrderNotFoundError(order=order_id)
-        order.order_status = new_status
+        order.order_status = OrderStatus[new_status]
         OrderValidator.validate(order)
         return self.gateway.create_update_order(order)

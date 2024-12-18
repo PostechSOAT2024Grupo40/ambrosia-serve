@@ -30,6 +30,9 @@ class Order:
     def __eq__(self, other):
         return self.id == other.id
 
+    def __gt__(self, other):
+        return self.order_status.value > other.order_status.value
+
     @property
     def id(self):
         return self._id

@@ -1,25 +1,75 @@
-from datetime import datetime
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column, DeclarativeBase
-from sqlalchemy.sql.functions import now
+
+from src.cart.adapters.AuditMixin import AuditMixin
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class OrderTable(Base):
+class StatusTable(Base, AuditMixin):
+    __tablename__ = "status"
+
+    id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
+    status: Mapped[str] = mapped_column(nullable=False, unique=True)
+
+    orders: Mapped[list["OrderTable"]] = relationship(back_populates="status",
+                                                      cascade="all, delete",
+                                                      passive_deletes=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.id = kwargs.get('id')
+        self.status = kwargs.get('status')
+        self.created_at = kwargs.get('created_at')
+        self.updated_at = kwargs.get('updated_at')
+
+    def __repr__(self):
+        return (f"StatusTable(id={self.id}, "
+                f"status={self.status}, "
+                f"created_at={self.created_at}, "
+                f"updated_at={self.updated_at})")
+
+
+class PaymentConditionTable(Base, AuditMixin):
+    __tablename__ = "payment_conditions"
+
+    id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
+    description: Mapped[str]
+
+    order: Mapped["OrderTable"] = relationship(back_populates="payment_condition",
+                                               cascade="all, delete",
+                                               passive_deletes=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.id = kwargs.get('id')
+        self.description = kwargs.get('description')
+        self.created_at = kwargs.get('created_at')
+        self.updated_at = kwargs.get('updated_at')
+
+    def __repr__(self):
+        return (f"PaymentConditionTable(id={self.id}, "
+                f"description={self.description}, "
+                f"created_at={self.created_at}, "
+                f"updated_at={self.updated_at})")
+
+
+class OrderTable(Base, AuditMixin):
     __tablename__ = "orders"
 
     id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False, index=True)
     user_id: Mapped[str]
-    status: Mapped[int]
-    payment_condition: Mapped[str]
+    status_id: Mapped[str] = mapped_column(ForeignKey("status.id", ondelete="CASCADE"))
+    status: Mapped["StatusTable"] = relationship(back_populates="orders")
+    payment_condition_id: Mapped[str] = mapped_column(ForeignKey("payment_conditions.id", ondelete="CASCADE"))
+    payment_condition: Mapped["PaymentConditionTable"] = relationship(back_populates="order")
     total: Mapped[float]
-    products: Mapped["OrderProductTable"] = relationship("OrderProductTable", back_populates="order")
-    created_at: Mapped[datetime] = mapped_column(default=now())
-    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
+    products: Mapped[list["OrderProductTable"]] = relationship(back_populates="order",
+                                                               cascade="all, delete",
+                                                               passive_deletes=True)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -39,18 +89,16 @@ class OrderTable(Base):
                 f"updated_at={self.updated_at})")
 
 
-class OrderProductTable(Base):
+class OrderProductTable(Base, AuditMixin):
     __tablename__ = "order_products"
 
-    id: Mapped[str] = mapped_column(String(255), primary_key=True, nullable=False, autoincrement=False)
+    id: Mapped[str] = mapped_column(primary_key=True, nullable=False, autoincrement=False)
     product_id: Mapped[str]
     quantity: Mapped[int]
     observation: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=now())
-    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
-    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"))
-    order = relationship("OrderTable", back_populates="products")
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id", ondelete="CASCADE"))
+    order: Mapped["OrderTable"] = relationship(back_populates="products")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

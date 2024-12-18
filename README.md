@@ -358,6 +358,7 @@ Os seguintes Status de Pedidos estão disponíveis:
 | `CONCLUIDO`   | O Pedido foi concluído                           |
 | `CANCELADO`   | O Pedido foi cancelado                           |
 
+
 Para executar o projeto localmente utilizando Docker, siga as seguintes etapas:
 
 1. Crie a infraestrutura kubernetes utilizando
@@ -389,3 +390,4 @@ aws eks update-kubeconfig --region us-east-1 --name ambrosia-serve-cluster
 ```shell
 kubectl get svc
 ```
+
