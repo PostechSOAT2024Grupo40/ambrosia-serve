@@ -48,37 +48,42 @@ class PostgreSqlClientRepository(IClientRepository):
         return results
 
     def create_user(self, user: Dict):
-        credential = self.save_credential(email=user['email'], password=user['password'])
-
+        credential = self.create_or_get_credential(user_id=user['id'], email=user['email'], password=user['password'])
+        del user['email']
+        del user['password']
         profile = ProfileTable(credential_id=credential.id, **user)
         self.session.add(profile)
         self.session.commit()
 
-    def save_credential(self, email: str, password: str):
-        credential = CredentialTable(id=str(uuid.uuid4()), email=email, password=password)
-        self.session.add(credential)
-        self.session.commit()
+    def create_or_get_credential(self, user_id: str, email: str, password: str):
+        credential = self.session.query(CredentialTable).join(CredentialTable.profile).filter(
+            ProfileTable.id == user_id).first()
+        if not credential:
+            credential = CredentialTable(id=str(uuid.uuid4()), email=email, password=password)
+            self.session.add(credential)
+            self.session.commit()
         return credential
 
     def update_user(self, user: Dict):
+        credential_data = self.create_or_get_credential(user_id=user['id'], email=user['email'],
+                                                        password=user['password'])
+        if credential_data:
+            stmt = insert(CredentialTable).values(id=credential_data.id, email=user['email'], password=user['password'])
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[CredentialTable.id],
+                set_=dict(email=user['email'], password=user['password'])
+            )
+            self.session.execute(stmt)
+
+        self.session.commit()
+
         profile_data = {key: user[key] for key in user if key not in ['email', 'password']}
-        stmt = insert(ProfileTable).values(**profile_data)
+        stmt = insert(ProfileTable).values(credential_id=credential_data.id, **profile_data)
         stmt = stmt.on_conflict_do_update(
             index_elements=[ProfileTable.id],
             set_=profile_data
         )
         self.session.execute(stmt)
-
-        credential_data = {key: user[key] for key in user if key in ['email', 'password']}
-        if credential_data:
-            stmt = insert(CredentialTable).values(id=user['credential_id'], **credential_data)
-            stmt = stmt.on_conflict_do_update(
-                index_elements=[CredentialTable.id],
-                set_=credential_data
-            )
-            self.session.execute(stmt)
-
-        self.session.commit()
 
     def delete_user(self, user_id: str):
         stmt = delete(ProfileTable).where(ProfileTable.id == user_id)
