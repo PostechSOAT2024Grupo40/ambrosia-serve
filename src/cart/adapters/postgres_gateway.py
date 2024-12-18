@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy import Row
 
 from src.cart.domain.entities.order import Order
+from src.cart.domain.enums.order_status import OrderStatus
 from src.cart.domain.enums.paymentConditions import PaymentConditions
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
@@ -27,7 +28,8 @@ class PostgreSqlOrderGateway(ICartGateway):
     def get_orders(self) -> list[Order]:
         with self.uow:
             orders: Optional[list[Row]] = self.uow.repository.get_all()
-            return [self.build_order_entity(o) for o in orders]
+            orders_entity = [self.build_order_entity(o) for o in orders]
+            return orders_entity
 
     def get_order_by_id(self, order_id: str) -> Optional[Order]:
         with self.uow:
@@ -42,7 +44,7 @@ class PostgreSqlOrderGateway(ICartGateway):
             self.uow.repository.insert_update({
                 'id': order.id,
                 'user_id': order.user,
-                'status': order.order_status.value,
+                'status': order.order_status.name,
                 'payment_condition': condition.name,
                 'total': order.total_order,
                 'products': [{'id': p.id,
@@ -68,5 +70,5 @@ class PostgreSqlOrderGateway(ICartGateway):
         return Order(_id=order.id,
                      user=order.user_id,
                      order_datetime=order.created_at,
-                     order_status=order.status,
+                     order_status=OrderStatus[order.status],
                      payment_condition=payment_condition.value)

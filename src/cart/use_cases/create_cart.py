@@ -6,7 +6,7 @@ from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
 from src.cart.exceptions import (ClientError,
                                  ProductNotFoundError,
-                                 OrderExistsError)
+                                 OrderExistsError, OrderNotFoundError)
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.use_cases.get_order_by_id import GetOrderByIdUseCase
 from src.client.ports.user_gateway import IUserGateway
@@ -36,9 +36,11 @@ class CreateCartUseCase:
 
         for product in products_required:
             order.add_product(product)
-
-        if self.get_order_by_id.execute(order.id):
-            raise OrderExistsError(order=order.id)
+        try:
+            if self.get_order_by_id.execute(order.id):
+                raise OrderExistsError(order=order.id)
+        except OrderNotFoundError:
+            pass
 
         return self.cart_gateway.create_update_order(order)
 

@@ -9,7 +9,7 @@ from src.cart.adapters.order_table import OrderTable, OrderProductTable, StatusT
 from src.cart.ports.repository_interface import IRepository
 
 ORDER_COLS: tuple = (
-    OrderTable.id.label('order_id'),
+    OrderTable.id,
     OrderTable.user_id,
     StatusTable.status,
     PaymentConditionTable.description.label('payment_condition'),
@@ -81,6 +81,9 @@ class PostgreSqlRepository(IRepository):
 
         order_data["status_id"] = status.id
         order_data["payment_condition_id"] = payment_condition.id
+
+        del order_data["status"]
+        del order_data["payment_condition"]
         stmt = insert(OrderTable).values(order_data)
         stmt = stmt.on_conflict_do_update(
             index_elements=[OrderTable.id],
