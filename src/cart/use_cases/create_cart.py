@@ -46,7 +46,7 @@ class CreateCartUseCase:
             pass
 
         order_created = self.cart_gateway.create_update_order(order)
-        self.event_publisher.publish(order_created)
+        self.event_publisher.publish(data=order_created.order_product_id_and_quantity)
         return order_created
 
     def build_products_required_list(self, products: list[Dict]):
