@@ -47,7 +47,3 @@ class Order:
     @staticmethod
     def calculate_total_price_per_quantity(order_item):
         return order_item.product.price * order_item.quantity
-
-    @property
-    def order_product_id_and_quantity(self) -> list[tuple[str, int]]:
-        return [(order_item.product.id, order_item.quantity) for order_item in self.products]

@@ -4,7 +4,6 @@ from typing import Dict
 from src.cart.domain.entities.order import Order
 from src.cart.domain.entities.order_product import OrderProduct
 from src.cart.domain.enums.order_status import OrderStatus
-from src.cart.domain.events.order_placed_event import OrderPlacedEvent
 from src.cart.exceptions import (ClientError,
                                  ProductNotFoundError,
                                  OrderExistsError, OrderNotFoundError)
@@ -18,13 +17,11 @@ class CreateCartUseCase:
     def __init__(self, cart_gateway: ICartGateway,
                  user_gateway: IUserGateway,
                  product_gateway: IProductGateway,
-                 get_order_by_id: GetOrderByIdUseCase,
-                 event_publisher: OrderPlacedEvent):
+                 get_order_by_id: GetOrderByIdUseCase):
         self.cart_gateway = cart_gateway
         self.user_gateway = user_gateway
         self.product_gateway = product_gateway
         self.get_order_by_id = get_order_by_id
-        self.event_publisher = event_publisher
 
     def execute(self, request_data: Dict):
         user_id = request_data['user_id']
@@ -46,7 +43,7 @@ class CreateCartUseCase:
             pass
 
         order_created = self.cart_gateway.create_update_order(order)
-        self.event_publisher.publish(data=order_created.order_product_id_and_quantity)
+
         return order_created
 
     def build_products_required_list(self, products: list[Dict]):

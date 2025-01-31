@@ -3,7 +3,6 @@ from typing import Dict
 from src.cart.adapters.postgres_gateway import PostgreSqlOrderGateway
 from src.cart.adapters.postgresql_uow import CartPostgreSqlUow
 from src.cart.adapters.pydantic_presenter import PydanticCartPresenter
-from src.cart.domain.events.order_placed_event import OrderPlacedEvent
 from src.cart.ports.cart_gateway import ICartGateway
 from src.cart.ports.cart_presenter import ICartPresenter
 from src.cart.ports.unit_of_work_interface import ICartUnitOfWork
@@ -34,12 +33,11 @@ class CartController:
         product_uow: IProductUnitOfWork = ProductPostgreSqlUow(session_factory=postgresql_session_factory())
         product_gateway: IProductGateway = PostgreSqlProductGateway(product_uow)
         presenter: ICartPresenter = PydanticCartPresenter()
-        order_placed_event: OrderPlacedEvent = OrderPlacedEvent()
+
         use_case = CreateCartUseCase(cart_gateway=cart_gateway,
                                      user_gateway=user_gateway,
                                      product_gateway=product_gateway,
-                                     get_order_by_id=GetOrderByIdUseCase(gateway=cart_gateway),
-                                     event_publisher=order_placed_event)
+                                     get_order_by_id=GetOrderByIdUseCase(gateway=cart_gateway))
         order = use_case.execute(request_data=request_data)
         return presenter.present(order)
 
