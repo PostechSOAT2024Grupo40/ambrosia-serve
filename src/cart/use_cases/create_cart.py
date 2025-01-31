@@ -42,7 +42,9 @@ class CreateCartUseCase:
         except OrderNotFoundError:
             pass
 
-        return self.cart_gateway.create_update_order(order)
+        order_created = self.cart_gateway.create_update_order(order)
+
+        return order_created
 
     def build_products_required_list(self, products: list[Dict]):
         products_required = []

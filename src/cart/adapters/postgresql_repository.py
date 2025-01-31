@@ -1,12 +1,13 @@
 import uuid
 from typing import Any, Sequence, Optional
 
-from sqlalchemy import select, delete, Row
+from sqlalchemy import select, delete, Row, Update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from src.cart.adapters.order_table import OrderTable, OrderProductTable, StatusTable, PaymentConditionTable
 from src.cart.ports.repository_interface import IRepository
+from src.product.adapters.product_table import ProductTable
 
 ORDER_COLS: tuple = (
     OrderTable.id,
@@ -89,6 +90,13 @@ class PostgreSqlRepository(IRepository):
             index_elements=[OrderTable.id],
             set_={key: order_data[key] for key in order_data if key != "id"}
         )
+        self.session.execute(stmt)
+
+        self.update_product_stock()
+
+    def update_product_stock(self):
+        stmt = (Update(ProductTable).values({'stock': ProductTable.stock - 1})
+                .where(ProductTable.id == OrderProductTable.product_id))
         self.session.execute(stmt)
 
     def create_or_get_payment_condition(self, values):
